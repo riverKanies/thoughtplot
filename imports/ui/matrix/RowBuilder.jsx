@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-export default class MatrixBuilder extends Component {
+export default class RowBuilder extends Component {
   constructor(props) {
     super(props)
 

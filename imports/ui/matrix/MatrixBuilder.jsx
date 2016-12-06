@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
+import ColumnBuilder from './ColumnBuilder.jsx'
 import RowBuilder from './RowBuilder.jsx'
 
 export default class MatrixBuilder extends Component {
@@ -8,25 +9,27 @@ export default class MatrixBuilder extends Component {
 
     this.state = {}
     this.state.currentStep = 0
-    this.state.steps = [
-      <RowBuilder {...this.props} />,
-      <div>step 2</div>,
-      <div>step 3</div>
-    ]
 
     this.toPrevious = this.toPrevious.bind(this)
     this.toNext = this.toNext.bind(this)
   }
 
   render() {
+    const steps = [
+      <ColumnBuilder {...this.props} />,
+      <RowBuilder {...this.props} />,
+      <div>step 2</div>,
+      <div>step 3</div>
+    ]
+    
     return(<div>
       <header>
         <h1>Matrix Builder</h1>
       </header>
 
       {this.state.currentStep > 0 ? <button onClick={this.toPrevious}>Previous</button> : ''}
-      {this.state.steps[this.state.currentStep]}
-      {this.state.currentStep < this.state.steps.length-1 ? <button onClick={this.toNext}>Next</button> : ''}
+      {steps[this.state.currentStep]}
+      {this.state.currentStep < steps.length-1 ? <button onClick={this.toNext}>Next</button> : ''}
     </div>)
   }
 
