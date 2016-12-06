@@ -35,12 +35,14 @@ class App extends Component {
   renderOptionRows() {
     //console.log('state', this.state)
     this.scores = []
+    const bestI = this.bestOption(this.state.mtx).index
     return this.state.mtx.slice(1).map((row, i) => {
       //console.log('row', row, i)
       const score = row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b) ), 0)
       const rowScored = row.concat(score)
       this.scores.push(score)
-      return <tr key={i}>{this.renderRow(rowScored,i+1)}</tr>
+      const styles = (bestI == i) ? {background: "yellow"} : {}
+      return <tr key={i} style={styles}>{this.renderRow(rowScored,i+1)}</tr>
     })
   }
 
