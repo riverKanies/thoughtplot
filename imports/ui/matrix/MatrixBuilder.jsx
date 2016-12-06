@@ -1,60 +1,40 @@
 import React, { Component, PropTypes } from 'react'
 
+import RowBuilder from './RowBuilder.jsx'
+
 export default class MatrixBuilder extends Component {
   constructor(props) {
     super(props)
 
     this.state = {}
-    this.onAddRow = this.onAddRow.bind(this)
-    this.acceptRow = this.acceptRow.bind(this)
-    this.cancelRow = this.cancelRow.bind(this)
-  }
+    this.state.currentStep = 0
+    this.state.steps = [
+      <RowBuilder {...this.props} />,
+      <div>step 2</div>,
+      <div>step 3</div>
+    ]
 
-  renderRowBuilder() {
-    if (this.state.buildingRow != true) return <button onClick={this.onAddRow}>Add Row</button>
-    const rowNum = this.props.mtx.length - 1
-    return (
-      <div>
-        {this.props.mtx[0].map((col, i) => {
-          return <div key={i}>
-            <label>{col == null ? "option" : col}</label>
-            <input value={this.props.mtx[rowNum][i]} onChange={this.props.onChangeHandler(rowNum, i)}/>
-          </div>
-        })}
-        <button onClick={this.acceptRow}>Done</button>
-        <button onClick={this.cancelRow}>Cancel</button>
-      </div>
-    )
+    this.toPrevious = this.toPrevious.bind(this)
+    this.toNext = this.toNext.bind(this)
   }
 
   render() {
-    return (<div>
+    return(<div>
       <header>
         <h1>Matrix Builder</h1>
       </header>
 
-      {this.renderRowBuilder()}
+      {this.state.currentStep > 0 ? <button onClick={this.toPrevious}>Previous</button> : ''}
+      {this.state.steps[this.state.currentStep]}
+      {this.state.currentStep < this.state.steps.length-1 ? <button onClick={this.toNext}>Next</button> : ''}
     </div>)
   }
 
-  onAddRow() {
-    const { mtx } = this.props
-    const newRow = []
-    mtx[0].forEach(() => {
-      newRow.push(0)
-    })
-    mtx.push(newRow)
-    this.setState({buildingRow: true})
-    this.props.changeMatrix(mtx)
+  toPrevious() {
+    this.setState({currentStep: this.state.currentStep - 1})
   }
 
-  acceptRow() {
-    this.setState({buildingRow: false})
-  }
-  cancelRow() {
-    const {mtx} = this.props
-    mtx.pop()
-    this.setState({buildingRow: false})
-    this.props.changeMatrix(mtx)
+  toNext() {
+    this.setState({currentStep: this.state.currentStep + 1})
   }
 }
