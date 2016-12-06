@@ -7,14 +7,23 @@ export default class ColumnBuilder extends Component {
     this.state = {}
 
     this.addColumn = this.addColumn.bind(this)
+    this.acceptColumn = this.acceptColumn.bind(this)
+    this.cancelColumn = this.cancelColumn.bind(this)
   }
 
   renderBuilder() {
-    if (this.state.buildingColumn != true) return <button onClick={this.addColumn}>Add Column</button>
+    if (this.state.buildingColumn != true) {
+      return (<div>
+        <button onClick={this.addColumn}>Add Column</button>
+        <button onClick={this.cancelColumn}>Delete Column</button>
+      </div>)
+    }
     const colNum = this.props.mtx[0].length-1
     return (<div key={colNum}>
       <label>Variable Name:</label>
       <input value={this.props.mtx[0][colNum]} onChange={this.props.onChangeHandler(0,colNum)} />
+      <button onClick={this.acceptColumn}>Done</button>
+      <button onClick={this.cancelColumn}>Cancel</button>
     </div>)
   }
 
@@ -32,5 +41,19 @@ export default class ColumnBuilder extends Component {
     })
     this.props.changeMatrix(mtx)
     this.setState({buildingColumn: true})
+  }
+
+  acceptColumn() {
+    this.setState({buildingColumn: false})
+  }
+
+  cancelColumn() {
+    const { mtx } = this.props
+    if (mtx[0].length < 2) return
+    mtx.map((row) => {
+      return row.pop()
+    })
+    this.props.changeMatrix(mtx)
+    this.setState({buildingColumn: false})
   }
 }

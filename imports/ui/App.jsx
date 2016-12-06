@@ -34,10 +34,12 @@ class App extends Component {
 
   renderOptionRows() {
     //console.log('state', this.state)
+    this.scores = []
     return this.state.mtx.slice(1).map((row, i) => {
       //console.log('row', row, i)
       const score = row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b) ), 0)
       const rowScored = row.concat(score)
+      this.scores.push(score)
       return <tr key={i}>{this.renderRow(rowScored,i+1)}</tr>
     })
   }
@@ -105,7 +107,7 @@ class App extends Component {
       return {option: row[0], index: i, score: score}
     })
     return scored.reduce((a,b) => {
-      if (a > b) return a
+      if (a.score > b.score) return a
       return b
     })
   }

@@ -56,6 +56,7 @@ export default class RowBuilder extends Component {
   }
   cancelRow() {
     const {mtx} = this.props
+    if(mtx.length < 2) return
     mtx.pop()
     this.setState({buildingRow: false})
     this.props.changeMatrix(mtx)
