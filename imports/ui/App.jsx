@@ -55,6 +55,7 @@ class App extends Component {
   }
 
   render() {
+    const bestOption = this.bestOption()
     return (
       <div className="container">
         <MatrixBuilder mtx={this.state.mtx} onChangeHandler={this.onChangeHandler} changeMatrix={this.changeMatrix} />
@@ -69,6 +70,7 @@ class App extends Component {
             {this.renderOptionRows()}
           </tbody>
         </table>
+        <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
 
         <header>
           <h1>Todo List</h1>
@@ -95,6 +97,17 @@ class App extends Component {
 
   numColumns() {
     return this.state.mtx[0].length
+  }
+
+  bestOption(mtx) {
+    const scored = this.state.mtx.slice(1).map((row, i) => {
+      const score = row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b) ), 0)
+      return {option: row[0], index: i, score: score}
+    })
+    return scored.reduce((a,b) => {
+      if (a > b) return a
+      return b
+    })
   }
 }
 
