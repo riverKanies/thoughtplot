@@ -3,6 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data'
 
 import { Tasks } from '../api/tasks.js'
 
+import MatrixBuilder from './matrix/MatrixBuilder.jsx'
 import Task from './Task.jsx'
 
 class App extends Component {
@@ -16,7 +17,8 @@ class App extends Component {
       ['IRC', 10, 5]
     ]
 
-    this.onAddRow = this.onAddRow.bind(this)
+    this.onChangeHandler = this.onChangeHandler.bind(this)
+    this.changeMatrix = this.changeMatrix.bind(this)
   }
 
   renderTasks() {
@@ -52,29 +54,10 @@ class App extends Component {
     return <input value={val} onChange={this.onChangeHandler(i,j)}/>
   }
 
-  renderRowBuilder() {
-    if (this.state.buildingRow != true) return <button onClick={this.onAddRow}>Add Row</button>
-    const rowNum = this.state.mtx.length - 1
-    return (
-      <div>
-        {this.state.mtx[0].map((col, i) => {
-          return <div key={i}>
-            <label>{col == null ? "option" : col}</label>
-            <input value={this.state.mtx[rowNum][i]} onChange={this.onChangeHandler(rowNum, i)}/>
-          </div>
-        })}
-      </div>
-    )
-  }
-
   render() {
     return (
       <div className="container">
-        <header>
-          <h1>Matrix Builder</h1>
-        </header>
-
-        {this.renderRowBuilder()}
+        <MatrixBuilder mtx={this.state.mtx} onChangeHandler={this.onChangeHandler} changeMatrix={this.changeMatrix} />
 
         <header>
           <h1>Matrix</h1>
@@ -98,22 +81,16 @@ class App extends Component {
     )
   }
 
+  changeMatrix(mtx) {
+    this.setState({mtx: mtx})
+  }
+
   onChangeHandler(i,j) {
     return (e) => {
       const { mtx } = this.state
       mtx[i][j] = e.target.value
       this.setState(mtx: mtx)
     }
-  }
-
-  onAddRow() {
-    const { mtx } = this.state
-    const newRow = []
-    mtx[0].forEach(() => {
-      newRow.push(0)
-    })
-    mtx.push(newRow)
-    this.setState({buildingRow: true, mtx: mtx})
   }
 
   numColumns() {
