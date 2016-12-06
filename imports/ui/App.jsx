@@ -15,6 +15,8 @@ class App extends Component {
       ['slack', 5, 8],
       ['IRC', 10, 5]
     ]
+
+    this.onAddRow = this.onAddRow.bind(this)
   }
 
   renderTasks() {
@@ -50,9 +52,30 @@ class App extends Component {
     return <input value={val} onChange={this.onChangeHandler(i,j)}/>
   }
 
+  renderRowBuilder() {
+    if (this.state.buildingRow != true) return <button onClick={this.onAddRow}>Add Row</button>
+    const rowNum = this.state.mtx.length - 1
+    return (
+      <div>
+        {this.state.mtx[0].map((col, i) => {
+          return <div key={i}>
+            <label>{col == null ? "option" : col}</label>
+            <input value={this.state.mtx[rowNum][i]} onChange={this.onChangeHandler(rowNum, i)}/>
+          </div>
+        })}
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="container">
+        <header>
+          <h1>Matrix Builder</h1>
+        </header>
+
+        {this.renderRowBuilder()}
+
         <header>
           <h1>Matrix</h1>
         </header>
@@ -81,6 +104,16 @@ class App extends Component {
       mtx[i][j] = e.target.value
       this.setState(mtx: mtx)
     }
+  }
+
+  onAddRow() {
+    const { mtx } = this.state
+    const newRow = []
+    mtx[0].forEach(() => {
+      newRow.push(0)
+    })
+    mtx.push(newRow)
+    this.setState({buildingRow: true, mtx: mtx})
   }
 
   numColumns() {
