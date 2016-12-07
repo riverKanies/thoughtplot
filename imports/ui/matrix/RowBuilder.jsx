@@ -24,10 +24,12 @@ export default class RowBuilder extends Component {
       <div>
         {this.props.mtx[0].map((col, i) => {
           return <div key={i}>
-            <label>{col == null ? "option" : col}</label>
+            <label>{col == null ? "Option" : col}</label>
             <input value={this.props.mtx[rowNum][i]} onChange={this.props.onChangeHandler(rowNum, i)}/>
+            {col == null ? <div><br/>Variables: You can fill in values for this option here if you like.</div> : ''}
           </div>
         })}
+        <br/>
         <button onClick={this.acceptRow}>Done</button>
         <button onClick={this.cancelRow}>Cancel</button>
       </div>
@@ -36,6 +38,7 @@ export default class RowBuilder extends Component {
 
   render() {
     return (<div>
+      <p><b>Row Builder</b>: Rows are for the different options you're considering. You should add a row for each.</p>
       {this.renderRowBuilder()}
     </div>)
   }

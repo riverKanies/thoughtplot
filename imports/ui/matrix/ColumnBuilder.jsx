@@ -29,7 +29,7 @@ export default class ColumnBuilder extends Component {
 
   render() {
     return (<div>
-      column builder:
+      <p><b>Column Builder</b>: Columns are for variables relevant to your decision. You should add a column for each main area in which your options differ significantly.</p>
       {this.renderBuilder()}
     </div>)
   }
