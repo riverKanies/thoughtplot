@@ -61,7 +61,7 @@ class App extends Component {
   }
 
   render() {
-    const bestOption = this.bestOption()
+    const bestOption = this.bestOption(this.state.mtx)
     return (
       <div className="container">
         <header>
@@ -89,9 +89,7 @@ class App extends Component {
         <header>
           <h1>Decision</h1>
         </header>
-        <textarea value={this.state.decision}
-          style={{width: "200px"}}
-          onChange={this.onChangeDecision}/>
+        <textarea value={this.state.decision} onChange={this.onChangeDecision}/>
 
         <header>
           <h1>Matrix</h1>
@@ -136,7 +134,8 @@ class App extends Component {
   }
 
   bestOption(mtx) {
-    const scored = this.state.mtx.slice(1).map((row, i) => {
+    if (mtx.length < 2) return {}
+    const scored = mtx.slice(1).map((row, i) => {
       const score = row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b) ), 0)
       return {option: row[0], index: i, score: score}
     })
