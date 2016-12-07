@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
+import Decision from './Decision.jsx'
 import ColumnBuilder from './ColumnBuilder.jsx'
 import RowBuilder from './RowBuilder.jsx'
 
@@ -12,10 +13,12 @@ export default class MatrixBuilder extends Component {
 
     this.toPrevious = this.toPrevious.bind(this)
     this.toNext = this.toNext.bind(this)
+    this.toStep = this.toStep.bind(this)
   }
 
   render() {
     const steps = [
+      <Decision {...this.props} />,
       <ColumnBuilder {...this.props} />,
       <RowBuilder {...this.props} />,
       <div><p><b>Scoring</b>: If there are any blank cells in your decision matrix fill them in now.
@@ -26,7 +29,8 @@ export default class MatrixBuilder extends Component {
        Do the scores align with your intuition about which choice is best?
         If not, modify some of your scores to capture your intuition as best you can.
          Is there something relevant to the decision that you haven't yet made a column for?
-          If so, add a column now (you'll have to go back to the Column Builder step). </p></div>
+          If so, add a column now (you'll have to go back to the
+          <a onClick={this.toStep(1)} style={{color: "blue"}}> Column Builder</a> step). </p></div>
     ]
 
     return(<div>
@@ -49,5 +53,11 @@ export default class MatrixBuilder extends Component {
 
   toNext() {
     this.setState({currentStep: this.state.currentStep + 1})
+  }
+
+  toStep(step) {
+    return () => {
+      this.setState({currentStep: step})
+    }
   }
 }

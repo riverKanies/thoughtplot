@@ -11,6 +11,7 @@ class App extends Component {
     super(props)
 
     this.state = {}
+    this.state.decision = "which team chat tool?"
     this.state.mtx = [
       [null, 'price', 'usability'],
       ['slack', 5, 8],
@@ -18,6 +19,7 @@ class App extends Component {
     ]
 
     this.onChangeHandler = this.onChangeHandler.bind(this)
+    this.onChangeDecision = this.onChangeDecision.bind(this)
     this.changeMatrix = this.changeMatrix.bind(this)
   }
 
@@ -77,12 +79,23 @@ class App extends Component {
         Using the DDT in no way guarantees that everyone will agree on which option is best.
          However, decision matricies can be compared to reveal where critical discrepencies in reasoning are, which can help to facilitate a discussion about the decision.</p>
 
-        <MatrixBuilder mtx={this.state.mtx} onChangeHandler={this.onChangeHandler} changeMatrix={this.changeMatrix} />
+        <MatrixBuilder
+          decision={this.state.decision}
+          mtx={this.state.mtx}
+          onChangeHandler={this.onChangeHandler}
+          changeMatrix={this.changeMatrix}
+          onChangeDecision={this.onChangeDecision} />
+
+        <header>
+          <h1>Decision</h1>
+        </header>
+        <textarea value={this.state.decision}
+          style={{width: "200px"}}
+          onChange={this.onChangeDecision}/>
 
         <header>
           <h1>Matrix</h1>
         </header>
-
         <table>
           <tbody>
             {this.renderLabelRow()}
@@ -112,6 +125,10 @@ class App extends Component {
       mtx[i][j] = e.target.value
       this.setState(mtx: mtx)
     }
+  }
+
+  onChangeDecision(e) {
+    this.setState({decision: e.target.value})
   }
 
   numColumns() {

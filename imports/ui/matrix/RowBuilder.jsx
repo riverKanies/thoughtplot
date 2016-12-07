@@ -26,7 +26,12 @@ export default class RowBuilder extends Component {
           return <div key={i}>
             <label>{col == null ? "Option" : col}</label>
             <input value={this.props.mtx[rowNum][i]} onChange={this.props.onChangeHandler(rowNum, i)}/>
-            {col == null ? <div><br/>Variables: You can fill in values for this option here if you like.</div> : ''}
+            {col == null ? <div><br/>Variables: You can fill in values for this option here if you like,
+              or you can modify them in the matrix directly at any time.
+              Variables should be scored based on relative importance.
+              Higher score means that it's a good desision.
+              For example: if cost is a variable, an option with a relatively high cost should get a
+              relatively low score in the cost column.</div> : ''}
           </div>
         })}
         <br/>
