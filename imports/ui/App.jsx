@@ -17,10 +17,14 @@ class App extends Component {
       ['slack', 5, 8],
       ['IRC', 10, 5]
     ]
+    this.state.isWeightedMtx = false
+    this.state.weights = []
 
     this.onChangeHandler = this.onChangeHandler.bind(this)
     this.onChangeDecision = this.onChangeDecision.bind(this)
     this.changeMatrix = this.changeMatrix.bind(this)
+    this.addWeights = this.addWeights.bind(this)
+    this.onChangeWeightHandler = this.onChangeWeightHandler.bind(this)
   }
 
   renderTasks() {
@@ -58,6 +62,14 @@ class App extends Component {
     if (val === null) return
     if (j === this.numColumns()) return val
     return <input value={val} onChange={this.onChangeHandler(i,j)}/>
+  }
+
+  renderWeightsRow() {
+    if (!this.state.isWeightedMtx) return <tr><td><button onClick={this.addWeights}>Add Weights</button></td></tr>
+    return <tr>{this.state.mtx[0].map((label, i) => {
+      if (label == null) return <td key='0'>Weights</td>
+      return <td key={i}><input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)}/></td>
+    })}</tr>
   }
 
   render() {
@@ -98,6 +110,7 @@ class App extends Component {
           <tbody>
             {this.renderLabelRow()}
             {this.renderOptionRows()}
+            {this.renderWeightsRow()}
           </tbody>
         </table>
         <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
@@ -111,6 +124,11 @@ class App extends Component {
         </ul>
       </div>
     )
+  }
+
+  addWeights() {
+    const weights = this.state.mtx[0].map(() => (1))
+    this.setState({isWeightedMtx: true, weights: weights})
   }
 
   changeMatrix(mtx) {
@@ -127,6 +145,14 @@ class App extends Component {
 
   onChangeDecision(e) {
     this.setState({decision: e.target.value})
+  }
+
+  onChangeWeightHandler(i) {
+    return (e) => {
+      const { weights } = this.state
+      weights[i] = e.target.value
+      this.setState({weights: weights})
+    }
   }
 
   numColumns() {
