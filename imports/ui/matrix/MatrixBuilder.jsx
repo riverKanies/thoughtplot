@@ -23,8 +23,10 @@ export default class MatrixBuilder extends Component {
       <RowBuilder {...this.props} />,
       <div><p><b>Scoring</b>: If there are any blank cells in your decision matrix fill them in now.
        Values you fill in should represent the relative importance of that variable for that option.
-        It doesn't matter what scale you choose to use (0-1, 1-10, 1-100).
-         The values you fill in are simply summed for each option to determine the final overall score for that option.</p></div>,
+       It doesn't matter what scale you choose to use (0-1, 1-10, 1-100).
+       The values you fill in are simply summed for each option to determine the final overall score for that option.
+       However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the matrix)
+       each column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the input value for each cell).</p></div>,
       <div><p><b>Self Review</b>: Look over your matrix, paying special attention to the overall scores.
        Do the scores align with your intuition about which choice is best?
         If not, modify some of your scores to capture your intuition as best you can.

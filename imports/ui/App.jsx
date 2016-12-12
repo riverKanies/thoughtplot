@@ -24,6 +24,7 @@ class App extends Component {
     this.onChangeDecision = this.onChangeDecision.bind(this)
     this.changeMatrix = this.changeMatrix.bind(this)
     this.addWeights = this.addWeights.bind(this)
+    this.removeWeights = this.removeWeights.bind(this)
     this.onChangeWeightHandler = this.onChangeWeightHandler.bind(this)
   }
 
@@ -34,8 +35,8 @@ class App extends Component {
   }
 
   renderLabelRow() {
-    const labelRow = this.state.mtx[0].concat(['Score'])
-    if (this.state.isWeightedMtx) labelRow.push('Weighted')
+    const labelRow = this.state.mtx[0].concat([`Score${this.state.isWeightedMtx ? ' (weighted)' : ''}`])
+    //if (this.state.isWeightedMtx) labelRow.push('Weighted')
     return <tr>{this.renderRow(labelRow,0)}</tr>
   }
 
@@ -45,12 +46,8 @@ class App extends Component {
     const bestI = this.bestOption(this.state.mtx).index
     return this.state.mtx.slice(1).map((row, i) => {
       //console.log('row', row, i)
-      const score = row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b) ), 0)
-      const weightedScore = row.slice(1).reduce((a,b,j) => {
-        return (parseInt(a)+parseInt(b)*this.state.weights[j+1])
-      }, 0)
+      const score = this.scoreRow(row)
       let rowScored = row.concat(score)
-      if (this.state.isWeightedMtx) rowScored = rowScored.concat(weightedScore)
       this.scores.push(score)
       const styles = (bestI == i) ? {background: "yellow"} : {}
       return <tr key={i} style={styles}>{this.renderRow(rowScored,i+1)}</tr>
@@ -75,7 +72,7 @@ class App extends Component {
   renderWeightsRow() {
     if (!this.state.isWeightedMtx) return <tr><td><button onClick={this.addWeights}>Add Weights</button></td></tr>
     return <tr>{this.state.mtx[0].map((label, i) => {
-      if (label == null) return <td key='0'>Weights</td>
+      if (label == null) return <td key='0'>Weights<button onClick={this.removeWeights}>X</button></td>
       return <td key={i}><input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)}/></td>
     })}</tr>
   }
@@ -92,7 +89,7 @@ class App extends Component {
          A decision matrix is a useful tool for documenting reasoning used to make a decision.
           Basically, you will create a table of options vs. variables, then score each option by summing the values for each variable.
            When you're done, one option should have the highest score, indicating that you think it is the best.
-            The DDT can be helpful for making decisions, but it's main purpose is for communicating decisions to your peers and/or partners, whoever will be affected by the decision.
+            The DDT can be helpful for making decisions, but its main purpose is for communicating decisions to your peers and/or partners, whoever will be affected by the decision.
              Documenting critical design and process related decisions using the DDT will help to get everyone on the same page and working efficiently together.
         </p>
         <p>
@@ -139,6 +136,10 @@ class App extends Component {
     this.setState({isWeightedMtx: true, weights: weights})
   }
 
+  removeWeights() {
+    this.setState({isWeightedMtx: false})
+  }
+
   changeMatrix(mtx) {
     const {weights} = this.state
     if (this.state.weights.length < mtx[0].length) weights.push(1)
@@ -169,10 +170,16 @@ class App extends Component {
     return this.state.mtx[0].length
   }
 
+  scoreRow(row) {
+    return !this.state.isWeightedMtx ?
+      row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b)), 0) :
+      row.slice(1).reduce((a,b,j) => (parseInt(a)+parseInt(b)*this.state.weights[j+1]), 0)
+  }
+
   bestOption(mtx) {
     if (mtx.length < 2) return {}
     const scored = mtx.slice(1).map((row, i) => {
-      const score = row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b) ), 0)
+      const score = this.scoreRow(row)
       return {option: row[0], index: i, score: score}
     })
     return scored.reduce((a,b) => {
