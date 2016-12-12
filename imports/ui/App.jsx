@@ -34,7 +34,8 @@ class App extends Component {
   }
 
   renderLabelRow() {
-    const labelRow = this.state.mtx[0].concat(['score'])
+    const labelRow = this.state.mtx[0].concat(['Score'])
+    if (this.state.isWeightedMtx) labelRow.push('Weighted')
     return <tr>{this.renderRow(labelRow,0)}</tr>
   }
 
@@ -45,7 +46,11 @@ class App extends Component {
     return this.state.mtx.slice(1).map((row, i) => {
       //console.log('row', row, i)
       const score = row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b) ), 0)
-      const rowScored = row.concat(score)
+      const weightedScore = row.slice(1).reduce((a,b,j) => {
+        return (parseInt(a)+parseInt(b)*this.state.weights[j+1])
+      }, 0)
+      let rowScored = row.concat(score)
+      if (this.state.isWeightedMtx) rowScored = rowScored.concat(weightedScore)
       this.scores.push(score)
       const styles = (bestI == i) ? {background: "yellow"} : {}
       return <tr key={i} style={styles}>{this.renderRow(rowScored,i+1)}</tr>
@@ -60,8 +65,11 @@ class App extends Component {
 
   renderCell(val,i,j) {
     if (val === null) return
-    if (j === this.numColumns()) return val
-    return <input value={val} onChange={this.onChangeHandler(i,j)}/>
+    if (j >= this.numColumns()) return val
+    return <span><input value={val} onChange={this.onChangeHandler(i,j)}/>
+      {this.state.isWeightedMtx && i==0 ? 'wght' : ''}
+      {this.state.isWeightedMtx && j>0 && i>0 ? (val * this.state.weights[j]) : ''}
+    </span>
   }
 
   renderWeightsRow() {
@@ -132,7 +140,9 @@ class App extends Component {
   }
 
   changeMatrix(mtx) {
-    this.setState({mtx: mtx})
+    const {weights} = this.state
+    if (this.state.weights.length < mtx[0].length) weights.push(1)
+    this.setState({mtx: mtx, weights: weights})
   }
 
   onChangeHandler(i,j) {
