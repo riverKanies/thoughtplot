@@ -25,7 +25,7 @@ export default class RowBuilder extends Component {
         {this.props.mtx[0].map((col, i) => {
           return <div key={i}>
             <label>{col == null ? "Option" : col}</label>
-            <input value={this.props.mtx[rowNum][i]} onChange={this.props.onChangeHandler(rowNum, i)}/>
+            <input value={this.props.mtx[rowNum][i]} onChange={this.props.onChangeHandler(rowNum, i)} onClick={(e)=>e.target.select()}/>
             {col == null ? <div><br/>Variables: You can fill in values for this option here if you like,
               or you can modify them in the matrix directly at any time.
               Variables should be scored based on relative importance.

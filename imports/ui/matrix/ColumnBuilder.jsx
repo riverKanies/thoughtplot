@@ -21,7 +21,7 @@ export default class ColumnBuilder extends Component {
     const colNum = this.props.mtx[0].length-1
     return (<div key={colNum}>
       <label>Variable Name:</label>
-      <input value={this.props.mtx[0][colNum]} onChange={this.props.onChangeHandler(0,colNum)} />
+      <input value={this.props.mtx[0][colNum]} onChange={this.props.onChangeHandler(0,colNum)} onClick={(e)=>e.target.select()} />
       <button onClick={this.acceptColumn}>Done</button>
       <button onClick={this.cancelColumn}>Cancel</button>
     </div>)
