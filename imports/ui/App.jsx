@@ -3,11 +3,9 @@ import { createContainer } from 'meteor/react-meteor-data'
 
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
-import { Tasks } from '../api/tasks.js'
 import { Decisions } from '../api/decisions.js'
 
 import MatrixBuilder from './matrix/MatrixBuilder.jsx'
-import Task from './Task.jsx'
 
 class App extends Component {
   constructor(props) {
@@ -30,12 +28,7 @@ class App extends Component {
     this.removeWeights = this.removeWeights.bind(this)
     this.onChangeWeightHandler = this.onChangeWeightHandler.bind(this)
     this.saveMatrix = this.saveMatrix.bind(this)
-  }
 
-  renderTasks() {
-    return this.props.tasks.map((task) => (
-      <Task key={task._id} task={task} />
-    ))
   }
 
   renderDecisions() {
@@ -147,13 +140,6 @@ class App extends Component {
           {this.renderDecisions()}
         </ul>
 
-        <header>
-          <h1>Todo List</h1>
-        </header>
-
-        <ul>
-          {this.renderTasks()}
-        </ul>
       </div>
     )
   }
@@ -216,19 +202,26 @@ class App extends Component {
   }
 
   saveMatrix() {
+    const decision = {
+      decision: this.state.decision,
+      matrix: this.state.mtx,
+      isWeightedMatrix: this.state.isWeightedMtx,
+      weights: this.state.weights
+    }
     console.log('saving matrix for ', this.props.currentUser)
+    Meteor.call('decisions.insert', decision)
   }
+
 }
 
 App.propTypes = {
-  tasks: PropTypes.array.isRequired,
+  decisions: PropTypes.array.isRequired,
 }
 
 export default createContainer(() => {
   return {
     routeDecisionId: FlowRouter.getParam('_id'),
     currentUser: Meteor.user(),
-    tasks: Tasks.find({}).fetch(),
     decisions: Decisions.find({}).fetch(),
   }
 }, App)
