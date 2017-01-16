@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { createContainer } from 'meteor/react-meteor-data'
 
+import AccountsUIWrapper from './AccountsUIWrapper.jsx';
+
 import { Tasks } from '../api/tasks.js'
 
 import MatrixBuilder from './matrix/MatrixBuilder.jsx'
@@ -26,6 +28,7 @@ class App extends Component {
     this.addWeights = this.addWeights.bind(this)
     this.removeWeights = this.removeWeights.bind(this)
     this.onChangeWeightHandler = this.onChangeWeightHandler.bind(this)
+    this.saveMatrix = this.saveMatrix.bind(this)
   }
 
   renderTasks() {
@@ -77,10 +80,16 @@ class App extends Component {
     })}</tr>
   }
 
+  renderSaveMatrix() {
+    if (!this.props.currentUser) return <button disabled="true">Save Matrix (must be logged in)</button>
+    return <button onClick={this.saveMatrix}>Save Matrix</button>
+  }
+
   render() {
     const bestOption = this.bestOption(this.state.mtx)
     return (
       <div className="container">
+        <AccountsUIWrapper />
         <header>
           <h1>Introduction to the Decision Documentation Tool (DDT)</h1>
         </header>
@@ -119,6 +128,8 @@ class App extends Component {
           </tbody>
         </table>
         <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
+
+        {this.renderSaveMatrix()}
 
         <header>
           <h1>Todo List</h1>
@@ -187,6 +198,10 @@ class App extends Component {
       return b
     })
   }
+
+  saveMatrix() {
+    console.log('saving matrix for ', this.props.currentUser)
+  }
 }
 
 App.propTypes = {
@@ -195,6 +210,7 @@ App.propTypes = {
 
 export default createContainer(() => {
   return {
+    currentUser: Meteor.user(),
     tasks: Tasks.find({}).fetch(),
   }
 }, App)
