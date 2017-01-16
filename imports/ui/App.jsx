@@ -4,6 +4,7 @@ import { createContainer } from 'meteor/react-meteor-data'
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 
 import { Tasks } from '../api/tasks.js'
+import { Decisions } from '../api/decisions.js'
 
 import MatrixBuilder from './matrix/MatrixBuilder.jsx'
 import Task from './Task.jsx'
@@ -34,6 +35,12 @@ class App extends Component {
   renderTasks() {
     return this.props.tasks.map((task) => (
       <Task key={task._id} task={task} />
+    ))
+  }
+
+  renderDecisions() {
+    return this.props.decisions.map((dec) => (
+      <p key={dec._id}>{dec._id}: {dec.decision}</p>
     ))
   }
 
@@ -89,6 +96,7 @@ class App extends Component {
     const bestOption = this.bestOption(this.state.mtx)
     return (
       <div className="container">
+        <p>Current route decision id: {this.props.routeDecisionId}</p>
         <AccountsUIWrapper />
         <header>
           <h1>Introduction to the Decision Documentation Tool (DDT)</h1>
@@ -130,6 +138,14 @@ class App extends Component {
         <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
 
         {this.renderSaveMatrix()}
+
+        <header>
+          <h1>Decision List</h1>
+        </header>
+
+        <ul>
+          {this.renderDecisions()}
+        </ul>
 
         <header>
           <h1>Todo List</h1>
@@ -210,7 +226,9 @@ App.propTypes = {
 
 export default createContainer(() => {
   return {
+    routeDecisionId: FlowRouter.getParam('_id'),
     currentUser: Meteor.user(),
     tasks: Tasks.find({}).fetch(),
+    decisions: Decisions.find({}).fetch(),
   }
 }, App)
