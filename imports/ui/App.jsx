@@ -103,18 +103,18 @@ class App extends Component {
       <div className="container">
         <AccountsUIWrapper />
         <header>
-          <h1>Introduction to the Decision Documentation Tool (DDT)</h1>
+          <h1>Introduction to the Decision Communication Tool (DCT)</h1>
         </header>
         <p>
-        Welcome to the DDT. This tool will walk you through making a decision matrix.
-         A decision matrix is a useful tool for documenting reasoning used to make a decision.
+        Welcome to the DCT. This tool will walk you through making a decision matrix.
+         A decision matrix is a useful tool for documenting and communicating reasoning used to make a decision.
           Basically, you will create a table of options vs. variables, then score each option by summing the values for each variable.
            When you're done, one option should have the highest score, indicating that you think it is the best.
-            The DDT can be helpful for making decisions, but its main purpose is for communicating decisions to your peers and/or partners, whoever will be affected by the decision.
-             Documenting critical design and process related decisions using the DDT will help to get everyone on the same page and working efficiently together.
+            The DCT can be helpful for making decisions, but its main purpose is for communicating decisions to your peers and/or partners, whoever will be affected by the decision.
+             Documenting critical design and process related decisions using the DCT will help to get everyone on the same page and working efficiently together.
         </p>
         <p>
-        Using the DDT in no way guarantees that everyone will agree on which option is best.
+        Using the DCT in no way guarantees that everyone will agree on which option is best.
          However, decision matricies can be compared to reveal where critical discrepencies in reasoning are, which can help to facilitate a discussion about the decision.</p>
 
         {this.props.routeDecisionId && !this.props.decision ?
@@ -130,11 +130,14 @@ class App extends Component {
             <header>
               <h1>Decision</h1>
             </header>
+            <p>This is the decision you are documenting. Feel free to edit it here:</p>
             <textarea value={this.state.decision} onChange={this.onChangeDecision}/>
 
             <header>
               <h1>Matrix</h1>
             </header>
+            <p>This is the final decision matrix. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
+            <p>Remember, columns for negative values (such as cost) should be given a negative weight.</p>
             <table>
               <tbody>
                 {this.renderLabelRow()}

@@ -31,7 +31,9 @@ export default class RowBuilder extends Component {
               Variables should be scored based on relative importance.
               Higher score means that it's a good desision.
               For example: if cost is a variable, an option with a relatively high cost should get a
-              relatively low score in the cost column.</div> : ''}
+              relatively low score in the cost column. If you're scoring variables on a 1-10 scale,
+              an option with high cost might get a score of 1 while an option with a low cost might get a score of 10.
+              Alternatively, you can write the actual cost in $ and give the cost column an appropriate negative weight to achieve the same effect.</div> : ''}
           </div>
         })}
         <br/>

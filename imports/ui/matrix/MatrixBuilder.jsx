@@ -39,14 +39,20 @@ export default class MatrixBuilder extends Component {
       <header>
         <h1>Matrix Builder</h1>
       </header>
-
+      <p>Follow these {steps.length} steps to document your decision:</p>
       <p>
         Step {this.state.currentStep+1}:
         <button disabled={this.state.currentStep > 0 ? false : true} onClick={this.toPrevious}>Previous</button>
-        <button disabled={this.state.currentStep < steps.length-1 ? false : true} onClick={this.toNext}>Next</button>
+        {this.renderNextButton(steps)}
       </p>
       {steps[this.state.currentStep]}
+      <br/>
+      {this.renderNextButton(steps)}
     </div>)
+  }
+
+  renderNextButton(steps) {
+    return <button disabled={this.state.currentStep < steps.length-1 ? false : true} onClick={this.toNext}>Next</button>
   }
 
   toPrevious() {
