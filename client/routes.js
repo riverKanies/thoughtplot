@@ -4,3 +4,6 @@ FlowRouter.route('/decisions/:_id', {
     console.log("Looking at a decision?", params);
   }
 })
+FlowRouter.route('/', {
+  name: 'Home'
+})

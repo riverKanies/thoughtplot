@@ -22,7 +22,7 @@ class App extends Component {
     }else{
       this.state.decision = ""
       this.state.mtx = [
-        []
+        [null]
       ]
       this.state.isWeightedMtx = false
       this.state.weights = []
