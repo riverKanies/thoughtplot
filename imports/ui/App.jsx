@@ -13,20 +13,16 @@ class App extends Component {
 
     this.state = {}
 
-    const dec = Decisions.findOne({_id: props.routeDecisionId})
+    const dec = props.decision
     if (dec) {
-      console.log('setting found dec vals')
       this.state.decision = dec.decision
       this.state.mtx = dec.matrix
       this.state.isWeightedMtx = dec.isWeightedMatrix
       this.state.weights = dec.weights
     }else{
-      console.log('no decision, setting default vals')
-      this.state.decision = "which team chat tool?"
+      this.state.decision = ""
       this.state.mtx = [
-        [null, 'price', 'usability'],
-        ['slack', 5, 8],
-        ['IRC', 10, 5]
+        []
       ]
       this.state.isWeightedMtx = false
       this.state.weights = []
@@ -43,17 +39,9 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('new props')
-    // have to check decisions.length because it will be 0 on first render even if the id is valid
-    // ... but, this is broken too because it will pass whenever a new dec is added, causing current
-    // state to be overwritten with saved state
-    if (nextProps.routeDecisionId == this.props.routeDecisionId && nextProps.decisions.length == this.props.decisions.length) return
-    console.log('route change')
-    const dec = Decisions.findOne({_id: nextProps.routeDecisionId})
-    if (!dec) {
-      console.log('no decision matching route')
-      return
-    }
+    if (nextProps.decision == this.props.decision) return
+    const dec = nextProps.decision
+    if (!dec) return
     this.setState({decision: dec.decision, mtx: dec.matrix, isWeightedMtx: dec.isWeightedMatrix, weights: dec.weights})
   }
 
@@ -70,11 +58,9 @@ class App extends Component {
   }
 
   renderOptionRows() {
-    //console.log('state', this.state)
     this.scores = []
     const bestI = this.bestOption(this.state.mtx).index
     return this.state.mtx.slice(1).map((row, i) => {
-      //console.log('row', row, i)
       const score = this.scoreRow(row)
       let rowScored = row.concat(score)
       this.scores.push(score)
@@ -112,11 +98,9 @@ class App extends Component {
   }
 
   render() {
-    console.log('rendering', this.props.decisions.length)
     const bestOption = this.bestOption(this.state.mtx)
     return (
       <div className="container">
-        <p>Current route decision id: {this.props.routeDecisionId}</p>
         <AccountsUIWrapper />
         <header>
           <h1>Introduction to the Decision Documentation Tool (DDT)</h1>
@@ -133,31 +117,35 @@ class App extends Component {
         Using the DDT in no way guarantees that everyone will agree on which option is best.
          However, decision matricies can be compared to reveal where critical discrepencies in reasoning are, which can help to facilitate a discussion about the decision.</p>
 
-        <MatrixBuilder
-          decision={this.state.decision}
-          mtx={this.state.mtx}
-          onChangeHandler={this.onChangeHandler}
-          changeMatrix={this.changeMatrix}
-          onChangeDecision={this.onChangeDecision} />
+        {this.props.routeDecisionId && !this.props.decision ?
+          <h1 style={{color: "red"}}>No such decision</h1> :
+          <div>
+            <MatrixBuilder
+              decision={this.state.decision}
+              mtx={this.state.mtx}
+              onChangeHandler={this.onChangeHandler}
+              changeMatrix={this.changeMatrix}
+              onChangeDecision={this.onChangeDecision} />
 
-        <header>
-          <h1>Decision</h1>
-        </header>
-        <textarea value={this.state.decision} onChange={this.onChangeDecision}/>
+            <header>
+              <h1>Decision</h1>
+            </header>
+            <textarea value={this.state.decision} onChange={this.onChangeDecision}/>
 
-        <header>
-          <h1>Matrix</h1>
-        </header>
-        <table>
-          <tbody>
-            {this.renderLabelRow()}
-            {this.renderOptionRows()}
-            {this.renderWeightsRow()}
-          </tbody>
-        </table>
-        <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
+            <header>
+              <h1>Matrix</h1>
+            </header>
+            <table>
+              <tbody>
+                {this.renderLabelRow()}
+                {this.renderOptionRows()}
+                {this.renderWeightsRow()}
+              </tbody>
+            </table>
+            <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
 
-        {this.renderSaveMatrix()}
+            {this.renderSaveMatrix()}
+          </div>}
 
         <header>
           <h1>Decision List</h1>
@@ -235,7 +223,6 @@ class App extends Component {
       isWeightedMatrix: this.state.isWeightedMtx,
       weights: this.state.weights
     }
-    console.log('saving matrix for ', this.props.currentUser)
     Meteor.call('decisions.insert', decision)
   }
 
@@ -251,6 +238,7 @@ App.propTypes = {
 export default createContainer(() => {
   return {
     routeDecisionId: FlowRouter.getParam('_id'),
+    decision: Decisions.findOne({_id: FlowRouter.getParam('_id')}),
     currentUser: Meteor.user(),
     decisions: Decisions.find({}).fetch(),
   }
