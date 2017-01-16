@@ -12,14 +12,25 @@ class App extends Component {
     super(props)
 
     this.state = {}
-    this.state.decision = "which team chat tool?"
-    this.state.mtx = [
-      [null, 'price', 'usability'],
-      ['slack', 5, 8],
-      ['IRC', 10, 5]
-    ]
-    this.state.isWeightedMtx = false
-    this.state.weights = []
+
+    const dec = Decisions.findOne({_id: props.routeDecisionId})
+    if (dec) {
+      console.log('setting found dec vals')
+      this.state.decision = dec.decision
+      this.state.mtx = dec.matrix
+      this.state.isWeightedMtx = dec.isWeightedMatrix
+      this.state.weights = dec.weights
+    }else{
+      console.log('no decision, setting default vals')
+      this.state.decision = "which team chat tool?"
+      this.state.mtx = [
+        [null, 'price', 'usability'],
+        ['slack', 5, 8],
+        ['IRC', 10, 5]
+      ]
+      this.state.isWeightedMtx = false
+      this.state.weights = []
+    }
 
     this.onChangeHandler = this.onChangeHandler.bind(this)
     this.onChangeDecision = this.onChangeDecision.bind(this)
@@ -31,9 +42,24 @@ class App extends Component {
 
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log('new props')
+    // have to check decisions.length because it will be 0 on first render even if the id is valid
+    // ... but, this is broken too because it will pass whenever a new dec is added, causing current
+    // state to be overwritten with saved state
+    if (nextProps.routeDecisionId == this.props.routeDecisionId && nextProps.decisions.length == this.props.decisions.length) return
+    console.log('route change')
+    const dec = Decisions.findOne({_id: nextProps.routeDecisionId})
+    if (!dec) {
+      console.log('no decision matching route')
+      return
+    }
+    this.setState({decision: dec.decision, mtx: dec.matrix, isWeightedMtx: dec.isWeightedMatrix, weights: dec.weights})
+  }
+
   renderDecisions() {
     return this.props.decisions.map((dec) => (
-      <p key={dec._id}>{dec._id}: {dec.decision}</p>
+      <p key={dec._id}>{dec._id}: {dec.decision}<button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button></p>
     ))
   }
 
@@ -86,6 +112,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('rendering', this.props.decisions.length)
     const bestOption = this.bestOption(this.state.mtx)
     return (
       <div className="container">
@@ -212,6 +239,9 @@ class App extends Component {
     Meteor.call('decisions.insert', decision)
   }
 
+  goTo(path) {
+    return () => FlowRouter.go(path)
+  }
 }
 
 App.propTypes = {
