@@ -50,7 +50,7 @@ class App extends Component {
 
   renderDecisions() {
     return this.props.decisions.map((dec) => (
-      <p key={dec._id}>{dec._id}: {dec.decision}<button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button></p>
+      <p key={dec._id}>- {dec.decision}<button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button></p>
     ))
   }
 
@@ -171,12 +171,11 @@ class App extends Component {
       <div className="container">
         <AccountsUIWrapper />
         <section>
-          <button onClick={this.setTab('intro')}>Intro</button>
-          <button onClick={this.setTab('builder')}>Builder</button>
-          <button onClick={this.setTab('matrix')}>Matrix</button>
-          <button onClick={this.setTab('list')}>List</button>
+          <button onClick={this.setTab('intro')} style={this.state.selectedTab === 'intro' ? {borderColor: 'blue'} : {}}>Intro</button>
+          <button onClick={this.setTab('builder')} style={this.state.selectedTab === 'builder' ? {borderColor: 'blue'} : {}}>Builder</button>
+          <button onClick={this.setTab('matrix')} style={this.state.selectedTab === 'matrix' ? {borderColor: 'blue'} : {}}>Matrix</button>
+          <button onClick={this.setTab('list')} style={this.state.selectedTab === 'list' ? {borderColor: 'blue'} : {}}>List</button>
         </section>
-        <p>{this.state.selectedTab}</p>
         {this.renderTab()}
       </div>
     )
