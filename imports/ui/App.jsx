@@ -12,7 +12,7 @@ class App extends Component {
     super(props)
 
     this.state = {}
-    this.state.selectedTab = 'intro'
+    this.state.selectedTab = localStorage.getItem('mtxplayTab') || 'intro'
 
     const dec = props.decision
     if (dec) {
@@ -154,6 +154,22 @@ class App extends Component {
           </table>
           <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
           {this.renderSaveMatrix()}
+          <br/><br/>
+          <h3>Notes:</h3>
+          <p><b>Scoring</b>: If there are any blank cells in your decision matrix fill them in now.
+           Values you fill in should represent the relative importance of that variable for that option.
+           It doesn't matter what scale you choose to use (0-1, 1-10, 1-100).
+           The values you fill in are simply summed for each option to determine the final overall score for that option.
+           However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the matrix)
+           each column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the input value for each cell).
+          </p>
+          <p><b>Self Review</b>: Look over your matrix, paying special attention to the overall scores.
+           Do the scores align with your intuition about which choice is best?
+            If not, modify some of your scores to capture your intuition as best you can.
+             Is there something relevant to the decision that you haven't yet made a column for?
+              If so, add a column now (you'll have to go back to the
+               Column Builder step).
+          </p>
         </div>}
     </section>)
     if (this.state.selectedTab === 'list') return (<section>
@@ -181,9 +197,10 @@ class App extends Component {
     )
   }
 
-  setTab(i) {
+  setTab(l) {
     return ()=>{
-      this.setState({selectedTab: i})
+      window.localStorage.setItem('mtxplayTab', l)
+      this.setState({selectedTab: l})
     }
   }
 
