@@ -57,7 +57,7 @@ class App extends Component {
   renderLabelRow() {
     const labelRow = this.state.mtx[0].concat([`Score${this.state.isWeightedMtx ? ' (weighted)' : ''}`])
     //if (this.state.isWeightedMtx) labelRow.push('Weighted')
-    return <tr>{this.renderRow(labelRow,0)}</tr>
+    return <tr>{this.renderRowOfLabels(labelRow,0)}</tr>
   }
 
   renderOptionRows() {
@@ -78,10 +78,27 @@ class App extends Component {
     ))
   }
 
+  renderRowOfLabels(row,i) {
+    return row.map((cell, j) => (
+      <td key={j}>{this.renderLabelCell(cell,i,j)}</td>
+    ))
+  }
+
   renderCell(val,i,j) {
     if (val === null) return
     if (j >= this.numColumns()) return val
     return <span><input value={val} onChange={this.onChangeHandler(i,j)}/>
+      {this.state.isWeightedMtx && i==0 ? 'wght' : ''}
+      {this.state.isWeightedMtx && j>0 && i>0 ? (val * this.state.weights[j]) : ''}
+    </span>
+  }
+
+  renderLabelCell(val,i,j) {
+    if (val === null) return
+    if (j >= this.numColumns()) return val
+    let styles={background: "lightblue"}
+    return <span style={styles}>
+      <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
       {this.state.isWeightedMtx && i==0 ? 'wght' : ''}
       {this.state.isWeightedMtx && j>0 && i>0 ? (val * this.state.weights[j]) : ''}
     </span>
