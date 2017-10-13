@@ -73,31 +73,24 @@ class App extends Component {
   }
 
   renderRow(row,i) {
-    return row.map((cell, j) => (
-      <td key={j}>{this.renderCell(cell,i,j)}</td>
-    ))
+    return row.map((cell, j) => {
+      console.log('j',j)
+      const styles = (j==0) ? {background: "orange"} : {background: "lightgray"}
+      return <td key={j}>{this.renderCell(cell,i,j,styles)}</td>
+    })
   }
 
   renderRowOfLabels(row,i) {
-    return row.map((cell, j) => (
-      <td key={j}>{this.renderLabelCell(cell,i,j)}</td>
-    ))
+    return row.map((cell, j) => {
+      const styles = {background: "lightblue"}
+      return <td key={j}>{this.renderCell(cell,i,j,styles)}</td>
+    })
   }
 
-  renderCell(val,i,j) {
+  renderCell(val,i,j,styles) {
     if (val === null) return
     if (j >= this.numColumns()) return val
-    return <span><input value={val} onChange={this.onChangeHandler(i,j)}/>
-      {this.state.isWeightedMtx && i==0 ? 'wght' : ''}
-      {this.state.isWeightedMtx && j>0 && i>0 ? (val * this.state.weights[j]) : ''}
-    </span>
-  }
-
-  renderLabelCell(val,i,j) {
-    if (val === null) return
-    if (j >= this.numColumns()) return val
-    let styles={background: "lightblue"}
-    return <span style={styles}>
+    return <span>
       <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
       {this.state.isWeightedMtx && i==0 ? 'wght' : ''}
       {this.state.isWeightedMtx && j>0 && i>0 ? (val * this.state.weights[j]) : ''}
@@ -108,7 +101,7 @@ class App extends Component {
     if (!this.state.isWeightedMtx) return <tr><td><button onClick={this.addWeights}>Add Weights</button></td></tr>
     return <tr>{this.state.mtx[0].map((label, i) => {
       if (label == null) return <td key='0'>Weights<button onClick={this.removeWeights}>X</button></td>
-      return <td key={i}><input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)}/></td>
+      return <td key={i}><input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: "purple", border: "2px solid black", borderRadius: "5px"}}/></td>
     })}</tr>
   }
 
