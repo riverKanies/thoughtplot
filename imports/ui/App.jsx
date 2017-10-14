@@ -68,7 +68,6 @@ class App extends Component {
       let rowScored = row.concat(score)
       this.scores.push(score)
       const styles = (bestI == i) ? {background: colors.yellow} : {}
-      console.log('row', rowScored)
       return <div  className='row' key={i} style={styles}>{this.renderRow(rowScored,i+1)}</div>
     })
   }
@@ -115,83 +114,85 @@ class App extends Component {
   }
 
   renderTab() {
-    const bestOption = this.bestOption(this.state.mtx)
-    if (this.state.selectedTab === 'intro') return (<section>
-      <header>
-        <h1>Introduction to the Decision Communication Tool (DCT)</h1>
-      </header>
-      <p>
-      Welcome to the DCT. This tool will walk you through making a decision matrix.
-       A decision matrix is a useful tool for documenting and communicating reasoning used to make a decision.
-        Basically, you will create a table of options vs. variables, then score each option by summing the values for each variable.
-         When you're done, one option should have the highest score, indicating that you think it is the best.
-          The DCT can be helpful for making decisions, but its main purpose is for communicating decisions to your peers and/or partners, whoever will be affected by the decision.
-           Documenting critical design and process related decisions using the DCT will help to get everyone on the same page and working efficiently together.
-      </p>
-      <p>
-      Using the DCT in no way guarantees that everyone will agree on which option is best.
-       However, decision matricies can be compared to reveal where critical discrepencies in reasoning are, which can help to facilitate a discussion about the decision.
-      </p>
-    </section>)
-    if (this.state.selectedTab === 'builder') return (<section>
-      {this.props.routeDecisionId && !this.props.decision ?
-        <h1>No such decision!</h1> :
-        <div>
-          <MatrixBuilder
-            decision={this.state.decision}
-            mtx={this.state.mtx}
-            onChangeHandler={this.onChangeHandler}
-            changeMatrix={this.changeMatrix}
-            onChangeDecision={this.onChangeDecision} />
-        </div>}
-    </section>)
-    if (this.state.selectedTab === 'matrix') return (<section>
-      {this.props.routeDecisionId && !this.props.decision ?
-        <h1>No such decision!</h1> :
-        <div>
-          <header>
-            <h1>Decision</h1>
-          </header>
-          <p>This is the decision you are documenting. Feel free to edit it here:</p>
-          <textarea value={this.state.decision} onChange={this.onChangeDecision}/>
-          <header>
-            <h1>Matrix</h1>
-          </header>
-          <p>This is the final decision matrix. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
-          <p>Remember, columns for negative values (such as cost) should be given a negative weight.</p>
-          <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px'}}>
-            {this.renderLabelRow()}
-            {this.renderOptionRows()}
-            {this.renderWeightsRow()}
-          </div>
-          <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
-          {this.renderSaveMatrix()}
-          <br/><br/>
-          <h3>Notes:</h3>
-          <p><b>Scoring</b>: If there are any blank cells in your decision matrix fill them in now.
-           Values you fill in should represent the relative importance of that variable for that option.
-           It doesn't matter what scale you choose to use (0-1, 1-10, 1-100).
-           The values you fill in are simply summed for each option to determine the final overall score for that option.
-           However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the matrix)
-           each column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the input value for each cell).
-          </p>
-          <p><b>Self Review</b>: Look over your matrix, paying special attention to the overall scores.
-           Do the scores align with your intuition about which choice is best?
-            If not, modify some of your scores to capture your intuition as best you can.
-             Is there something relevant to the decision that you haven't yet made a column for?
-              If so, add a column now (you'll have to go back to the
-               Column Builder step).
-          </p>
-        </div>}
-    </section>)
-    if (this.state.selectedTab === 'list') return (<section>
-      <header>
-        <h1>Decision List</h1>
-      </header>
-      <ul>
-        {this.renderDecisions()}
-      </ul>
-    </section>)
+    const bestOption = this.bestOption(this.state.mtx) 
+    return (<div>
+      <section style={{display: (this.state.selectedTab === 'intro' ? '' : 'none')}}>
+        <header>
+          <h1>Introduction to the Decision Communication Tool (DCT)</h1>
+        </header>
+        <p>
+        Welcome to the DCT. This tool will walk you through making a decision matrix.
+        A decision matrix is a useful tool for documenting and communicating reasoning used to make a decision.
+          Basically, you will create a table of options vs. variables, then score each option by summing the values for each variable.
+          When you're done, one option should have the highest score, indicating that you think it is the best.
+            The DCT can be helpful for making decisions, but its main purpose is for communicating decisions to your peers and/or partners, whoever will be affected by the decision.
+            Documenting critical design and process related decisions using the DCT will help to get everyone on the same page and working efficiently together.
+        </p>
+        <p>
+        Using the DCT in no way guarantees that everyone will agree on which option is best.
+        However, decision matricies can be compared to reveal where critical discrepencies in reasoning are, which can help to facilitate a discussion about the decision.
+        </p>
+      </section>
+      <section style={{display: (this.state.selectedTab === 'builder' ? '' : 'none')}}>
+        {this.props.routeDecisionId && !this.props.decision ?
+          <h1>No such decision!</h1> :
+          <div>
+            <MatrixBuilder
+              decision={this.state.decision}
+              mtx={this.state.mtx}
+              onChangeHandler={this.onChangeHandler}
+              changeMatrix={this.changeMatrix}
+              onChangeDecision={this.onChangeDecision} />
+          </div>}
+      </section>
+      <section style={{display: (this.state.selectedTab === 'matrix' ? '' : 'none')}}>
+        {this.props.routeDecisionId && !this.props.decision ?
+          <h1>No such decision!</h1> :
+          <div>
+            <header>
+              <h1>Decision</h1>
+            </header>
+            <p>This is the decision you are documenting. Feel free to edit it here:</p>
+            <textarea value={this.state.decision} onChange={this.onChangeDecision}/>
+            <header>
+              <h1>Matrix</h1>
+            </header>
+            <p>This is the final decision matrix. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
+            <p>Remember, columns for negative values (such as cost) should be given a negative weight.</p>
+            <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px'}}>
+              {this.renderLabelRow()}
+              {this.renderOptionRows()}
+              {this.renderWeightsRow()}
+            </div>
+            <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
+            {this.renderSaveMatrix()}
+            <br/><br/>
+            <h3>Notes:</h3>
+            <p><b>Scoring</b>: If there are any blank cells in your decision matrix fill them in now.
+            Values you fill in should represent the relative importance of that variable for that option.
+            It doesn't matter what scale you choose to use (0-1, 1-10, 1-100).
+            The values you fill in are simply summed for each option to determine the final overall score for that option.
+            However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the matrix)
+            each column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the input value for each cell).
+            </p>
+            <p><b>Self Review</b>: Look over your matrix, paying special attention to the overall scores.
+            Do the scores align with your intuition about which choice is best?
+              If not, modify some of your scores to capture your intuition as best you can.
+              Is there something relevant to the decision that you haven't yet made a column for?
+                If so, add a column now (you'll have to go back to the
+                Column Builder step).
+            </p>
+          </div>}
+      </section>
+      <section style={{display: (this.state.selectedTab === 'list' ? '' : 'none')}}>
+        <header>
+          <h1>Decision List</h1>
+        </header>
+        <ul>
+          {this.renderDecisions()}
+        </ul>
+      </section>
+    </div>)
   }
 
   render() {
