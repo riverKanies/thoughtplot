@@ -57,7 +57,7 @@ class App extends Component {
   renderLabelRow() {
     const labelRow = this.state.mtx[0].concat([`Score${this.state.isWeightedMtx ? ' (weighted)' : ''}`])
     //if (this.state.isWeightedMtx) labelRow.push('Weighted')
-    return <tr>{this.renderRowOfLabels(labelRow,0)}</tr>
+    return <div className='row'>{this.renderRowOfLabels(labelRow,0)}</div>
   }
 
   renderOptionRows() {
@@ -68,41 +68,40 @@ class App extends Component {
       let rowScored = row.concat(score)
       this.scores.push(score)
       const styles = (bestI == i) ? {background: "yellow"} : {}
-      return <tr key={i} style={styles}>{this.renderRow(rowScored,i+1)}</tr>
+      console.log('row', rowScored)
+      return <div  className='row' key={i} style={styles}>{this.renderRow(rowScored,i+1)}</div>
     })
   }
 
   renderRow(row,i) {
     return row.map((cell, j) => {
-      console.log('j',j)
-      const styles = (j==0) ? {background: "orange"} : {background: "lightgray"}
-      return <td key={j}>{this.renderCell(cell,i,j,styles)}</td>
+      const styles = (j==0) ? {background: "orange", width: '70px'} : {background: "lightgray", width: '20px'}
+      return <div key={j}>{this.renderCell(cell,i,j,styles)}</div>
     })
   }
 
   renderRowOfLabels(row,i) {
     return row.map((cell, j) => {
-      const styles = {background: "lightblue"}
-      return <td key={j}>{this.renderCell(cell,i,j,styles)}</td>
+      const styles = {background: "lightblue", width: '70px'}
+      return <div key={j}>{this.renderCell(cell,i,j,styles)}</div>
     })
   }
 
   renderCell(val,i,j,styles) {
-    if (val === null) return
-    if (j >= this.numColumns()) return val
-    return <span>
+    if (val === null) return <div className='col-3' />
+    if (j >= this.numColumns()) return <div className='col-3'>{val}</div>
+    return <div className='col-3'>
       <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
-      {this.state.isWeightedMtx && i==0 ? 'wght' : ''}
-      {this.state.isWeightedMtx && j>0 && i>0 ? (val * this.state.weights[j]) : ''}
-    </span>
+      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{color: 'purple'}}>{val * this.state.weights[j]}</text> : ''}
+    </div>
   }
 
   renderWeightsRow() {
-    if (!this.state.isWeightedMtx) return <tr><td><button onClick={this.addWeights}>Add Weights</button></td></tr>
-    return <tr>{this.state.mtx[0].map((label, i) => {
-      if (label == null) return <td key='0'>Weights<button onClick={this.removeWeights}>X</button></td>
-      return <td key={i}><input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: "purple", border: "2px solid black", borderRadius: "5px"}}/></td>
-    })}</tr>
+    if (!this.state.isWeightedMtx) return <div><div><button onClick={this.addWeights}>Add Weights</button></div></div>
+    return <div className='row'>{this.state.mtx[0].map((label, i) => {
+      if (label == null) return <div className='col-3' key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
+      return <div className='col-3' key={i}><input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: "purple", width: '20px', border: "2px solid black", borderRadius: "5px"}}/></div>
+    })}</div>
   }
 
   renderSaveMatrix() {
@@ -155,13 +154,11 @@ class App extends Component {
           </header>
           <p>This is the final decision matrix. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
           <p>Remember, columns for negative values (such as cost) should be given a negative weight.</p>
-          <table>
-            <tbody>
-              {this.renderLabelRow()}
-              {this.renderOptionRows()}
-              {this.renderWeightsRow()}
-            </tbody>
-          </table>
+          <div className='container'>
+            {this.renderLabelRow()}
+            {this.renderOptionRows()}
+            {this.renderWeightsRow()}
+          </div>
           <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
           {this.renderSaveMatrix()}
           <br/><br/>
