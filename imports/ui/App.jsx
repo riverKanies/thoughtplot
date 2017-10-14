@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { createContainer } from 'meteor/react-meteor-data'
-
 import AccountsUIWrapper from './AccountsUIWrapper.jsx';
-
 import { Decisions } from '../api/decisions.js'
-
 import MatrixBuilder from './matrix/MatrixBuilder.jsx'
-
 import colors from './colors'
+
+const cellColClass = 'col-2'
 
 class App extends Component {
   constructor(props) {
@@ -90,10 +88,10 @@ class App extends Component {
   }
 
   renderCell(val,i,j,styles) {
-    if (val === null) return <div className='col-3' />
-    if (j >= this.numColumns()) return <div className='col-3'>{val}</div>
+    if (val === null) return <div className={cellColClass} />
+    if (j >= this.numColumns()) return <div className={cellColClass}>{val}</div>
     const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '.8em'}
-    return <div className='col-3'>
+    return <div className={cellColClass}>
       <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
       {this.state.isWeightedMtx && j>0 && i>0 ? <text style={stylesWeight}>{val * this.state.weights[j]}</text> : ''}
       <text className='hidden-when-big' style={{marginLeft: '10px'}}>{this.state.mtx[0][j]}</text>
@@ -103,8 +101,8 @@ class App extends Component {
   renderWeightsRow() {
     if (!this.state.isWeightedMtx) return <div><div><button onClick={this.addWeights}>Add Weights</button></div></div>
     return <div className='row'>{this.state.mtx[0].map((label, i) => {
-      if (label == null) return <div className='col-3' key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
-      return (<div className='col-3' key={i}>
+      if (label == null) return <div className={cellColClass} key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
+      return (<div className={cellColClass} key={i}>
         <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, width: '20px'}}/>
         <text className='hidden-when-big'>{this.state.mtx[0][i]}</text>
       </div>)
