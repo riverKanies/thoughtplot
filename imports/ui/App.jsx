@@ -7,6 +7,8 @@ import { Decisions } from '../api/decisions.js'
 
 import MatrixBuilder from './matrix/MatrixBuilder.jsx'
 
+import colors from './colors'
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -57,7 +59,7 @@ class App extends Component {
   renderLabelRow() {
     const labelRow = this.state.mtx[0].concat([`Score${this.state.isWeightedMtx ? ' (weighted)' : ''}`])
     //if (this.state.isWeightedMtx) labelRow.push('Weighted')
-    return <div className='row'>{this.renderRowOfLabels(labelRow,0)}</div>
+    return <div className='row hidden-when-small'>{this.renderRowOfLabels(labelRow,0)}</div>
   }
 
   renderOptionRows() {
@@ -67,7 +69,7 @@ class App extends Component {
       const score = this.scoreRow(row)
       let rowScored = row.concat(score)
       this.scores.push(score)
-      const styles = (bestI == i) ? {background: "yellow"} : {}
+      const styles = (bestI == i) ? {background: colors.yellow} : {}
       console.log('row', rowScored)
       return <div  className='row' key={i} style={styles}>{this.renderRow(rowScored,i+1)}</div>
     })
@@ -75,14 +77,14 @@ class App extends Component {
 
   renderRow(row,i) {
     return row.map((cell, j) => {
-      const styles = (j==0) ? {background: "orange", width: '70px'} : {background: "lightgray", width: '20px'}
+      const styles = (j==0) ? {background: colors.orange, width: '70px'} : {background: "lightgray", width: '20px'}
       return <div key={j}>{this.renderCell(cell,i,j,styles)}</div>
     })
   }
 
   renderRowOfLabels(row,i) {
     return row.map((cell, j) => {
-      const styles = {background: "lightblue", width: '70px'}
+      const styles = {background: colors.blue, width: '70px'}
       return <div key={j}>{this.renderCell(cell,i,j,styles)}</div>
     })
   }
@@ -92,7 +94,8 @@ class App extends Component {
     if (j >= this.numColumns()) return <div className='col-3'>{val}</div>
     return <div className='col-3'>
       <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
-      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{color: 'purple'}}>{val * this.state.weights[j]}</text> : ''}
+      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{backgroundColor: colors.purple}}>{val * this.state.weights[j]}</text> : ''}
+      <text className='hidden-when-big' style={{marginLeft: '10px'}}>{this.state.mtx[0][j]}</text>
     </div>
   }
 
@@ -100,7 +103,10 @@ class App extends Component {
     if (!this.state.isWeightedMtx) return <div><div><button onClick={this.addWeights}>Add Weights</button></div></div>
     return <div className='row'>{this.state.mtx[0].map((label, i) => {
       if (label == null) return <div className='col-3' key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
-      return <div className='col-3' key={i}><input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: "purple", width: '20px', border: "2px solid black", borderRadius: "5px"}}/></div>
+      return (<div className='col-3' key={i}>
+        <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, width: '20px', border: "2px solid black", borderRadius: "5px"}}/>
+        <text className='hidden-when-big'>{this.state.mtx[0][i]}</text>
+      </div>)
     })}</div>
   }
 
@@ -130,7 +136,7 @@ class App extends Component {
     </section>)
     if (this.state.selectedTab === 'builder') return (<section>
       {this.props.routeDecisionId && !this.props.decision ?
-        <h1 style={{color: "red"}}>No such decision</h1> :
+        <h1>No such decision!</h1> :
         <div>
           <MatrixBuilder
             decision={this.state.decision}
@@ -142,7 +148,7 @@ class App extends Component {
     </section>)
     if (this.state.selectedTab === 'matrix') return (<section>
       {this.props.routeDecisionId && !this.props.decision ?
-        <h1 style={{color: "red"}}>No such decision</h1> :
+        <h1>No such decision!</h1> :
         <div>
           <header>
             <h1>Decision</h1>
