@@ -92,9 +92,10 @@ class App extends Component {
   renderCell(val,i,j,styles) {
     if (val === null) return <div className='col-3' />
     if (j >= this.numColumns()) return <div className='col-3'>{val}</div>
+    const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '.8em'}
     return <div className='col-3'>
       <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
-      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{backgroundColor: colors.purple}}>{val * this.state.weights[j]}</text> : ''}
+      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={stylesWeight}>{val * this.state.weights[j]}</text> : ''}
       <text className='hidden-when-big' style={{marginLeft: '10px'}}>{this.state.mtx[0][j]}</text>
     </div>
   }
@@ -104,7 +105,7 @@ class App extends Component {
     return <div className='row'>{this.state.mtx[0].map((label, i) => {
       if (label == null) return <div className='col-3' key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
       return (<div className='col-3' key={i}>
-        <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, width: '20px', border: "2px solid black", borderRadius: "5px"}}/>
+        <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, width: '20px'}}/>
         <text className='hidden-when-big'>{this.state.mtx[0][i]}</text>
       </div>)
     })}</div>
@@ -160,7 +161,7 @@ class App extends Component {
           </header>
           <p>This is the final decision matrix. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
           <p>Remember, columns for negative values (such as cost) should be given a negative weight.</p>
-          <div className='container'>
+          <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px'}}>
             {this.renderLabelRow()}
             {this.renderOptionRows()}
             {this.renderWeightsRow()}
