@@ -196,15 +196,19 @@ class App extends Component {
   }
 
   render() {
+    const styles = {width: '100%', border: '2px solid lightgray', borderRadius: '5px', backgroundColor: 'lightgray', color: 'white', fontSize: '0.8em'}
+    const stylesActive = { ...styles, borderColor: colors.blue, color: colors.blue, backgroundColor: 'white',}
     return (
       <div className="container">
-        <AccountsUIWrapper />
-        <section>
-          <button onClick={this.setTab('intro')} style={this.state.selectedTab === 'intro' ? {borderColor: 'blue'} : {}}>Intro</button>
-          <button onClick={this.setTab('builder')} style={this.state.selectedTab === 'builder' ? {borderColor: 'blue'} : {}}>Builder</button>
-          <button onClick={this.setTab('matrix')} style={this.state.selectedTab === 'matrix' ? {borderColor: 'blue'} : {}}>Matrix</button>
-          <button onClick={this.setTab('list')} style={this.state.selectedTab === 'list' ? {borderColor: 'blue'} : {}}>List</button>
-        </section>
+        <div className="container">
+          <section className="row">
+            <div className="col-4"><AccountsUIWrapper /></div>
+            <div className="col-2"><button onClick={this.setTab('intro')} style={this.state.selectedTab === 'intro' ? stylesActive : styles}>Intro</button></div>
+            <div className="col-2"><button onClick={this.setTab('builder')} style={this.state.selectedTab === 'builder' ? stylesActive : styles}>Builder</button></div>
+            <div className="col-2"><button onClick={this.setTab('matrix')} style={this.state.selectedTab === 'matrix' ? stylesActive : styles}>Matrix</button></div>
+            <div className="col-2"><button onClick={this.setTab('list')} style={this.state.selectedTab === 'list' ? stylesActive : styles}>List</button></div>
+          </section>
+        </div>
         {this.renderTab()}
       </div>
     )
@@ -236,7 +240,7 @@ class App extends Component {
     return (e) => {
       const { mtx } = this.state
       mtx[i][j] = e.target.value
-      this.setState(mtx: mtx)
+      this.setState({mtx: mtx})
     }
   }
 
