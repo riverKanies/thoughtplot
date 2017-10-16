@@ -179,6 +179,7 @@ class App extends Component {
         <header>
           <h1>Decision List</h1>
         </header>
+        <p>Select which plot you'd like to view (view it on the Plot tab):</p>
         <ul>
           {this.renderDecisions()}
         </ul>
@@ -196,7 +197,7 @@ class App extends Component {
             <div className="col-4"><AccountsUIWrapper /></div>
             <div className="col-2"><button onClick={this.setTab('intro')} style={this.state.selectedTab === 'intro' ? stylesActive : styles}>Intro</button></div>
             <div className="col-2"><button onClick={this.setTab('builder')} style={this.state.selectedTab === 'builder' ? stylesActive : styles}>Builder</button></div>
-            <div className="col-2"><button onClick={this.setTab('matrix')} style={this.state.selectedTab === 'matrix' ? stylesActive : styles}>Matrix</button></div>
+            <div className="col-2"><button onClick={this.setTab('matrix')} style={this.state.selectedTab === 'matrix' ? stylesActive : styles}>Plot</button></div>
             <div className="col-2"><button onClick={this.setTab('list')} style={this.state.selectedTab === 'list' ? stylesActive : styles}>List</button></div>
           </section>
         </div>
