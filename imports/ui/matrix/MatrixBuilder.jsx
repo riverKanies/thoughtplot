@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 
 import Decision from './Decision.jsx'
-import ColumnBuilder from './ColumnBuilder.jsx'
 import RowBuilder from './RowBuilder.jsx'
+import ColumnBuilder from './ColumnBuilder.jsx'
+import CellBuilder from './CellBuilder.jsx'
+
 
 export default class MatrixBuilder extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ export default class MatrixBuilder extends Component {
       <Decision {...this.props} />,
       <RowBuilder {...this.props} />,
       <ColumnBuilder {...this.props} />,
+      <CellBuilder {...this.props} />,
     ]
 
     return(<div>
@@ -33,7 +36,9 @@ export default class MatrixBuilder extends Component {
         <button disabled={this.state.currentStep > 0 ? false : true} onClick={this.toPrevious}>Previous</button>
         {this.renderNextButton(steps)}
       </p>
-      {steps[this.state.currentStep]}
+      <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '10px'}}>
+        {steps[this.state.currentStep]}
+      </div>
       <br/>
       {this.renderNextButton(steps)}
     </div>)
