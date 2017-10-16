@@ -23,20 +23,8 @@ export default class RowBuilder extends Component {
     const rowNum = this.props.mtx.length - 1
     return (
       <div>
-        {this.props.mtx[0].map((col, i) => {
-          return <div key={i}>
-            <label>{col == null ? "New Option" : col}</label>
-            <input value={this.props.mtx[rowNum][i]} onChange={this.props.onChangeHandler(rowNum, i)} onClick={(e)=>e.target.select()}/>
-            {col == null ? <div><br/>Variables: You can fill in values for this option here if you like,
-              or you can modify them in the matrix directly at any time.
-              Variables should be scored based on relative importance.
-              Higher score means that it's a good desision.
-              For example: if cost is a variable, an option with a relatively high cost should get a
-              relatively low score in the cost column. If you're scoring variables on a 1-10 scale,
-              an option with high cost might get a score of 1 while an option with a low cost might get a score of 10.
-              Alternatively, you can write the actual cost in $ and give the cost column an appropriate negative weight to achieve the same effect.</div> : ''}
-          </div>
-        })}
+        <label>New Option:</label>
+        <input value={this.props.mtx[rowNum][0]} onChange={this.props.onChangeHandler(rowNum, 0)} onClick={(e)=>e.target.select()}/>
         <br/>
         <button onClick={this.acceptRow}>Done</button>
         <button onClick={this.cancelRow}>Cancel</button>
@@ -47,6 +35,13 @@ export default class RowBuilder extends Component {
   render() {
     return (<div>
       <p><b>Add Options</b><br/>What are the (3) options you're considering. You should add an option (row) for each.</p>
+      <label>Current Options</label>
+      <ol>
+        {this.props.mtx.map((row, i) => {
+          if (i==0) return ''
+          return <li key={i}>{row[0]}</li>
+        })}
+      </ol>
       {this.renderRowBuilder()}
     </div>)
   }
@@ -54,8 +49,9 @@ export default class RowBuilder extends Component {
   onAddRow() {
     const { mtx } = this.props
     const newRow = []
-    mtx[0].forEach(() => {
-      newRow.push(0)
+    mtx[0].forEach((col, i) => {
+      const val = (i==0) ? "ThotPlot" : 0
+      newRow.push(val)
     })
     mtx.push(newRow)
     this.setState({buildingRow: true})
