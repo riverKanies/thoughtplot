@@ -14,13 +14,14 @@ export default class ColumnBuilder extends Component {
   renderBuilder() {
     if (this.state.buildingColumn != true) {
       return (<div>
-        <button onClick={this.addColumn}>Add Column</button>
-        <button onClick={this.cancelColumn}>Delete Column</button>
+        <button onClick={this.addColumn}>Add Consideration</button>
+        <button onClick={this.cancelColumn}>Delete Last Consideration</button>
+        <text>(the last consideration is in the right column while viewing the plot)</text>
       </div>)
     }
     const colNum = this.props.mtx[0].length-1
     return (<div key={colNum}>
-      <label>Variable Name:</label>
+      <label>New Consideration:</label>
       <input value={this.props.mtx[0][colNum]} onChange={this.props.onChangeHandler(0,colNum)} onClick={(e)=>e.target.select()} />
       <button onClick={this.acceptColumn}>Done</button>
       <button onClick={this.cancelColumn}>Cancel</button>
@@ -29,14 +30,25 @@ export default class ColumnBuilder extends Component {
 
   render() {
     return (<div>
-      <p><b>Column Builder</b>: Columns are for variables relevant to your decision. You should add a column for each main area in which your options differ significantly.</p>
+      <p>
+        <b>Add Considerations</b><br/>
+        What are the (3) most important considerations for your decision. You should add a consideration (column) for each main area in which your options differ significantly.
+      </p>
+      <label>Current Considerations</label>
+      <ol>
+        {this.props.mtx[0].map((label, i) => {
+          if (i==0) return ''
+          return <li key={i}>{label}</li>
+        })}
+      </ol>
       {this.renderBuilder()}
     </div>)
   }
 
   addColumn() {
     const { mtx } = this.props
-    mtx.map((row) => {
+    mtx.map((row, i) => {
+      if (i==0) return row.push("cost")
       return row.push(0)
     })
     this.props.changeMatrix(mtx)

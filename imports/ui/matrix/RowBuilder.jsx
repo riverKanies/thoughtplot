@@ -14,8 +14,9 @@ export default class RowBuilder extends Component {
     if (this.state.buildingRow != true) {
       return (
         <div>
-          <button onClick={this.onAddRow}>Add Row</button>
-          <button onClick={this.cancelRow}>Delete Last Row</button>
+          <button onClick={this.onAddRow}>Add Option</button>
+          <button onClick={this.cancelRow}>Delete Last Option</button>
+          <text>(the last option is in the bottom row of the plot)</text>
         </div>
       )
     }
@@ -24,7 +25,7 @@ export default class RowBuilder extends Component {
       <div>
         {this.props.mtx[0].map((col, i) => {
           return <div key={i}>
-            <label>{col == null ? "Option" : col}</label>
+            <label>{col == null ? "New Option" : col}</label>
             <input value={this.props.mtx[rowNum][i]} onChange={this.props.onChangeHandler(rowNum, i)} onClick={(e)=>e.target.select()}/>
             {col == null ? <div><br/>Variables: You can fill in values for this option here if you like,
               or you can modify them in the matrix directly at any time.
@@ -45,7 +46,7 @@ export default class RowBuilder extends Component {
 
   render() {
     return (<div>
-      <p><b>Row Builder</b>: Rows are for the different options you're considering. You should add a row for each.</p>
+      <p><b>Add Options</b><br/>What are the (3) options you're considering. You should add an option (row) for each.</p>
       {this.renderRowBuilder()}
     </div>)
   }
