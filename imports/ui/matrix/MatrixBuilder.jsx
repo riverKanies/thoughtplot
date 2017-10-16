@@ -28,7 +28,7 @@ export default class MatrixBuilder extends Component {
 
     return(<div>
       <header>
-        <h1>Matrix Builder</h1>
+        <h1>Plot Builder</h1>
       </header>
       <p>Follow these {steps.length} steps to document your decision:</p>
       <p>

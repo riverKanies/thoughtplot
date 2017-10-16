@@ -49,9 +49,10 @@ class App extends Component {
   }
 
   renderDecisions() {
-    return this.props.decisions.map((dec) => (
-      <p key={dec._id}>- {dec.decision}<button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button></p>
-    ))
+    return this.props.decisions.map((dec) => {
+      const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
+      return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>- {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}</p>
+    })
   }
 
   renderLabelRow() {
@@ -118,20 +119,14 @@ class App extends Component {
     return (<div>
       <section style={{display: (this.state.selectedTab === 'intro' ? '' : 'none')}}>
         <header>
-          <h1>Introduction to the Decision Communication Tool (DCT)</h1>
+          <h1>About ThotPlot</h1>
         </header>
-        <p>
-        Welcome to the DCT. This tool will walk you through making a decision matrix.
-        A decision matrix is a useful tool for documenting and communicating reasoning used to make a decision.
-          Basically, you will create a table of options vs. variables, then score each option by summing the values for each variable.
-          When you're done, one option should have the highest score, indicating that you think it is the best.
-            The DCT can be helpful for making decisions, but its main purpose is for communicating decisions to your peers and/or partners, whoever will be affected by the decision.
-            Documenting critical design and process related decisions using the DCT will help to get everyone on the same page and working efficiently together.
-        </p>
-        <p>
-        Using the DCT in no way guarantees that everyone will agree on which option is best.
-        However, decision matricies can be compared to reveal where critical discrepencies in reasoning are, which can help to facilitate a discussion about the decision.
-        </p>
+        <h4>
+          ThotPlot makes it easy to communicate complicated decisions to your team so that you can spend less time in meetings and more time adding value to your business.
+        </h4>
+        <p><b>What is:</b> People make decisions based on any number of variables and political reasoning, then communicate those decisions by telling a short story that hits on the one 'most important' point. This often includes stacking data or pointing out only what is most likely to get a thumbs up from the team.</p>
+        <p><b>What could be:</b> Decisions are documented and communicated in a transparent and objective way. Each consideration is weighed relatively and scored on a per option basis so that it's not just clear what option seems best now, but it's also clear how much better the option is for what reasons, and it's straight forward to go back and re-evaluate when circumstances change.</p>
+        <p>Use ThotPlot to improve decision making and communication for your team: <button onClick={this.setTab('builder')}>Try It</button></p>
       </section>
       <section style={{display: (this.state.selectedTab === 'builder' ? '' : 'none')}}>
         {this.props.routeDecisionId && !this.props.decision ?
@@ -142,7 +137,8 @@ class App extends Component {
               mtx={this.state.mtx}
               onChangeHandler={this.onChangeHandler}
               changeMatrix={this.changeMatrix}
-              onChangeDecision={this.onChangeDecision} />
+              onChangeDecision={this.onChangeDecision}
+              setTab={this.setTab} />
           </div>}
       </section>
       <section style={{display: (this.state.selectedTab === 'matrix' ? '' : 'none')}}>
@@ -155,32 +151,27 @@ class App extends Component {
             <p>This is the decision you are documenting. Feel free to edit it here:</p>
             <textarea value={this.state.decision} onChange={this.onChangeDecision}/>
             <header>
-              <h1>Matrix</h1>
+              <h1>Plot</h1>
             </header>
-            <p>This is the final decision matrix. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
-            <p>Remember, columns for negative values (such as cost) should be given a negative weight.</p>
-            <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px'}}>
+            <p>This is the final ThotPlot. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
+            <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px', padding: '10px 0'}}>
               {this.renderLabelRow()}
               {this.renderOptionRows()}
               {this.renderWeightsRow()}
             </div>
-            <b>Best: {bestOption.option}, Score: {bestOption.score}</b>
-            {this.renderSaveMatrix()}
+            <div style={{textAlign: 'center', width: '100%'}}>
+              <b>Best: {bestOption.option}, Score: {bestOption.score} {this.renderSaveMatrix()}</b>
+            </div>
             <br/><br/>
             <h3>Notes:</h3>
-            <p><b>Scoring</b>: If there are any blank cells in your decision matrix fill them in now.
-            Values you fill in should represent the relative importance of that variable for that option.
-            It doesn't matter what scale you choose to use (0-1, 1-10, 1-100).
-            The values you fill in are simply summed for each option to determine the final overall score for that option.
-            However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the matrix)
-            each column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the input value for each cell).
+            <p><b>Scoring</b>: The values you fill in are simply summed for each option to determine the final overall score for that option.
+            However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the plot)
+            each consideration column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the non-weighted values).
             </p>
-            <p><b>Self Review</b>: Look over your matrix, paying special attention to the overall scores.
+            <p><b>Self Review</b>: Look over your ThotPlot, paying special attention to the overall scores.
             Do the scores align with your intuition about which choice is best?
               If not, modify some of your scores to capture your intuition as best you can.
-              Is there something relevant to the decision that you haven't yet made a column for?
-                If so, add a column now (you'll have to go back to the
-                Column Builder step).
+              Is there something relevant to the decision that you haven't yet made a consideration column for?
             </p>
           </div>}
       </section>

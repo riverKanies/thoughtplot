@@ -13,19 +13,20 @@ export default class CellBuilder extends Component {
 
   renderBuilder() {
     const { mtx } = this.props
+    if (mtx.length < 2 || mtx[0].length < 2) return "Error, must have at least one option and one consideration!"
     const i = this.state.currentRow
     const j = this.state.currentColumn
     const value = mtx[i][j]
     const option = mtx[i][0]
     const consideration = mtx[0][j]
-    const buttonDisabled = (i==mtx.length-1 && j==mtx[0].length-1)
+    const finished = (i==mtx.length-1 && j==mtx[0].length-1)
     return <div>
       <p><b>Option {i}, Consideration {j}</b></p>
       <text>Based on <b>{consideration}</b> alone, the option <b>{option}</b> should get a score of
       <input value={value} onChange={this.props.onChangeHandler(i,j)} style={{width: '20px', margin: '0 5px 0 5px'}}/>
       (-5 to 5)
       </text><br/>
-      <button onClick={this.nextCell} disabled={buttonDisabled}>Next Consideration</button>
+      {finished ? <text>Done! <button onClick={this.props.setTab('matrix')}>View Plot</button></text> : <button onClick={this.nextCell}>Next Consideration</button>}
     </div>
   }
 
