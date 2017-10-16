@@ -99,7 +99,7 @@ class App extends Component {
   }
 
   renderWeightsRow() {
-    if (!this.state.isWeightedMtx) return <div><div><button onClick={this.addWeights}>Add Weights</button></div></div>
+    if (!this.state.isWeightedMtx) return <div className='row'><div className={cellColClass}><button onClick={this.addWeights}>Add Weights</button></div></div>
     return <div className='row'>{this.state.mtx[0].map((label, i) => {
       if (label == null) return <div className={cellColClass} key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
       return (<div className={cellColClass} key={i}>
@@ -110,12 +110,28 @@ class App extends Component {
   }
 
   renderSaveMatrix() {
-    if (!this.props.currentUser) return <button disabled="true">Save Matrix (must be logged in)</button>
-    return <button onClick={this.saveMatrix}>Save Matrix</button>
+    if (!this.props.currentUser) return <button disabled="true">Save Plot (must be logged in)</button>
+    return <button onClick={this.saveMatrix}>Save New Plot</button>
+  }
+
+  renderPlot() {
+    const bestOption = this.bestOption(this.state.mtx)     
+    const { mtx } = this.state
+    if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>Error, must have at least one option and one consideration!</text>
+    return (<div>
+        <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px', padding: '10px 0'}}>
+        {this.renderLabelRow()}
+        {this.renderOptionRows()}
+        {this.renderWeightsRow()}
+      </div>
+      <div style={{textAlign: 'center', width: '100%'}}>
+        <b>Best: {bestOption.option}, Score: {bestOption.score}</b><br/>
+        {this.renderSaveMatrix()}
+      </div>
+    </div>)
   }
 
   renderTab() {
-    const bestOption = this.bestOption(this.state.mtx) 
     return (<div>
       <section style={{display: (this.state.selectedTab === 'intro' ? '' : 'none')}}>
         <header>
@@ -154,14 +170,7 @@ class App extends Component {
               <h1>Plot</h1>
             </header>
             <p>This is the final ThotPlot. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
-            <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px', padding: '10px 0'}}>
-              {this.renderLabelRow()}
-              {this.renderOptionRows()}
-              {this.renderWeightsRow()}
-            </div>
-            <div style={{textAlign: 'center', width: '100%'}}>
-              <b>Best: {bestOption.option}, Score: {bestOption.score} {this.renderSaveMatrix()}</b>
-            </div>
+            {this.renderPlot()}
             <br/><br/>
             <h3>Notes:</h3>
             <p><b>Scoring</b>: The values you fill in are simply summed for each option to determine the final overall score for that option.

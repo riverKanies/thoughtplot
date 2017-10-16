@@ -13,7 +13,7 @@ export default class CellBuilder extends Component {
 
   renderBuilder() {
     const { mtx } = this.props
-    if (mtx.length < 2 || mtx[0].length < 2) return "Error, must have at least one option and one consideration!"
+    if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>"Error, must have at least one option and one consideration!"</text>
     const i = this.state.currentRow
     const j = this.state.currentColumn
     const value = mtx[i][j]
