@@ -94,7 +94,12 @@ class App extends Component {
     if (j >= this.numColumns()) return <div className={cellColClass}>{val}</div>
     const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '.8em'}
     return <div className={cellColClass}>
-      <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
+      <div className='tooltipcontainer'>
+        <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
+        <span className='tooltip'>
+          <textarea placeholder='tooltip!' style={{color: 'white', background: 'black', border: '0px'}}/>
+          </span>
+      </div>
       {this.state.isWeightedMtx && j>0 && i>0 ? <text style={stylesWeight}>{val * this.state.weights[j]}</text> : ''}
       <text className='hidden-when-big' style={{marginLeft: '10px'}}>{this.state.mtx[0][j].val}</text>
     </div>

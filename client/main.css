@@ -16,3 +16,39 @@ input, textarea {
 }
 
 button:focus {outline: 0;}
+textarea:focus {outline: 0;}
+input:focus {outline: 0;}
+
+/* tooltips */
+.tooltipcontainer {
+    position: relative;
+    display: inline-block;
+}
+.tooltipcontainer .tooltip {
+    visibility: hidden;
+    width: 160px;
+    height: 40px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 80%;
+    margin-left: -60px;
+}
+.tooltipcontainer:hover .tooltip {
+    visibility: visible;
+}
+.tooltipcontainer .tooltip::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 30%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
