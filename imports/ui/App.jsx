@@ -23,7 +23,7 @@ class App extends Component {
     }else{
       this.state.decision = ""
       this.state.mtx = [
-        [{val: null}]
+        [{val: null, note: null}]
       ]
       this.state.isWeightedMtx = false
       this.state.weights = []
@@ -92,12 +92,13 @@ class App extends Component {
     const val = valObj.val
     if (val === null) return <div className={cellColClass} />
     if (j >= this.numColumns()) return <div className={cellColClass}>{val}</div>
+    const note = this.state.mtx[i][j].note
     const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '.8em'}
     return <div className={cellColClass}>
       <div className='tooltipcontainer'>
         <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
         <span className='tooltip'>
-          <textarea placeholder='tooltip!' style={{color: 'white', background: 'black', border: '0px'}}/>
+          <textarea value={note} onChange={this.onChangeNote(i,j)} style={{color: 'white', background: 'black', border: '0px'}}/>
           </span>
       </div>
       {this.state.isWeightedMtx && j>0 && i>0 ? <text style={stylesWeight}>{val * this.state.weights[j]}</text> : ''}

@@ -49,7 +49,7 @@ export default class ColumnBuilder extends Component {
   addColumn() {
     const { mtx } = this.props
     mtx.map((row, i) => {
-      if (i==0) return row.push({val: "cost"})
+      if (i==0) return row.push({val: "cost", note: ''})
       return row.push({val: 0, note: ''})
     })
     this.props.changeMatrix(mtx)
