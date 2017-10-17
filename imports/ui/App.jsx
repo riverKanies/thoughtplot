@@ -23,7 +23,7 @@ class App extends Component {
     }else{
       this.state.decision = ""
       this.state.mtx = [
-        [null]
+        [{val: null}]
       ]
       this.state.isWeightedMtx = false
       this.state.weights = []
@@ -55,8 +55,15 @@ class App extends Component {
     })
   }
 
+  renderRowOfLabels(row,i) {
+    return row.map((cell, j) => {
+      const styles = {background: colors.blue, width: '70px'}
+      return <div key={j}>{this.renderCell(cell,i,j,styles)}</div>
+    })
+  }
+
   renderLabelRow() {
-    const labelRow = this.state.mtx[0].concat([`Score${this.state.isWeightedMtx ? ' (weighted)' : ''}`])
+    const labelRow = this.state.mtx[0].concat([{val: `Score${this.state.isWeightedMtx ? ' (weighted)' : ''}`}])
     //if (this.state.isWeightedMtx) labelRow.push('Weighted')
     return <div className='row hidden-when-small'>{this.renderRowOfLabels(labelRow,0)}</div>
   }
@@ -66,8 +73,8 @@ class App extends Component {
     const bestI = this.bestOption(this.state.mtx).index
     return this.state.mtx.slice(1).map((row, i) => {
       const score = this.scoreRow(row)
-      let rowScored = row.concat(score)
-      this.scores.push(score)
+      let rowScored = row.concat({val: score})
+      this.scores.push({val: score})
       const styles = (bestI == i) ? {background: colors.yellow} : {}
       return <div  className='row' key={i} style={styles}>{this.renderRow(rowScored,i+1)}</div>
     })
@@ -80,31 +87,27 @@ class App extends Component {
     })
   }
 
-  renderRowOfLabels(row,i) {
-    return row.map((cell, j) => {
-      const styles = {background: colors.blue, width: '70px'}
-      return <div key={j}>{this.renderCell(cell,i,j,styles)}</div>
-    })
-  }
-
-  renderCell(val,i,j,styles) {
+  renderCell(valObj,i,j,styles) {
+    const val = valObj.val
+    console.log('val', val)
     if (val === null) return <div className={cellColClass} />
     if (j >= this.numColumns()) return <div className={cellColClass}>{val}</div>
     const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '.8em'}
     return <div className={cellColClass}>
       <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
       {this.state.isWeightedMtx && j>0 && i>0 ? <text style={stylesWeight}>{val * this.state.weights[j]}</text> : ''}
-      <text className='hidden-when-big' style={{marginLeft: '10px'}}>{this.state.mtx[0][j]}</text>
+      <text className='hidden-when-big' style={{marginLeft: '10px'}}>{this.state.mtx[0][j].val}</text>
     </div>
   }
 
   renderWeightsRow() {
     if (!this.state.isWeightedMtx) return <div className='row'><div className={cellColClass}><button onClick={this.addWeights}>Add Weights</button></div></div>
-    return <div className='row'>{this.state.mtx[0].map((label, i) => {
+    return <div className='row'>{this.state.mtx[0].map((labelObj, i) => {
+      const label = labelObj.val
       if (label == null) return <div className={cellColClass} key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
       return (<div className={cellColClass} key={i}>
         <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, width: '20px'}}/>
-        <text className='hidden-when-big'>{this.state.mtx[0][i]}</text>
+        <text className='hidden-when-big'>{this.state.mtx[0][i].val}</text>
       </div>)
     })}</div>
   }
@@ -115,7 +118,8 @@ class App extends Component {
   }
 
   renderPlot() {
-    const bestOption = this.bestOption(this.state.mtx)     
+    const bestOption = this.bestOption(this.state.mtx)  
+    console.log('best', bestOption)   
     const { mtx } = this.state
     if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>Error, must have at least one option and one consideration!</text>
     return (<div>
@@ -240,7 +244,7 @@ class App extends Component {
   onChangeHandler(i,j) {
     return (e) => {
       const { mtx } = this.state
-      mtx[i][j] = e.target.value
+      mtx[i][j].val = e.target.value
       this.setState({mtx: mtx})
     }
   }
@@ -262,16 +266,18 @@ class App extends Component {
   }
 
   scoreRow(row) {
+    console.log('scoreRow', row)
     return !this.state.isWeightedMtx ?
-      row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b)), 0) :
-      row.slice(1).reduce((a,b,j) => (parseInt(a)+parseInt(b)*this.state.weights[j+1]), 0)
+      row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b.val)), 0) :
+      row.slice(1).reduce((a,b,j) => (parseInt(a)+parseInt(b.val)*this.state.weights[j+1]), 0)
   }
 
   bestOption(mtx) {
     if (mtx.length < 2) return {}
     const scored = mtx.slice(1).map((row, i) => {
       const score = this.scoreRow(row)
-      return {option: row[0], index: i, score: score}
+      console.log('score', score)
+      return {option: row[0].val, index: i, score: score}
     })
     return scored.reduce((a,b) => {
       if (a.score > b.score) return a

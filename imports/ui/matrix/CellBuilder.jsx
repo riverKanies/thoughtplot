@@ -16,9 +16,9 @@ export default class CellBuilder extends Component {
     if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>"Error, must have at least one option and one consideration!"</text>
     const i = this.state.currentRow
     const j = this.state.currentColumn
-    const value = mtx[i][j]
-    const option = mtx[i][0]
-    const consideration = mtx[0][j]
+    const value = mtx[i][j].val
+    const option = mtx[i][0].val
+    const consideration = mtx[0][j].val
     const finished = (i==mtx.length-1 && j==mtx[0].length-1)
     return <div>
       <p><b>Option {i}, Consideration {j}</b></p>

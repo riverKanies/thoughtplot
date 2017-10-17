@@ -24,7 +24,7 @@ export default class RowBuilder extends Component {
     return (
       <div>
         <label>New Option:</label>
-        <input value={this.props.mtx[rowNum][0]} onChange={this.props.onChangeHandler(rowNum, 0)} onClick={(e)=>e.target.select()}/>
+        <input value={this.props.mtx[rowNum][0].val} onChange={this.props.onChangeHandler(rowNum, 0)} onClick={(e)=>e.target.select()}/>
         <br/>
         <button onClick={this.acceptRow}>Done</button>
         <button onClick={this.cancelRow}>Cancel</button>
@@ -39,7 +39,7 @@ export default class RowBuilder extends Component {
       <ol>
         {this.props.mtx.map((row, i) => {
           if (i==0) return ''
-          return <li key={i}>{row[0]}</li>
+          return <li key={i}>{row[0].val}</li>
         })}
       </ol>
       {this.renderRowBuilder()}
@@ -51,7 +51,7 @@ export default class RowBuilder extends Component {
     const newRow = []
     mtx[0].forEach((col, i) => {
       const val = (i==0) ? "ThotPlot" : 0
-      newRow.push(val)
+      newRow.push({val: val})
     })
     mtx.push(newRow)
     this.setState({buildingRow: true})
