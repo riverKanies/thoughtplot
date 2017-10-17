@@ -32,6 +32,7 @@ class App extends Component {
     this.setTab = this.setTab.bind(this)
 
     this.onChangeHandler = this.onChangeHandler.bind(this)
+    this.onChangeNote = this.onChangeNote.bind(this)
     this.onChangeDecision = this.onChangeDecision.bind(this)
     this.changeMatrix = this.changeMatrix.bind(this)
     this.addWeights = this.addWeights.bind(this)
@@ -89,7 +90,6 @@ class App extends Component {
 
   renderCell(valObj,i,j,styles) {
     const val = valObj.val
-    console.log('val', val)
     if (val === null) return <div className={cellColClass} />
     if (j >= this.numColumns()) return <div className={cellColClass}>{val}</div>
     const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '.8em'}
@@ -119,7 +119,6 @@ class App extends Component {
 
   renderPlot() {
     const bestOption = this.bestOption(this.state.mtx)  
-    console.log('best', bestOption)   
     const { mtx } = this.state
     if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>Error, must have at least one option and one consideration!</text>
     return (<div>
@@ -156,6 +155,7 @@ class App extends Component {
               decision={this.state.decision}
               mtx={this.state.mtx}
               onChangeHandler={this.onChangeHandler}
+              onChangeNote={this.onChangeNote}
               changeMatrix={this.changeMatrix}
               onChangeDecision={this.onChangeDecision}
               setTab={this.setTab} />
@@ -249,6 +249,14 @@ class App extends Component {
     }
   }
 
+  onChangeNote(i,j) {
+    return (e) => {
+      const { mtx } = this.state
+      mtx[i][j].note = e.target.value
+      this.setState({mtx: mtx})
+    }
+  }
+
   onChangeDecision(e) {
     this.setState({decision: e.target.value})
   }
@@ -266,7 +274,6 @@ class App extends Component {
   }
 
   scoreRow(row) {
-    console.log('scoreRow', row)
     return !this.state.isWeightedMtx ?
       row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b.val)), 0) :
       row.slice(1).reduce((a,b,j) => (parseInt(a)+parseInt(b.val)*this.state.weights[j+1]), 0)
@@ -276,7 +283,6 @@ class App extends Component {
     if (mtx.length < 2) return {}
     const scored = mtx.slice(1).map((row, i) => {
       const score = this.scoreRow(row)
-      console.log('score', score)
       return {option: row[0].val, index: i, score: score}
     })
     return scored.reduce((a,b) => {

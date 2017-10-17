@@ -20,12 +20,15 @@ export default class CellBuilder extends Component {
     const option = mtx[i][0].val
     const consideration = mtx[0][j].val
     const finished = (i==mtx.length-1 && j==mtx[0].length-1)
+    const note = this.props.mtx[i][j].note
     return <div>
       <p><b>Option {i}, Consideration {j}</b></p>
       <text>Based on <b>{consideration}</b> alone, the option <b>{option}</b> should get a score of
       <input value={value} onChange={this.props.onChangeHandler(i,j)} style={{width: '20px', margin: '0 5px 0 5px'}}/>
       (-5 to 5)
-      </text><br/>
+      </text><br/><br/>
+      <label>Note: (describe why you think this score is appropriate)</label><br/>
+      <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='cost is relatively low'/><br/><br/>
       {finished ? <text>Done! <button onClick={this.props.setTab('matrix')}>View Plot</button></text> : <button onClick={this.nextCell}>Next Consideration</button>}
     </div>
   }

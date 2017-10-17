@@ -51,7 +51,7 @@ export default class RowBuilder extends Component {
     const newRow = []
     mtx[0].forEach((col, i) => {
       const val = (i==0) ? "ThotPlot" : 0
-      newRow.push({val: val})
+      newRow.push({val: val, note: ''})
     })
     mtx.push(newRow)
     this.setState({buildingRow: true})

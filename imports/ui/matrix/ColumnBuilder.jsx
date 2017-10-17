@@ -12,7 +12,6 @@ export default class ColumnBuilder extends Component {
   }
 
   renderBuilder() {
-    console.log('builder', this.props.mtx)
     if (this.state.buildingColumn != true) {
       return (<div>
         <button onClick={this.addColumn}>Add Consideration</button>
@@ -20,7 +19,6 @@ export default class ColumnBuilder extends Component {
         <text>(the last consideration is in the right column while viewing the plot)</text>
       </div>)
     }
-    console.log('rend new')
     const colNum = this.props.mtx[0].length-1
     return (<div key={colNum}>
       <label>New Consideration:</label>
@@ -52,7 +50,7 @@ export default class ColumnBuilder extends Component {
     const { mtx } = this.props
     mtx.map((row, i) => {
       if (i==0) return row.push({val: "cost"})
-      return row.push({val: 0})
+      return row.push({val: 0, note: ''})
     })
     this.props.changeMatrix(mtx)
     this.setState({buildingColumn: true})
