@@ -205,7 +205,7 @@ class App extends Component {
     const stylesActive = { ...styles, borderColor: colors.blue, color: colors.blue, backgroundColor: 'white',}
     return (
       <div className="container">
-        <div className="container">
+        <div className="container" style={{background: colors.purple, margin: '0', width: '100%', padding: '10px 0'}}>
           <section className="row">
             <div className="col-4"><AccountsUIWrapper /></div>
             <div className="col-2"><button onClick={this.setTab('intro')} style={this.state.selectedTab === 'intro' ? stylesActive : styles}>Intro</button></div>

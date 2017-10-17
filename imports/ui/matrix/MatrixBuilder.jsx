@@ -4,6 +4,7 @@ import Decision from './Decision.jsx'
 import RowBuilder from './RowBuilder.jsx'
 import ColumnBuilder from './ColumnBuilder.jsx'
 import CellBuilder from './CellBuilder.jsx'
+import colors from '../colors'
 
 
 export default class MatrixBuilder extends Component {
@@ -33,19 +34,17 @@ export default class MatrixBuilder extends Component {
       <p>Follow these {steps.length} steps to document your decision:</p>
       <p>
         Step {this.state.currentStep+1}:
-        <button disabled={this.state.currentStep > 0 ? false : true} onClick={this.toPrevious}>Previous</button>
-        {this.renderNextButton(steps)}
+        <button disabled={this.state.currentStep > 0 ? false : true} onClick={this.toPrevious}>&#8678;</button>
+        <button disabled={this.state.currentStep < steps.length-1 ? false : true} onClick={this.toNext}>&#8680;</button>
       </p>
       <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '10px'}}>
         {steps[this.state.currentStep]}
       </div>
       <br/>
-      {this.renderNextButton(steps)}
+      <div style={{textAlign: 'center'}}>
+        <button disabled={this.state.currentStep < steps.length-1 ? false : true} onClick={this.toNext} style={{fontSize: '2em', backgroundColor: 'white', border: `2px solid ${colors.blue}`, color: colors.blue, borderRadius: '7px'}}>Next Step &#8680;</button>
+      </div>
     </div>)
-  }
-
-  renderNextButton(steps) {
-    return <button disabled={this.state.currentStep < steps.length-1 ? false : true} onClick={this.toNext}>Next</button>
   }
 
   toPrevious() {
