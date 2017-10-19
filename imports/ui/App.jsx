@@ -50,6 +50,7 @@ class App extends Component {
   }
 
   renderDecisions() {
+    console.log('decs', this.props.decisions)
     return this.props.decisions.map((dec) => {
       const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
       return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>- {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}</p>
@@ -317,6 +318,7 @@ App.propTypes = {
 }
 
 export default createContainer(() => {
+  Meteor.subscribe('decisions')
   return {
     routeDecisionId: FlowRouter.getParam('_id'),
     decision: Decisions.findOne({_id: FlowRouter.getParam('_id')}),

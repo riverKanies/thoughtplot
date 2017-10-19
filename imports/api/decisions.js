@@ -4,6 +4,13 @@ import { check } from 'meteor/check';
 
 export const Decisions = new Mongo.Collection('decisions')
 
+if (Meteor.isServer) {
+  // This code only runs on the server
+  Meteor.publish('decisions', function decisionsPublication() {
+    return Decisions.find({owner: this.userId});
+  });
+}
+
 Meteor.methods({
   'decisions.insert'(dec) {
     const { decision, matrix, weights, isWeightedMatrix } = dec
