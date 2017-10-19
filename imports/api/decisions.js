@@ -41,11 +41,14 @@ Meteor.methods({
   },
   'decisions.update'(dec) {
     const { matrix, weights, isWeightedMatrix } = dec
-    Decisions.update({_id: dec.id}, { $set: {
+    Decisions.update({_id: dec.id, owner: this.userId}, { $set: {
       matrix,
       weights,
       isWeightedMatrix,
       updatedAt: new Date(),
     }})
+  },
+  'decisions.remove'(id) {
+    Decisions.remove({_id: id, owner: this.userId})
   }
 });

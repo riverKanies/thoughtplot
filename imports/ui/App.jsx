@@ -40,6 +40,7 @@ class App extends Component {
     this.onChangeWeightHandler = this.onChangeWeightHandler.bind(this)
     this.saveMatrix = this.saveMatrix.bind(this)
     this.updateMatrix = this.updateMatrix.bind(this)
+    this.deleteMatrix = this.deleteMatrix.bind(this)
 
   }
 
@@ -53,7 +54,10 @@ class App extends Component {
   renderDecisions() {
     return this.props.decisions.map((dec) => {
       const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
-      return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>- {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}</p>
+      return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>
+        - {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
+        <button onClick={this.deleteMatrix(dec._id)}>Delete</button>
+      </p>
     })
   }
 
@@ -143,6 +147,13 @@ class App extends Component {
     </div>)
   }
 
+  renderNoDecision () {
+    return <div>
+      <h1>No such decision!</h1>
+      <button onClick={this.goTo('/')}>Home</button>
+    </div>
+  }
+
   renderTab() {
     return (<div>
       <section style={{display: (this.state.selectedTab === 'intro' ? '' : 'none')}}>
@@ -158,7 +169,7 @@ class App extends Component {
       </section>
       <section style={{display: (this.state.selectedTab === 'builder' ? '' : 'none')}}>
         {this.props.routeDecisionId && !this.props.decision ?
-          <h1>No such decision!</h1> :
+          this.renderNoDecision() :
           <div>
             <MatrixBuilder
               decision={this.state.decision}
@@ -172,7 +183,7 @@ class App extends Component {
       </section>
       <section style={{display: (this.state.selectedTab === 'matrix' ? '' : 'none')}}>
         {this.props.routeDecisionId && !this.props.decision ?
-          <h1>No such decision!</h1> :
+          this.renderNoDecision() :
           <div>
             <header>
               <h1>Decision</h1>
@@ -318,6 +329,13 @@ class App extends Component {
       weights: this.state.weights
     }
     Meteor.call('decisions.update', decision)
+  }
+
+  deleteMatrix(id) {
+    return () => {
+      const confirmed = confirm('Are you sure you want to delete this decision?')
+      if (confirmed) Meteor.call('decisions.remove', id)
+    }
   }
 
   goTo(path) {
