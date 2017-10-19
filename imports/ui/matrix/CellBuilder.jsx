@@ -28,7 +28,7 @@ export default class CellBuilder extends Component {
       (-5 to 5)
       </text><br/><br/>
       <label>Note: (describe why you think this score is appropriate)</label><br/>
-      <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='cost is relatively low'/><br/><br/>
+      <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='this option will save time in the long run'/><br/><br/>
       {finished ? <text>Done! <button onClick={this.props.setTab('matrix')}>View Plot</button></text> : <button onClick={this.nextCell}>Next Consideration</button>}
     </div>
   }
