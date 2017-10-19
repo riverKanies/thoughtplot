@@ -25,6 +25,11 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized');
     }
 
+    const decSame = Decisions.findOne({owner: this.userId, decision: decision})
+    if (decSame) {
+      throw new Meteor.Error('you already have a decision with that name')
+    }
+
     Decisions.insert({
       decision,
       matrix,
