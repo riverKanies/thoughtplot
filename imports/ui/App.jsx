@@ -39,6 +39,7 @@ class App extends Component {
     this.removeWeights = this.removeWeights.bind(this)
     this.onChangeWeightHandler = this.onChangeWeightHandler.bind(this)
     this.saveMatrix = this.saveMatrix.bind(this)
+    this.updateMatrix = this.updateMatrix.bind(this)
 
   }
 
@@ -50,7 +51,6 @@ class App extends Component {
   }
 
   renderDecisions() {
-    console.log('decs', this.props.decisions)
     return this.props.decisions.map((dec) => {
       const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
       return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>- {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}</p>
@@ -121,6 +121,8 @@ class App extends Component {
 
   renderSaveMatrix() {
     if (!this.props.currentUser) return <button disabled="true">Save Plot (must be logged in)</button>
+    const isCurrentPlot = !!Decisions.findOne({decision: this.state.decision})
+    if (isCurrentPlot) return <button onClick={this.updateMatrix}>Update Plot</button>
     return <button onClick={this.saveMatrix}>Save New Plot</button>
   }
 
@@ -306,6 +308,16 @@ class App extends Component {
       weights: this.state.weights
     }
     Meteor.call('decisions.insert', decision)
+  }
+
+  updateMatrix () {
+    const decision = {
+      id: this.props.routeDecisionId,
+      matrix: this.state.mtx,
+      isWeightedMatrix: this.state.isWeightedMtx,
+      weights: this.state.weights
+    }
+    Meteor.call('decisions.update', decision)
   }
 
   goTo(path) {

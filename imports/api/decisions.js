@@ -39,4 +39,13 @@ Meteor.methods({
       owner: this.userId,
     });
   },
+  'decisions.update'(dec) {
+    const { matrix, weights, isWeightedMatrix } = dec
+    Decisions.update({_id: dec.id}, { $set: {
+      matrix,
+      weights,
+      isWeightedMatrix,
+      updatedAt: new Date(),
+    }})
+  }
 });
