@@ -38,6 +38,7 @@ Meteor.methods({
       isWeightedMatrix,
       createdAt: new Date(),
       owner: this.userId,
+      collaborators: [],
     });
   },
   'decisions.update'(dec) {
@@ -51,6 +52,10 @@ Meteor.methods({
   },
   'decisions.remove'(id) {
     Decisions.remove({_id: id, owner: this.userId})
+  },
+  'decisions.addCollaborator'(email, decId) {
+    console.log('adding', email, 'to', decId)
+    Decisions.update({_id: decId, owner: this.userId}, { $push: {collaborators: email} })
   },
   'users.find'(email) {
     if (Meteor.isServer) {

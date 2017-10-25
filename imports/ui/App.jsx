@@ -44,6 +44,7 @@ class App extends Component {
     this.deleteMatrix = this.deleteMatrix.bind(this)
     this.shareMatrix = this.shareMatrix.bind(this)
     this.findUser = this.findUser.bind(this)
+    this.addCollaboratorToDecision = this.addCollaboratorToDecision.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -158,17 +159,23 @@ class App extends Component {
     const userExistsStatus = userExists ? <text style={{color: 'lightgreen'}}>Found!</text> : (userExists === false ? <text style={{color: 'red'}}>No such user!</text> : '')
     return <div style={{border: '2px solid lightgray', borderRadius: '5px', padding: '10px'}}>
       <p><b>Select Collaborators for: </b>{dec.decision}</p>
-      <p>Current Collaborators:</p>
+      <p>Decision Collaborators:</p>
+      <ul>
+        {dec.collaborators.map((email, i)=>{
+          return <li key={i}>{email}</li>
+        })}
+      </ul>
+      <p>My Collaborators:</p>
       <ul>
         {Meteor.user().profile.collaborators.map((email, i)=>{
-          return <li key={i}>{email}</li>
+          return <li key={i}>{email}<button onClick={this.addCollaboratorToDecision(email)}>Add</button></li>
         })}
       </ul>
       <label>Find Collaborators by Email:</label><br/>
       <input id='new_collaborator'/><br/>
       <button onClick={this.findUser}>Find</button>
       {userExistsStatus}<br/>
-      <button onClick={this.addCollaborator}>Add Colloborator</button>
+      <button onClick={this.addCollaborator}>Add to My Colloborators</button>
     </div>
   }
 
@@ -387,6 +394,12 @@ class App extends Component {
     Meteor.call('users.addCollaborator', email, (error, res)=>{
       console.log('res', res)
     })
+  }
+
+  addCollaboratorToDecision(email) {
+    return () => {
+      Meteor.call('decisions.addCollaborator', email, this.state.shareId)
+    }
   }
 
   goTo(path) {
