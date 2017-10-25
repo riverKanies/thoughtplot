@@ -58,7 +58,7 @@ class App extends Component {
     return this.props.decisions.map((dec) => {
       const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
       return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>
-        - {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
+        - {dec.decision}{isCurrentDec ? <button disabled style={{color: colors.blue}}>(viewing)</button> : <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
         <button onClick={this.deleteMatrix(dec._id)}>Delete</button>
         <button onClick={this.shareMatrix(dec._id)}>Collaborate</button>
       </p>
@@ -207,7 +207,7 @@ class App extends Component {
         </h4>
         <p><b>What is:</b> People make decisions based on any number of variables and political reasoning, then communicate those decisions by telling a short story that hits on the one 'most important' point. This often includes stacking data or pointing out only what is most likely to get a thumbs up from the team.</p>
         <p><b>What could be:</b> Decisions are documented and communicated in a transparent and objective way. Each consideration is weighed relatively and scored on a per option basis so that it's not just clear what option seems best now, but it's also clear how much better the option is for what reasons, and it's straight forward to go back and re-evaluate when circumstances change.</p>
-        <p>Use ThotPlot to improve decision making and communication for your team: <button onClick={this.setTab('builder')}>Try It</button></p>
+        <p>Use ThotPlot to improve decision making and communication for your team: <button onClick={this.setTab('builder')}>Try It &#8680;</button></p>
       </section>
       <section style={{display: (this.state.selectedTab === 'builder' ? '' : 'none')}}>
         {this.props.routeDecisionId && !this.props.decision ?

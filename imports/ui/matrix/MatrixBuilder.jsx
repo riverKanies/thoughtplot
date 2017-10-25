@@ -6,6 +6,7 @@ import ColumnBuilder from './ColumnBuilder.jsx'
 import CellBuilder from './CellBuilder.jsx'
 import colors from '../colors'
 
+const styles = {fontSize: '2em', backgroundColor: 'white', border: `2px solid ${colors.blue}`, color: colors.blue, borderRadius: '7px'}
 
 export default class MatrixBuilder extends Component {
   constructor(props) {
@@ -27,6 +28,8 @@ export default class MatrixBuilder extends Component {
       <CellBuilder {...this.props} />,
     ]
 
+    const endOfSteps = this.state.currentStep < steps.length-1
+
     return(<div>
       <header>
         <h1>Plot Builder</h1>
@@ -42,7 +45,10 @@ export default class MatrixBuilder extends Component {
       </div>
       <br/>
       <div style={{textAlign: 'center'}}>
-        <button disabled={this.state.currentStep < steps.length-1 ? false : true} onClick={this.toNext} style={{fontSize: '2em', backgroundColor: 'white', border: `2px solid ${colors.blue}`, color: colors.blue, borderRadius: '7px'}}>Next Step &#8680;</button>
+        {endOfSteps
+          ? <button onClick={this.toNext} style={styles}>Next Step &#8680;</button>
+          : <button onClick={this.props.setTab('matrix')} style={styles}>Skip to Plot &#8680;</button>
+        }
       </div>
     </div>)
   }
