@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { Accounts } from 'meteor/accounts-base'
 
 export const Decisions = new Mongo.Collection('decisions')
 
@@ -50,5 +51,11 @@ Meteor.methods({
   },
   'decisions.remove'(id) {
     Decisions.remove({_id: id, owner: this.userId})
+  },
+  'users.find'(email) {
+    if (Meteor.isServer) {
+      const user = Accounts.findUserByEmail(email)
+      return !!user
+    }
   }
 });

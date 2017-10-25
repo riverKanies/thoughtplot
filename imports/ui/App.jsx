@@ -28,6 +28,7 @@ class App extends Component {
       this.state.isWeightedMtx = false
       this.state.weights = []
     }
+    this.state.userExists = null
 
     this.setTab = this.setTab.bind(this)
 
@@ -41,7 +42,8 @@ class App extends Component {
     this.saveMatrix = this.saveMatrix.bind(this)
     this.updateMatrix = this.updateMatrix.bind(this)
     this.deleteMatrix = this.deleteMatrix.bind(this)
-
+    this.shareMatrix = this.shareMatrix.bind(this)
+    this.findUser = this.findUser.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,6 +59,7 @@ class App extends Component {
       return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>
         - {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
         <button onClick={this.deleteMatrix(dec._id)}>Delete</button>
+        <button onClick={this.shareMatrix(dec._id)}>Collaborate</button>
       </p>
     })
   }
@@ -147,6 +150,22 @@ class App extends Component {
     </div>)
   }
 
+  renderShare() {
+    const id = this.state.shareId
+    if (!id) return ''
+    const dec = (Decisions.findOne(id))
+    console.log('dec', dec)
+    const userExists = this.state.userExists
+    const userExistsStatus = userExists ? <text style={{color: 'lightgreen'}}>Found!</text> : (userExists === false ? <text style={{color: 'red'}}>No such user!</text> : '')
+    return <div style={{border: '2px solid lightgray', borderRadius: '5px', padding: '10px'}}>
+      <p><b>Select Collaborators for: </b>{dec.decision}</p>
+      <label>Find Collaborators: (email)</label>
+      <input id='new_collaborator'/><br/>
+      <button onClick={this.findUser}>Find current user by email</button>
+      {userExistsStatus}<br/>
+    </div>
+  }
+
   renderNoDecision () {
     return <div>
       <h1>No such decision!</h1>
@@ -217,6 +236,7 @@ class App extends Component {
         <ul>
           {this.renderDecisions()}
         </ul>
+        {this.renderShare()}
       </section>
     </div>)
   }
@@ -337,6 +357,22 @@ class App extends Component {
       const confirmed = confirm('Are you sure you want to delete this decision?')
       if (confirmed) Meteor.call('decisions.remove', id)
     }
+  }
+
+  shareMatrix(id) {
+    return () => {
+      console.log('sharing', id)
+      this.setState({shareId: id})
+    }
+  }
+
+  findUser() {
+    const email = document.getElementById('new_collaborator').value
+    console.log('finding', email)
+    Meteor.call('users.find', email, (error, userExists)=>{
+      console.log('exists', userExists, this.state.shareId)
+      this.setState({userExists})
+    })
   }
 
   goTo(path) {

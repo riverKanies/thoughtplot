@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { Decisions } from '../imports/api/decisions.js'
 
 Meteor.startup(() => {
-
 });
 
 
