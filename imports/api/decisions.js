@@ -57,5 +57,9 @@ Meteor.methods({
       const user = Accounts.findUserByEmail(email)
       return !!user
     }
+  },
+  'users.addCollaborator'(email) {
+    Meteor.users.update(this.userId, {$push: {'profile.collaborators': email}})
+    return Meteor.users.findOne(this.userId).profile
   }
 });

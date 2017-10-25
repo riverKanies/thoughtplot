@@ -154,15 +154,21 @@ class App extends Component {
     const id = this.state.shareId
     if (!id) return ''
     const dec = (Decisions.findOne(id))
-    console.log('dec', dec)
     const userExists = this.state.userExists
     const userExistsStatus = userExists ? <text style={{color: 'lightgreen'}}>Found!</text> : (userExists === false ? <text style={{color: 'red'}}>No such user!</text> : '')
     return <div style={{border: '2px solid lightgray', borderRadius: '5px', padding: '10px'}}>
       <p><b>Select Collaborators for: </b>{dec.decision}</p>
-      <label>Find Collaborators: (email)</label>
+      <p>Current Collaborators:</p>
+      <ul>
+        {Meteor.user().profile.collaborators.map((email, i)=>{
+          return <li key={i}>{email}</li>
+        })}
+      </ul>
+      <label>Find Collaborators by Email:</label><br/>
       <input id='new_collaborator'/><br/>
-      <button onClick={this.findUser}>Find current user by email</button>
+      <button onClick={this.findUser}>Find</button>
       {userExistsStatus}<br/>
+      <button onClick={this.addCollaborator}>Add Colloborator</button>
     </div>
   }
 
@@ -372,6 +378,14 @@ class App extends Component {
     Meteor.call('users.find', email, (error, userExists)=>{
       console.log('exists', userExists, this.state.shareId)
       this.setState({userExists})
+    })
+  }
+
+  addCollaborator() {
+    const email = document.getElementById('new_collaborator').value
+    console.log('adding', email)
+    Meteor.call('users.addCollaborator', email, (error, res)=>{
+      console.log('res', res)
     })
   }
 
