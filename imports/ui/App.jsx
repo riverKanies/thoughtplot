@@ -82,7 +82,7 @@ class App extends Component {
   }
 
   renderLabelRow() {
-    const labelRow = this.state.mtx[0].concat([{val: `Score${this.state.isWeightedMtx ? ' (weighted)' : ''}`}])
+    const labelRow = this.state.mtx[0].concat([{val: `Score`}])
     return <div className='row hidden-when-small'>{this.renderRowOfLabels(labelRow,0)}</div>
   }
 
@@ -108,9 +108,8 @@ class App extends Component {
   renderCell(valObj,i,j,styles) {
     const val = valObj.val
     if (val === null) return <div className={cellColClass} />
-    if (j >= this.numColumns()) return <div className={cellColClass}><b>{val}</b></div>
+    if (j >= this.numColumns()) return <div className={cellColClass} style={{textAlign: 'center', width: '70px', border: '1px solid black'}}><b>{val}</b></div>
     const note = this.state.mtx[i][j].note
-    const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '1.3em', padding: '0px 4px'}
     return <div className={cellColClass}>
       <div className='tooltipcontainer'>
         <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
@@ -118,8 +117,8 @@ class App extends Component {
           <textarea value={note} onChange={this.onChangeNote(i,j)} style={{color: 'white', background: 'black', border: '0px'}}/>
         </span>
       </div>
-      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{fontSize: '.8em', margin: '8px 0px'}}>*{this.state.weights[j]}=<text style={stylesWeight}>{val * this.state.weights[j]}</text></text> : ''}
-      <text className='hidden-when-big' style={{marginLeft: '10px'}}>{this.state.mtx[0][j].val}</text>
+      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{fontSize: '.8em', margin: '8px 0px'}}>*{this.state.weights[j]}=<text>{val * this.state.weights[j]}</text></text> : ''}
+      <text className='hidden-when-big' style={{color: colors.blue, marginLeft: '10px'}}>{this.state.mtx[0][j].val}</text>
     </div>
   }
 
@@ -130,7 +129,7 @@ class App extends Component {
       if (label == null) return <div className={cellColClass} key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
       return (<div className={cellColClass} key={i}>
         <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, color: 'white', width: '20px'}}/>
-        <text className='hidden-when-big'>{this.state.mtx[0][i].val}</text>
+        <text className='hidden-when-big' style={{color: colors.blue, marginLeft: '10px'}}>{this.state.mtx[0][i].val}</text>
       </div>)
     })}</div>
   }
