@@ -155,6 +155,7 @@ class App extends Component {
     const id = this.state.shareId
     if (!id) return ''
     const dec = (Decisions.findOne(id))
+    if (!dec) return ''
     const userExists = this.state.userExists
     const userExistsStatus = userExists ? <text style={{color: 'lightgreen'}}>Found!</text> : (userExists === false ? <text style={{color: 'red'}}>No such user!</text> : '')
     return <div style={{border: '2px solid lightgray', borderRadius: '5px', padding: '10px'}}>
@@ -238,7 +239,6 @@ class App extends Component {
               If not, modify some of your scores to capture your intuition as best you can.
               Is there something relevant to the decision that you haven't yet made a consideration column for?
             </p>
-            <br/><br/><br/><br/>
           </div>}
       </section>
       <section style={{display: (this.state.selectedTab === 'list' ? '' : 'none')}}>
@@ -269,6 +269,7 @@ class App extends Component {
           </section>
         </div>
         {this.renderTab()}
+        <br/><br/><br/><br/><br/><br/>
       </div>
     )
   }
