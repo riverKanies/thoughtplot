@@ -172,7 +172,7 @@ class App extends Component {
       <p>Decision Collaborators:</p>
       <ul>
         {dec.collaborators.map((email, i)=>{
-          return <li key={i}>{email}</li>
+          return <li key={i}>{email}<button onClick={this.removeCollaboratorFromDecision(email)}>X</button></li>
         })}
       </ul>
       <p>My Collaborators:</p>
@@ -417,6 +417,12 @@ class App extends Component {
   addCollaboratorToDecision(email) {
     return () => {
       Meteor.call('decisions.addCollaborator', email, this.state.shareId)
+    }
+  }
+
+  removeCollaboratorFromDecision(email) {
+    return () => {
+      Meteor.call('decisions.removeCollaborator', email, this.state.shareId)
     }
   }
 

@@ -61,6 +61,12 @@ Meteor.methods({
   'decisions.addCollaborator'(email, decId) {
     Decisions.update({_id: decId, owner: this.userId}, { $push: {collaborators: email} })
   },
+  'decisions.removeCollaborator'(email, decId) {
+    const collaborators = Decisions.findOne(decId).collaborators.filter((c)=>{
+      return c != email
+    })
+    Decisions.update({_id: decId, owner: this.userId}, { $set: {collaborators} })
+  },
   'users.find'(email) {
     if (Meteor.isServer) {
       const user = Accounts.findUserByEmail(email)
