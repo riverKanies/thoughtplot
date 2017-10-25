@@ -96,17 +96,17 @@ class App extends Component {
   renderCell(valObj,i,j,styles) {
     const val = valObj.val
     if (val === null) return <div className={cellColClass} />
-    if (j >= this.numColumns()) return <div className={cellColClass}>{val}</div>
+    if (j >= this.numColumns()) return <div className={cellColClass}><b>{val}</b></div>
     const note = this.state.mtx[i][j].note
-    const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '.8em'}
+    const stylesWeight = {backgroundColor: 'lightgray', color: colors.purple, borderRadius: '3px', fontSize: '1.3em', padding: '0px 4px'}
     return <div className={cellColClass}>
       <div className='tooltipcontainer'>
         <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
         <span className='tooltip'>
           <textarea value={note} onChange={this.onChangeNote(i,j)} style={{color: 'white', background: 'black', border: '0px'}}/>
-          </span>
+        </span>
       </div>
-      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={stylesWeight}>{val * this.state.weights[j]}</text> : ''}
+      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{fontSize: '.8em', margin: '8px 0px'}}>*{this.state.weights[j]}=<text style={stylesWeight}>{val * this.state.weights[j]}</text></text> : ''}
       <text className='hidden-when-big' style={{marginLeft: '10px'}}>{this.state.mtx[0][j].val}</text>
     </div>
   }
@@ -117,7 +117,7 @@ class App extends Component {
       const label = labelObj.val
       if (label == null) return <div className={cellColClass} key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
       return (<div className={cellColClass} key={i}>
-        <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, width: '20px'}}/>
+        <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, color: 'white', width: '20px'}}/>
         <text className='hidden-when-big'>{this.state.mtx[0][i].val}</text>
       </div>)
     })}</div>
@@ -135,7 +135,7 @@ class App extends Component {
     const { mtx } = this.state
     if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>Error, must have at least one option and one consideration!</text>
     return (<div>
-        <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px', padding: '10px 0'}}>
+      <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px', padding: '10px 0', margin: '0', width: '100%'}}>
         {this.renderLabelRow()}
         {this.renderOptionRows()}
         {this.renderWeightsRow()}
@@ -206,6 +206,7 @@ class App extends Component {
               If not, modify some of your scores to capture your intuition as best you can.
               Is there something relevant to the decision that you haven't yet made a consideration column for?
             </p>
+            <br/><br/><br/><br/>
           </div>}
       </section>
       <section style={{display: (this.state.selectedTab === 'list' ? '' : 'none')}}>
@@ -227,7 +228,7 @@ class App extends Component {
       <div className="container">
         <div className="container" style={{background: colors.purple, margin: '0', width: '100%', padding: '10px 0'}}>
           <section className="row">
-            <div className="col-4"><AccountsUIWrapper /></div>
+            <div className="col-4" style={{background: colors.blue, borderRadius: '5px', textAlign: 'center', height: '28px'}}><AccountsUIWrapper /></div>
             <div className="col-2"><button onClick={this.setTab('intro')} style={this.state.selectedTab === 'intro' ? stylesActive : styles}>Intro</button></div>
             <div className="col-2"><button onClick={this.setTab('builder')} style={this.state.selectedTab === 'builder' ? stylesActive : styles}>Builder</button></div>
             <div className="col-2"><button onClick={this.setTab('matrix')} style={this.state.selectedTab === 'matrix' ? stylesActive : styles}>Plot</button></div>

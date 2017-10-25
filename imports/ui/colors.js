@@ -1,6 +1,6 @@
 export default {
-    purple: '#a75abc',
-    orange: 'orange',
-    blue: 'lightblue',
-    yellow: '#f7dc62'
+    purple: '#044389',
+    orange: '#EDB017',
+    blue: '#789ABB',
+    yellow: '#FDFFA0'
 }
