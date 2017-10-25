@@ -70,5 +70,11 @@ Meteor.methods({
   'users.addCollaborator'(email) {
     Meteor.users.update(this.userId, {$push: {'profile.collaborators': email}})
     return Meteor.users.findOne(this.userId).profile
+  },
+  'users.removeCollaborator'(email) {
+    const collaborators = Meteor.user().profile.collaborators.filter((c)=>{
+      return c != email
+    })
+    Meteor.users.update(this.userId, {$set: {'profile.collaborators': collaborators}})
   }
 });

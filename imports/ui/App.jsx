@@ -178,14 +178,18 @@ class App extends Component {
       <p>My Collaborators:</p>
       <ul>
         {Meteor.user().profile.collaborators.map((email, i)=>{
-          return <li key={i}>{email}<button onClick={this.addCollaboratorToDecision(email)}>Add</button></li>
+          return <li key={i}>
+            {email}
+            <button onClick={this.addCollaboratorToDecision(email)}>Add</button>
+            <button onClick={this.removeCollaborator(email)}>X</button>
+          </li>
         })}
       </ul>
       <label>Find Collaborators by Email:</label><br/>
       <input id='new_collaborator'/><br/>
       <button onClick={this.findUser}>Find</button>
       {userExistsStatus}<br/>
-      <button onClick={this.addCollaborator}>Add to My Colloborators</button>
+      <button onClick={this.addCollaborator}>Add to My Collaborators</button>
     </div>
   }
 
@@ -402,6 +406,12 @@ class App extends Component {
   addCollaborator() {
     const email = document.getElementById('new_collaborator').value
     Meteor.call('users.addCollaborator', email)
+  }
+
+  removeCollaborator(email) {
+    return () => {
+      Meteor.call('users.removeCollaborator', email)
+    }
   }
 
   addCollaboratorToDecision(email) {
