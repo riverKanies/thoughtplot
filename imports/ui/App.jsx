@@ -65,6 +65,15 @@ class App extends Component {
     })
   }
 
+  renderSharedDecisions() {
+    return this.props.decisionsShared.map((dec) => {
+      const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
+      return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>
+        - {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
+      </p>
+    })
+  }
+
   renderRowOfLabels(row,i) {
     return row.map((cell, j) => {
       const styles = {background: colors.blue, width: '70px'}
@@ -74,7 +83,6 @@ class App extends Component {
 
   renderLabelRow() {
     const labelRow = this.state.mtx[0].concat([{val: `Score${this.state.isWeightedMtx ? ' (weighted)' : ''}`}])
-    //if (this.state.isWeightedMtx) labelRow.push('Weighted')
     return <div className='row hidden-when-small'>{this.renderRowOfLabels(labelRow,0)}</div>
   }
 
@@ -129,9 +137,11 @@ class App extends Component {
 
   renderSaveMatrix() {
     if (!this.props.currentUser) return <button disabled="true">Save Plot (must be logged in)</button>
-    const isCurrentPlot = !!Decisions.findOne({decision: this.state.decision})
-    if (isCurrentPlot) return <button onClick={this.updateMatrix}>Update Plot</button>
-    return <button onClick={this.saveMatrix}>Save New Plot</button>
+    const isCurrentPlot = !!Decisions.findOne({owner: this.props.currentUser._id, decision: this.state.decision})
+    if (!isCurrentPlot) return <button onClick={this.saveMatrix}>Save New Plot</button>
+    const userOwnedDec = Decisions.findOne({_id: this.props.routeDecisionId, owner: this.props.currentUser._id})
+    if (userOwnedDec) return <button onClick={this.updateMatrix}>Update Plot</button>
+    return <button disabled>(view your copy to edit)</button>
   }
 
   renderPlot() {
@@ -245,9 +255,13 @@ class App extends Component {
         <header>
           <h1>Decision List</h1>
         </header>
-        <p>Select which plot you'd like to view (view it on the Plot tab):</p>
+        <p>My Decisions:</p>
         <ul>
           {this.renderDecisions()}
+        </ul>
+        <p>Shared With Me:</p>
+        <ul>
+          {this.renderSharedDecisions()}
         </ul>
         {this.renderShare()}
       </section>
@@ -375,26 +389,20 @@ class App extends Component {
 
   shareMatrix(id) {
     return () => {
-      console.log('sharing', id)
       this.setState({shareId: id})
     }
   }
 
   findUser() {
     const email = document.getElementById('new_collaborator').value
-    console.log('finding', email)
     Meteor.call('users.find', email, (error, userExists)=>{
-      console.log('exists', userExists, this.state.shareId)
       this.setState({userExists})
     })
   }
 
   addCollaborator() {
     const email = document.getElementById('new_collaborator').value
-    console.log('adding', email)
-    Meteor.call('users.addCollaborator', email, (error, res)=>{
-      console.log('res', res)
-    })
+    Meteor.call('users.addCollaborator', email)
   }
 
   addCollaboratorToDecision(email) {
@@ -414,10 +422,14 @@ App.propTypes = {
 
 export default createContainer(() => {
   Meteor.subscribe('decisions')
+  Meteor.subscribe('decisionsShared')
+  const currentUser = Meteor.user()
+  const email = currentUser ? currentUser.emails[0].address : ''
   return {
     routeDecisionId: FlowRouter.getParam('_id'),
     decision: Decisions.findOne({_id: FlowRouter.getParam('_id')}),
-    currentUser: Meteor.user(),
-    decisions: Decisions.find({}).fetch(),
+    currentUser: currentUser,
+    decisions: Decisions.find({owner: (currentUser||{})._id}).fetch(),
+    decisionsShared: Decisions.find({collaborators: email}).fetch(),
   }
 }, App)

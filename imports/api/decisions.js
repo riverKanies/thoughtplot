@@ -10,6 +10,12 @@ if (Meteor.isServer) {
   Meteor.publish('decisions', function decisionsPublication() {
     return Decisions.find({owner: this.userId});
   });
+  Meteor.publish('decisionsShared', function decisionsSharedPublication() {
+    const currentUser = Meteor.users.findOne(this.userId)
+    if (!currentUser) return []
+    const email = currentUser.emails[0].address 
+    return Decisions.find({collaborators: email})
+  })
 }
 
 Meteor.methods({
@@ -30,7 +36,6 @@ Meteor.methods({
     if (decSame) {
       throw new Meteor.Error('you already have a decision with that name')
     }
-
     Decisions.insert({
       decision,
       matrix,
@@ -54,7 +59,6 @@ Meteor.methods({
     Decisions.remove({_id: id, owner: this.userId})
   },
   'decisions.addCollaborator'(email, decId) {
-    console.log('adding', email, 'to', decId)
     Decisions.update({_id: decId, owner: this.userId}, { $push: {collaborators: email} })
   },
   'users.find'(email) {
