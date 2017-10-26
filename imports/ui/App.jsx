@@ -60,7 +60,7 @@ class App extends Component {
       return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>
         - {dec.decision}{isCurrentDec ? <button disabled style={{color: colors.blue}}>(viewing)</button> : <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
         <button onClick={this.deleteMatrix(dec._id)}>Delete</button>
-        <button onClick={this.shareMatrix(dec._id)}>Collaborate</button>
+        {this.state.shareId == dec._id ? <button disabled style={{color: colors.blue}}>(open above)</button> : <button onClick={this.shareMatrix(dec._id)}>Collaborate</button>}
       </p>
     })
   }
@@ -258,6 +258,7 @@ class App extends Component {
         <header>
           <h1>Decision List</h1>
         </header>
+        {this.renderShare()}
         <p>My Decisions:</p>
         <ul>
           {this.renderDecisions()}
@@ -266,7 +267,6 @@ class App extends Component {
         <ul>
           {this.renderSharedDecisions()}
         </ul>
-        {this.renderShare()}
       </section>
     </div>)
   }
