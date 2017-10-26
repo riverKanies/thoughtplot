@@ -3,15 +3,15 @@ import { Decisions } from '../imports/api/decisions.js'
 import { Accounts } from 'meteor/accounts-base'
 
 Meteor.startup(() => {
-
 });
 
 Accounts.onCreateUser(function(options, user) {
-    if (user.profile == undefined) {
-      user.profile = {}
-      user.profile.collaborators = []
-    }
-    return user
+  Accounts.sendVerificationEmail(user._id, user.emails[0].address)
+  if (user.profile == undefined) {
+    user.profile = {}
+    user.profile.collaborators = []
+  }
+  return user
 });
 
 
