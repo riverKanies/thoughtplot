@@ -21,7 +21,7 @@ Meteor.startup(() => {
 
   const user = Accounts.findUserByEmail('river.kanies@gmail.com')
   // Accounts.sendVerificationEmail(user._id, user.emails[0].address)
-  Meteor.users.remove(user._id)
+  if (user) Meteor.users.remove(user._id)
 });
 
 Accounts.onCreateUser(function(options, user) {
