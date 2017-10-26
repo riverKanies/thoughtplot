@@ -6,6 +6,17 @@ Meteor.startup(() => {
   Accounts.config({
     sendVerificationEmail: true
   })
+
+  Accounts.emailTemplates.verifyEmail.text = function(user, url) {
+    console.log('emailver url', url)
+    const verificationCode = url.split('#')[1]
+    const correctUrl = 'http://thotplot.herokuapp.com/#'+verificationCode
+    return 'Your custom text, URL:' + correctUrl;
+  };
+
+  const user = Accounts.findUserByEmail('river.kanies@gmail.com')
+  // Accounts.sendVerificationEmail(user._id, user.emails[0].address)
+  Meteor.users.remove(user._id)
 });
 
 Accounts.onCreateUser(function(options, user) {
