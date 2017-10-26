@@ -3,10 +3,13 @@ import { Decisions } from '../imports/api/decisions.js'
 import { Accounts } from 'meteor/accounts-base'
 
 Meteor.startup(() => {
+  Accounts.config({
+    sendVerificationEmail: true
+  })
 });
 
 Accounts.onCreateUser(function(options, user) {
-  Accounts.sendVerificationEmail(user._id, user.emails[0].address)
+  //Accounts.sendVerificationEmail(user._id, user.emails[0].address)
   if (user.profile == undefined) {
     user.profile = {}
     user.profile.collaborators = []
