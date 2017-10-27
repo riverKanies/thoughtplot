@@ -6,6 +6,7 @@ import MatrixBuilder from './matrix/MatrixBuilder.jsx'
 import colors from './colors'
 import IntroTab from './IntroTab'
 import Share from './Share'
+import {DecisionsList, SharedDecisionsList} from './Decisions'
 
 const cellColClass = 'col-2'
 
@@ -43,7 +44,6 @@ class App extends Component {
     this.onChangeWeightHandler = this.onChangeWeightHandler.bind(this)
     this.saveMatrix = this.saveMatrix.bind(this)
     this.updateMatrix = this.updateMatrix.bind(this)
-    this.deleteMatrix = this.deleteMatrix.bind(this)
     this.shareMatrix = this.shareMatrix.bind(this)
   }
 
@@ -52,26 +52,6 @@ class App extends Component {
     const dec = nextProps.decision
     if (!dec) return
     this.setState({decision: dec.decision, mtx: dec.matrix, isWeightedMtx: dec.isWeightedMatrix, weights: dec.weights})
-  }
-
-  renderDecisions() {
-    return this.props.decisions.map((dec) => {
-      const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
-      return <p key={dec._id}  style={isCurrentDec ? {color: colors.blue} : {}}>
-        &#9672; {dec.decision}{isCurrentDec ? <button disabled style={{color: colors.blue}}>(viewing)</button> : <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
-        <button onClick={this.deleteMatrix(dec._id)}>Delete</button>
-        {this.state.shareId == dec._id ? <button disabled style={{color: colors.blue}}>(open above)</button> : <button onClick={this.shareMatrix(dec._id)}>Collaborate</button>}
-      </p>
-    })
-  }
-
-  renderSharedDecisions() {
-    return this.props.decisionsShared.map((dec) => {
-      const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
-      return <p key={dec._id}  style={isCurrentDec ? {color: colors.blue} : {}}>
-        &#9672; {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
-      </p>
-    })
   }
 
   renderRowOfLabels(row,i) {
@@ -225,11 +205,11 @@ class App extends Component {
         <Share {...this.state} />
         <p>My Decisions:</p>
         <ul>
-          {this.renderDecisions()}
+          <DecisionsList {...this.props} goTo={this.goTo} shareMatrix={this.shareMatrix}/>
         </ul>
         <p>Shared With Me:</p>
         <ul>
-          {this.renderSharedDecisions()}
+          <SharedDecisionsList {...this.props} goTo={this.goTo}/>
         </ul>
       </section>
     </div>)
@@ -350,13 +330,6 @@ class App extends Component {
       weights: this.state.weights
     }
     Meteor.call('decisions.update', decision)
-  }
-
-  deleteMatrix(id) {
-    return () => {
-      const confirmed = confirm('Are you sure you want to delete this decision?')
-      if (confirmed) Meteor.call('decisions.remove', id)
-    }
   }
 
   shareMatrix(id) {
