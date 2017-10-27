@@ -313,9 +313,14 @@ class App extends Component {
     this.setState({mtx: mtx, weights: weights})
   }
 
-  onChangeHandler(i,j) {
+  onChangeHandler(i,j,score) {
+    const { mtx } = this.state
+    if (score || score === 0) {
+      mtx[i][j].val = score
+      this.setState({mtx: mtx})
+      return
+    }
     return (e) => {
-      const { mtx } = this.state
       mtx[i][j].val = e.target.value
       this.setState({mtx: mtx})
     }

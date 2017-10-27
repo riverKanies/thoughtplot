@@ -1,4 +1,15 @@
 import React, { Component, PropTypes } from 'react'
+import colors from '../colors'
+
+const range = [-5,-4,-3,-2,-1,0,1,2,3,4,5]
+const btnStyles = {
+  width: '25px',
+  textAlign: 'center',
+  border: `1px solid ${colors.blue}`,
+  borderRadius: '50%',
+  background: 'white',
+  margin: '3px'
+}
 
 export default class CellBuilder extends Component {
   constructor(props) {
@@ -9,6 +20,15 @@ export default class CellBuilder extends Component {
     this.state.currentColumn = 1
 
     this.nextCell = this.nextCell.bind(this)
+    this.selectBtn = this.selectBtn.bind(this)
+  }
+
+  renderScoreButtons(value) {
+    return range.map((s) => {
+      const selectedBtn = this.state.selectedBtn
+      const selectedStyles = (selectedBtn === s || s === value) ? {background: colors.blue} : {}
+      return <button key={s} style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
+    })
   }
 
   renderBuilder() {
@@ -25,7 +45,8 @@ export default class CellBuilder extends Component {
       <p><b>Option {i}, Consideration {j}</b></p>
       <text>Based on <b>{consideration}</b> alone, the option <b>{option}</b> should get a score of
       <input value={value} onChange={this.props.onChangeHandler(i,j)} style={{width: '20px', margin: '0 5px 0 5px'}}/>
-      (-5 to 5)
+      <br/>
+      {this.renderScoreButtons(value)}
       </text><br/><br/>
       <label>Note: (describe why you think this score is appropriate)</label><br/>
       <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='this option will save time in the long run'/><br/><br/>
@@ -47,9 +68,18 @@ export default class CellBuilder extends Component {
     const i = this.state.currentRow
     const j = this.state.currentColumn
     if (j==this.props.mtx[0].length-1) {
-      this.setState({currentRow: i+1, currentColumn: 1})
+      this.setState({currentRow: i+1, currentColumn: 1, selectedBtn: null})
     } else {
-      this.setState({currentColumn: j+1})
+      this.setState({currentColumn: j+1, selectedBtn: null})
+    }
+  }
+
+  selectBtn(s) {
+    return () => {
+      const i = this.state.currentRow
+      const j = this.state.currentColumn
+      this.props.onChangeHandler(i,j,s)
+      this.setState({selectedBtn: s})
     }
   }
 
