@@ -4,6 +4,7 @@ import AccountsUIWrapper from './AccountsUIWrapper.jsx';
 import { Decisions } from '../api/decisions.js'
 import MatrixBuilder from './matrix/MatrixBuilder.jsx'
 import colors from './colors'
+import IntroTab from './IntroTab'
 
 const cellColClass = 'col-2'
 
@@ -31,6 +32,7 @@ class App extends Component {
     this.state.userExists = null
 
     this.setTab = this.setTab.bind(this)
+    this.renderTryit = this.renderTryit.bind(this)
 
     this.onChangeHandler = this.onChangeHandler.bind(this)
     this.onChangeNote = this.onChangeNote.bind(this)
@@ -209,20 +211,7 @@ class App extends Component {
 
   renderTab() {
     return (<div>
-      <section style={{display: (this.state.selectedTab === 'intro' ? '' : 'none')}}>
-        <header>
-          <h1>About ThotPlot</h1>
-        </header>
-        <h4>
-          ThotPlot makes it easy to communicate complicated decisions to your team so that you can spend less time in meetings and more time adding value to your business.
-        </h4>
-        {this.renderTryit()}
-        <h3>Further Reading:</h3>
-        <p><b>What is:</b> People make decisions based on many variables (often political), but communicate those decisions by telling a short story that hits on the one 'most important' point. This often involves stacking data or pointing out only what is most likely to get a thumbs up from the team.</p>
-        <p><b>What could be:</b> Decisions can be documented and communicated in a transparent and objective way. Each consideration can be scored on a per option basis so that it's clear which option seems best now, and it's also clear how much better the option is (and why it's better). This means that it's straight forward to go back and re-evaluate the decision when circumstances change.</p>
-        <p>Use ThotPlot to improve decision making and communication for your team:</p>
-        {this.renderTryit()}
-      </section>
+      <IntroTab renderTryit={this.renderTryit} selectedTab={this.state.selectedTab}/>
       <section style={{display: (this.state.selectedTab === 'builder' ? '' : 'none')}}>
         {this.props.routeDecisionId && !this.props.decision ?
           this.renderNoDecision() :
