@@ -5,6 +5,7 @@ import { Decisions } from '../api/decisions.js'
 import MatrixBuilder from './matrix/MatrixBuilder.jsx'
 import colors from './colors'
 import IntroTab from './IntroTab'
+import Share from './Share'
 
 const cellColClass = 'col-2'
 
@@ -29,7 +30,6 @@ class App extends Component {
       this.state.isWeightedMtx = false
       this.state.weights = []
     }
-    this.state.userExists = null
 
     this.setTab = this.setTab.bind(this)
     this.renderTryit = this.renderTryit.bind(this)
@@ -45,8 +45,6 @@ class App extends Component {
     this.updateMatrix = this.updateMatrix.bind(this)
     this.deleteMatrix = this.deleteMatrix.bind(this)
     this.shareMatrix = this.shareMatrix.bind(this)
-    this.findUser = this.findUser.bind(this)
-    this.addCollaboratorToDecision = this.addCollaboratorToDecision.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -162,39 +160,6 @@ class App extends Component {
     </div>)
   }
 
-  renderShare() {
-    const id = this.state.shareId
-    if (!id) return ''
-    const dec = (Decisions.findOne(id))
-    if (!dec) return ''
-    const userExists = this.state.userExists
-    const userExistsStatus = userExists ? <text style={{color: 'lightgreen'}}>Found!</text> : (userExists === false ? <text style={{color: 'red'}}>No such user!</text> : '')
-    return <div style={{border: '2px solid lightgray', borderRadius: '5px', padding: '10px'}}>
-      <p><b>Select Collaborators for: </b>{dec.decision}</p>
-      <p>Decision Collaborators:</p>
-      <ul>
-        {dec.collaborators.map((email, i)=>{
-          return <li key={i}>{email}<button onClick={this.removeCollaboratorFromDecision(email)}>X</button></li>
-        })}
-      </ul>
-      <p>My Collaborators:</p>
-      <ul>
-        {Meteor.user().profile.collaborators.map((email, i)=>{
-          return <li key={i}>
-            {email}
-            <button onClick={this.addCollaboratorToDecision(email)}>Add</button>
-            <button onClick={this.removeCollaborator(email)}>X</button>
-          </li>
-        })}
-      </ul>
-      <label>Find Collaborators by Email:</label><br/>
-      <input id='new_collaborator'/><br/>
-      <button onClick={this.findUser}>Find</button>
-      {userExistsStatus}<br/>
-      <button onClick={this.addCollaborator}>Add to My Collaborators</button>
-    </div>
-  }
-
   renderNoDecision () {
     return <div>
       <h1>No such decision!</h1>
@@ -257,7 +222,7 @@ class App extends Component {
         <header>
           <h1>Decision List</h1>
         </header>
-        {this.renderShare()}
+        <Share {...this.state} />
         <p>My Decisions:</p>
         <ul>
           {this.renderDecisions()}
@@ -397,36 +362,6 @@ class App extends Component {
   shareMatrix(id) {
     return () => {
       this.setState({shareId: id})
-    }
-  }
-
-  findUser() {
-    const email = document.getElementById('new_collaborator').value
-    Meteor.call('users.find', email, (error, userExists)=>{
-      this.setState({userExists})
-    })
-  }
-
-  addCollaborator() {
-    const email = document.getElementById('new_collaborator').value
-    Meteor.call('users.addCollaborator', email)
-  }
-
-  removeCollaborator(email) {
-    return () => {
-      Meteor.call('users.removeCollaborator', email)
-    }
-  }
-
-  addCollaboratorToDecision(email) {
-    return () => {
-      Meteor.call('decisions.addCollaborator', email, this.state.shareId)
-    }
-  }
-
-  removeCollaboratorFromDecision(email) {
-    return () => {
-      Meteor.call('decisions.removeCollaborator', email, this.state.shareId)
     }
   }
 
