@@ -25,8 +25,7 @@ export default class CellBuilder extends Component {
 
   renderScoreButtons(value) {
     return range.map((s) => {
-      const selectedBtn = this.state.selectedBtn
-      const selectedStyles = (selectedBtn === s || s === value) ? {background: colors.blue} : {}
+      const selectedStyles = (s == value) ? {background: colors.blue} : {}
       return <button key={s} style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
     })
   }
@@ -68,9 +67,9 @@ export default class CellBuilder extends Component {
     const i = this.state.currentRow
     const j = this.state.currentColumn
     if (j==this.props.mtx[0].length-1) {
-      this.setState({currentRow: i+1, currentColumn: 1, selectedBtn: null})
+      this.setState({currentRow: i+1, currentColumn: 1})
     } else {
-      this.setState({currentColumn: j+1, selectedBtn: null})
+      this.setState({currentColumn: j+1})
     }
   }
 
@@ -79,7 +78,6 @@ export default class CellBuilder extends Component {
       const i = this.state.currentRow
       const j = this.state.currentColumn
       this.props.onChangeHandler(i,j,s)
-      this.setState({selectedBtn: s})
     }
   }
 
