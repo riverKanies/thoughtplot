@@ -57,8 +57,8 @@ class App extends Component {
   renderDecisions() {
     return this.props.decisions.map((dec) => {
       const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
-      return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>
-        - {dec.decision}{isCurrentDec ? <button disabled style={{color: colors.blue}}>(viewing)</button> : <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
+      return <p key={dec._id}  style={isCurrentDec ? {color: colors.blue} : {}}>
+        &#9672; {dec.decision}{isCurrentDec ? <button disabled style={{color: colors.blue}}>(viewing)</button> : <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
         <button onClick={this.deleteMatrix(dec._id)}>Delete</button>
         {this.state.shareId == dec._id ? <button disabled style={{color: colors.blue}}>(open above)</button> : <button onClick={this.shareMatrix(dec._id)}>Collaborate</button>}
       </p>
@@ -68,8 +68,8 @@ class App extends Component {
   renderSharedDecisions() {
     return this.props.decisionsShared.map((dec) => {
       const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
-      return <p key={dec._id}  style={isCurrentDec ? {color: 'blue'} : {}}>
-        - {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
+      return <p key={dec._id}  style={isCurrentDec ? {color: colors.blue} : {}}>
+        &#9672; {dec.decision}{isCurrentDec ? ' (viewing)': <button onClick={this.goTo(`/decisions/${dec._id}`)}>View</button>}
       </p>
     })
   }
@@ -200,6 +200,13 @@ class App extends Component {
     </div>
   }
 
+  renderTryit() {
+    const styles={border: `2px solid white`, borderRadius: '10px', color: 'white', background: colors.orange, fontSize: '2em'}
+    return <section style={{textAlign: 'center', margin: '60px 20%', background: colors.blue, padding: '30px 0', borderRadius: '60px'}}>
+      <button onClick={this.setTab('builder')} style={styles}>Try It &#8680;</button>
+    </section>
+  }
+
   renderTab() {
     return (<div>
       <section style={{display: (this.state.selectedTab === 'intro' ? '' : 'none')}}>
@@ -209,9 +216,12 @@ class App extends Component {
         <h4>
           ThotPlot makes it easy to communicate complicated decisions to your team so that you can spend less time in meetings and more time adding value to your business.
         </h4>
-        <p><b>What is:</b> People make decisions based on any number of variables and political reasoning, then communicate those decisions by telling a short story that hits on the one 'most important' point. This often includes stacking data or pointing out only what is most likely to get a thumbs up from the team.</p>
-        <p><b>What could be:</b> Decisions are documented and communicated in a transparent and objective way. Each consideration is weighed relatively and scored on a per option basis so that it's not just clear what option seems best now, but it's also clear how much better the option is for what reasons, and it's straight forward to go back and re-evaluate when circumstances change.</p>
-        <p>Use ThotPlot to improve decision making and communication for your team: <button onClick={this.setTab('builder')}>Try It &#8680;</button></p>
+        {this.renderTryit()}
+        <h3>Further Reading:</h3>
+        <p><b>What is:</b> People make decisions based on many variables (often political), but communicate those decisions by telling a short story that hits on the one 'most important' point. This often involves stacking data or pointing out only what is most likely to get a thumbs up from the team.</p>
+        <p><b>What could be:</b> Decisions can be documented and communicated in a transparent and objective way. Each consideration can be scored on a per option basis so that it's clear which option seems best now, and it's also clear how much better the option is (and why it's better). This means that it's straight forward to go back and re-evaluate the decision when circumstances change.</p>
+        <p>Use ThotPlot to improve decision making and communication for your team:</p>
+        {this.renderTryit()}
       </section>
       <section style={{display: (this.state.selectedTab === 'builder' ? '' : 'none')}}>
         {this.props.routeDecisionId && !this.props.decision ?

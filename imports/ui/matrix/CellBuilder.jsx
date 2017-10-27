@@ -10,6 +10,14 @@ const btnStyles = {
   background: 'white',
   margin: '3px'
 }
+const nxtStyles = {
+  border: `1px solid ${colors.blue}`,
+  background: 'white',
+  borderRadius: '3px',
+  color: colors.blue,
+  fontSize: '1.5em',
+  marginBottom: '20px'
+}
 
 export default class CellBuilder extends Component {
   constructor(props) {
@@ -49,7 +57,7 @@ export default class CellBuilder extends Component {
       </text><br/><br/>
       <label>Note: (describe why you think this score is appropriate)</label><br/>
       <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='this option will save time in the long run'/><br/><br/>
-      {finished ? <text>Done! <button onClick={this.props.setTab('matrix')}>View Plot &#8680;</button></text> : <button onClick={this.nextCell}>Next Consideration &#8680;</button>}
+      {finished ? <text>Done! <button onClick={this.props.setTab('matrix')} style={nxtStyles}>View Plot &#8680;</button></text> : <button onClick={this.nextCell} style={nxtStyles}>Next Consideration &#8680;</button>}
     </div>
   }
 
