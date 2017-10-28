@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base'
+import { Email } from 'meteor/email'
 
 export const Decisions = new Mongo.Collection('decisions')
 
@@ -60,6 +61,11 @@ Meteor.methods({
   },
   'decisions.addCollaborator'(email, decId) {
     Decisions.update({_id: decId, owner: this.userId}, { $push: {collaborators: email} })
+    if (Meteor.isServer) {
+      const user = Meteor.users.findOne(this.userId)
+      const dec = Decisions.findOne(decId)
+      if (user && dec) Email.send({from: 'river@thotplot.herokuapp.com', to: email, subject: "You've been invited to collaborate on a ThotPlot!", text: `${user.emails[0].address} has added you as a collaborator on the following decision: ${dec.decision}\n\nView the decision at: http://thotplot.herokuapp.com/decisions/${dec._id}`})
+    }
   },
   'decisions.removeCollaborator'(email, decId) {
     const collaborators = Decisions.findOne(decId).collaborators.filter((c)=>{
