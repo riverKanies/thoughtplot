@@ -205,7 +205,7 @@ class App extends Component {
         <Share {...this.state} />
         <p>My Decisions:</p>
         <ul>
-          <DecisionsList {...this.props} goTo={this.goTo} shareMatrix={this.shareMatrix}/>
+          <DecisionsList {...this.props} shareId={this.state.shareId} goTo={this.goTo} shareMatrix={this.shareMatrix}/>
         </ul>
         <p>Shared With Me:</p>
         <ul>
@@ -219,7 +219,7 @@ class App extends Component {
     const styles = {width: '100%', border: '2px solid lightgray', borderRadius: '5px', backgroundColor: 'lightgray', color: 'white', fontSize: '0.8em'}
     const stylesActive = { ...styles, borderColor: colors.blue, color: colors.blue, backgroundColor: 'white',}
     return (
-      <div className="container">
+      <div className="container" style={{background: 'white'}}>
         <div className="container" style={{background: colors.purple, margin: '0', width: '100%', padding: '10px 0'}}>
           <section className="row">
             <div className="col-4" style={{background: colors.blue, borderRadius: '5px', textAlign: 'center', height: '28px'}}><AccountsUIWrapper /></div>
