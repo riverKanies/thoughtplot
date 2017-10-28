@@ -1,4 +1,8 @@
 /* CSS declarations go here */
+#render-target {
+    background: white;
+}
+
 @media (max-width: 719px) {
     .hidden-when-small {
         display: none;
