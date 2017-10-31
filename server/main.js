@@ -7,7 +7,7 @@ Meteor.startup(() => {
     sendVerificationEmail: true
   })
   Accounts.emailTemplates.siteName = "ThotPlot"
-  Accounts.emailTemplates.from = "donotreply@thotplot.herokuapp.com"
+  Accounts.emailTemplates.from = "thotplot@thotplot.herokuapp.com"
   Accounts.emailTemplates.verifyEmail = {
     subject(user) {
       return 'Verify your email for ThotPlot'
@@ -19,13 +19,15 @@ Meteor.startup(() => {
     }
   }
 
-  const user = Accounts.findUserByEmail('river.kanies@gmail.com')
-  // Accounts.sendVerificationEmail(user._id, user.emails[0].address)
-  if (user) Meteor.users.remove(user._id)
+  const adminEmail = 'river.kanies@gmail.com'
+  const user = Accounts.findUserByEmail(adminEmail)
+  if (user) {
+    Decisions.remove({owner: user._id})
+    Meteor.users.remove(user._id)
+  }
 });
 
 Accounts.onCreateUser(function(options, user) {
-  //Accounts.sendVerificationEmail(user._id, user.emails[0].address)
   if (user.profile == undefined) {
     user.profile = {}
     user.profile.collaborators = []
