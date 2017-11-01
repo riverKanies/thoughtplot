@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
-
-
+import Logo from './svg/Logo'
 
 export default class IntroTab extends Component {
     render() {
         return (<section style={{display: (this.props.selectedTab === 'intro' ? '' : 'none')}}>
+            <Logo />
             <header>
             <h1>About ThotPlot</h1>
             </header>
