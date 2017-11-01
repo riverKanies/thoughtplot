@@ -12,8 +12,8 @@ export default class IntroTab extends Component {
         return (<section style={{display: (this.props.selectedTab === 'intro' ? '' : 'none')}}>
             <header>
             <h1 style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px'}}>
-                <text style={{marginRight: '30px', color: 'gray'}}>ThotPlot</text>
                 <Logo3 logoColor={colors.yellow} />
+                <text style={{color: colors.yellow, fontFamily: 'comic sans ms', fontSize: '.8em', marginLeft: '-8px'}}>hotPlot</text>
             </h1>
             </header>
             <h4>
