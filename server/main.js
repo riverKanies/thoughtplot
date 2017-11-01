@@ -7,14 +7,14 @@ Meteor.startup(() => {
     sendVerificationEmail: true
   })
   Accounts.emailTemplates.siteName = "ThotPlot"
-  Accounts.emailTemplates.from = "thotplot@thotplot.herokuapp.com"
+  Accounts.emailTemplates.from = "thotplot@thotplot.com"
   Accounts.emailTemplates.verifyEmail = {
     subject(user) {
       return 'Verify your email for ThotPlot'
     },
     text(user, url) {
       const verificationCode = url.split('#')[1]
-      const correctUrl = 'http://thotplot.herokuapp.com/#'+verificationCode
+      const correctUrl = 'http://www.thotplot.com/#'+verificationCode
       return `Thanks for using ThotPlot, click the following link to verify your email: ${correctUrl}`
     }
   }
