@@ -1,43 +1,17 @@
 import React, { Component, PropTypes } from 'react'
 
+const logoColor = "black"
+
 
 export default class Logo extends Component {
     render() {
-
-
-        // const arm = 2
-        // const branch = 20
-        // const inner = 2*arm
-        // const shoulder = 50 - branch - 5*arm
-
-        // const cps = [ // control point displacements
-        //     {x: 0, y: arm},
-        //     {x: branch, y: 0},
-        //     {x: 0, y: branch},
-        //     {x: 2*arm, y: 0},
-        //     {x: 0, -branch},
-        //     {x: shoulder, y: inner},
-        //     {x: inner, y: shoulder},
-        //     {x:-branch, y: 0},
-        //     {x: 0, y: 2*arm},
-        //     {x: branch, y: 0},
-        //     {x: 0, y: branch},
-        // ]
-        // let path = 'M -50 0'
-        // cps.forEach((cp, i)=>{
-        //     if (i<1) return
-        //     const cpl = cps[i-1]
-        //     const p = {x: } //displacements for next point on curve
-        //     path = `${path} q ${}`
-        // })
-        
-
         const arm = 2
         const branch = 8
         const shoulder = (50-2*branch-5*arm)/2
 
         const path = [
-            'M -50 0',
+            'M 0 0',
+            'L -50 0',
             `q 0 ${arm} ${branch} ${arm}`,
             `q ${branch} 0 ${branch} ${branch}`,
             `q 0 ${branch} ${arm} ${branch}`,// hand
@@ -49,14 +23,33 @@ export default class Logo extends Component {
             `q 0 ${arm} ${branch} ${arm}`,
             `q ${branch} 0 ${branch} ${branch}`,
             `q 0 ${branch} ${arm} ${branch}`,
+            ' z'
+        ].join(' ')
+
+        const face = 20
+        const skull = (50-2*face)/2
+        const line = 20
+        const neck = 50-branch-line-skull
+
+        const pathHead = [
+            'M 50 0',
+            'L 0 0',
+            `l 0 ${-skull}`,
+            `c ${face-5} 0 ${face+5} ${-2*face} 0 ${-2*face}`,
+            `l 0 ${-skull}`,
+            `c ${face+skull+3} 0 ${face+skull-5} ${2*(face+skull)-18} 15 ${2*(face+skull)-10}`, // bump
+            `Q ${2.2*skull} ${-arm} ${skull+neck} ${-arm}`,
+            `L ${50-branch} ${-arm}`,
+            `Q 50 ${-arm} 50 0`,
+            'z'
         ].join(' ')
 
         return <svg height="200" width="200" viewBox="-55 -55 110 110">
-            <circle id="pointA" cx="-50" cy="0" r="3" />
-            <circle id="BR" cx="50" cy="50" r="3" />
-            <circle id="TR" cx="50" cy="-50" r="3" />
+            <path d={path} stroke={logoColor} strokeWidth="1" fill={logoColor} />
+            <path d={path} stroke={logoColor} strokeWidth="1" fill={logoColor} transform="scale(-1,1)"/>
 
-            <path d={path} stroke="green" strokeWidth="1" fill="none" />
+            <path d={pathHead} stroke={logoColor} strokeWidth="1" fill={logoColor} />
+            <path d={pathHead} stroke={logoColor} strokeWidth="1" fill={logoColor} transform="scale(-1,1)"/>
 
             Sorry, your browser does not support inline SVG.  
         </svg>
