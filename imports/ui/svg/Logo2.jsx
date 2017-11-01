@@ -29,17 +29,17 @@ export default class Logo extends Component {
 
         const face = 20
         const skull = (50-2*face)/2
-        const line = 20
+        const line = 0
         const neck = 50-branch-line-skull
 
         const pathHead = [
             'M 50 0',
             'L 0 0',
             `l 0 ${-skull}`,
-            `c ${face-5} 0 ${face+5} ${-2*face} 0 ${-2*face}`,
+            `c ${face+15} 0 ${face+10} ${-2*face} 0 ${-2*face}`,
             `l 0 ${-skull}`,
-            `c ${face+skull+3} 0 ${face+skull-5} ${2*(face+skull)-18} 15 ${2*(face+skull)-10}`, // bump
-            `Q ${2.2*skull} ${-arm} ${skull+neck} ${-arm}`,
+            `c ${face+skull+3} 0 ${face+skull+12} ${2*(face+skull)-25} 25 ${2*(face+skull)-10}`, // bump
+            `Q ${4*skull} ${-arm} ${skull+neck} ${-arm}`,
             `L ${50-branch} ${-arm}`,
             `Q 50 ${-arm} 50 0`,
             'z'
