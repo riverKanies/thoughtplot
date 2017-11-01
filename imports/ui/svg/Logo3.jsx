@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 
-const logoColor = "black"
-
 
 export default class Logo extends Component {
     render() {
+        const logoColor = this.props.logoColor || 'black'
         const arm = 2
         const branch = 8
         const body = 4*arm/2
@@ -38,14 +37,13 @@ export default class Logo extends Component {
             `c ${face+13} 0 ${face+10} ${-2*face} 0 ${-2*face}`,
             `l 0 ${-skull}`,
             `c ${face+skull+1} 0 ${face+skull+10} ${2*(face+skull)-25} 26 ${2*(face+skull)-12}`, // bump
-            //`Q 25 ${-arm} ${skull+neck} ${-arm}`,
             `q -2 4 4 4`,
             `L ${50-branch} ${-arm}`,
             `Q 50 ${-arm} 50 0`,
             'z'
         ].join(' ')
 
-        return <svg height="200" width="200" viewBox="-55 -55 110 110">
+        return <svg height="50" width="50" viewBox="-55 -55 110 110">
             <path d={path} stroke={logoColor} strokeWidth="1" fill={logoColor} />
             <path d={path} stroke={logoColor} strokeWidth="1" fill={logoColor} transform="scale(-1,1)"/>
 

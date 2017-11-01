@@ -3,15 +3,18 @@ import Logo from './svg/Logo'
 import Logo2 from './svg/Logo2'
 import Logo3 from './svg/Logo3'
 
+import colors from './colors'
+
+const logoContainerStyles = {padding: '20px', width: '206', borderRadius: '30px', margin: '20px'}
 
 export default class IntroTab extends Component {
     render() {
         return (<section style={{display: (this.props.selectedTab === 'intro' ? '' : 'none')}}>
-            <Logo />
-            <Logo2 />
-            <Logo3 />
             <header>
-            <h1>About ThotPlot</h1>
+            <h1 style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px'}}>
+                <text style={{marginRight: '30px', color: 'gray'}}>ThotPlot</text>
+                <Logo3 logoColor={colors.yellow} />
+            </h1>
             </header>
             <h4>
             ThotPlot makes it easy to communicate complicated decisions to your team so that you can spend less time in meetings and more time adding value to your business.
