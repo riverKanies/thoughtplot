@@ -41,6 +41,12 @@ button:focus {outline: 0;}
 textarea:focus {outline: 0;}
 input:focus {outline: 0;}
 
+button {
+    background: white;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+}
+
 /* tooltips */
 .tooltipcontainer {
     position: relative;
