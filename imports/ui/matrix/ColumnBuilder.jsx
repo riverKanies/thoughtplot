@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 
+const inputId = 'new_consideration'
+
 export default class ColumnBuilder extends Component {
   constructor(props) {
     super(props)
@@ -7,57 +9,39 @@ export default class ColumnBuilder extends Component {
     this.state = {}
 
     this.addColumn = this.addColumn.bind(this)
-    this.acceptColumn = this.acceptColumn.bind(this)
     this.cancelColumn = this.cancelColumn.bind(this)
   }
 
-  renderBuilder() {
-    if (this.state.buildingColumn != true) {
-      return (<div>
-        <button onClick={this.addColumn}>Add Consideration</button>
-        <button onClick={this.cancelColumn}>Delete Last Consideration</button>
-        <text>(the last consideration is in the right column while viewing the plot)</text>
-      </div>)
-    }
-    const colNum = this.props.mtx[0].length-1
-    return (<div key={colNum}>
-      <label>New Consideration:</label>
-      <input value={this.props.mtx[0][colNum].val} onChange={this.props.onChangeHandler(0,colNum)} onClick={(e)=>e.target.select()} />
-      <button onClick={this.acceptColumn}>Done</button>
-      <button onClick={this.cancelColumn}>Cancel</button>
-    </div>)
-  }
-
   render() {
+    const colNum = this.props.mtx[0].length-1
+    const {mtx} = this.props
+    const numCols = mtx[0].length
     return (<div>
       <p>
         <b>Add Considerations</b><br/>
         What are the (3) most important considerations for your decision. You should add a consideration (column) for each main area in which your options differ significantly.
       </p>
-      <label>Current Considerations</label>
+      <label>Current Considerations:</label>
       <ol>
-        {this.props.mtx[0].map((labelObj, i) => {
+        {mtx[0].map((labelObj, i) => {
           const label = labelObj.val
           if (i==0) return ''
-          return <li key={i}>{label}</li>
+          return <li key={i}>{label}{i==(numCols-1) ? <button onClick={this.cancelColumn} style={{marginLeft: '10px'}}>X</button>: ''}</li>
         })}
       </ol>
-      {this.renderBuilder()}
+      <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
+      <button onClick={this.addColumn}>Add</button><br/>
     </div>)
   }
 
   addColumn() {
     const { mtx } = this.props
     mtx.map((row, i) => {
-      if (i==0) return row.push({val: "time", note: ''})
+      const val = document.getElementById(inputId).value
+      if (i==0) return row.push({val: val, note: ''})
       return row.push({val: 0, note: ''})
     })
     this.props.changeMatrix(mtx)
-    this.setState({buildingColumn: true})
-  }
-
-  acceptColumn() {
-    this.setState({buildingColumn: false})
   }
 
   cancelColumn() {
@@ -67,6 +51,5 @@ export default class ColumnBuilder extends Component {
       return row.pop()
     })
     this.props.changeMatrix(mtx)
-    this.setState({buildingColumn: false})
   }
 }

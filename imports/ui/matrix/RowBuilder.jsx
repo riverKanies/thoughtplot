@@ -1,48 +1,31 @@
 import React, { Component, PropTypes } from 'react'
 
+const inputId = 'new_option'
+
 export default class RowBuilder extends Component {
   constructor(props) {
     super(props)
 
     this.state = {}
     this.onAddRow = this.onAddRow.bind(this)
-    this.acceptRow = this.acceptRow.bind(this)
     this.cancelRow = this.cancelRow.bind(this)
   }
 
-  renderRowBuilder() {
-    if (this.state.buildingRow != true) {
-      return (
-        <div>
-          <button onClick={this.onAddRow}>Add Option</button>
-          <button onClick={this.cancelRow}>Delete Last Option</button>
-          <text>(the last option is in the bottom row of the plot)</text>
-        </div>
-      )
-    }
-    const rowNum = this.props.mtx.length - 1
-    return (
-      <div>
-        <label>New Option:</label>
-        <input value={this.props.mtx[rowNum][0].val} onChange={this.props.onChangeHandler(rowNum, 0)} onClick={(e)=>e.target.select()}/>
-        <br/>
-        <button onClick={this.acceptRow}>Done</button>
-        <button onClick={this.cancelRow}>Cancel</button>
-      </div>
-    )
-  }
-
   render() {
+    const rowNum = this.props.mtx.length - 1
+    const {mtx} = this.props
+    const numRows = mtx.length     
     return (<div>
       <p><b>Add Options</b><br/>What are the (3) options you're considering. You should add an option (row) for each.</p>
-      <label>Current Options</label>
+      <label>Current Options:</label><br/>
       <ol>
-        {this.props.mtx.map((row, i) => {
+        {mtx.map((row, i) => {
           if (i==0) return ''
-          return <li key={i}>{row[0].val}</li>
+          return <li key={i}>{row[0].val}{i==(numRows-1) ? <button onClick={this.cancelRow}>X</button>:''}</li>
         })}
       </ol>
-      {this.renderRowBuilder()}
+      <input id={inputId} placeholder='ThotPlot' onClick={(e)=>e.target.select()}/>
+      <button onClick={this.onAddRow}>Add</button><br/>
     </div>)
   }
 
@@ -50,22 +33,18 @@ export default class RowBuilder extends Component {
     const { mtx } = this.props
     const newRow = []
     mtx[0].forEach((col, i) => {
-      const val = (i==0) ? "ThotPlot" : 0
+      //const val = (i==0) ? "ThotPlot" : 0
+      const val = document.getElementById(inputId).value
       newRow.push({val: val, note: ''})
     })
     mtx.push(newRow)
-    this.setState({buildingRow: true})
     this.props.changeMatrix(mtx)
   }
 
-  acceptRow() {
-    this.setState({buildingRow: false})
-  }
   cancelRow() {
     const {mtx} = this.props
     if(mtx.length < 2) return
     mtx.pop()
-    this.setState({buildingRow: false})
     this.props.changeMatrix(mtx)
   }
 }
