@@ -36,10 +36,12 @@ export default class CellBuilder extends Component {
   }
 
   renderScoreButtons(value) {
-    return range.map((s) => {
-      const selectedStyles = (s == value) ? {background: colors.blue} : {}
-      return <button key={s} style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
-    })
+    return <div className='row'>
+      {range.map((s) => {
+        const selectedStyles = (s == value) ? {background: colors.blue} : {}
+        return <div key={s} className='col-1' style={{textAlign: 'center'}}><button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button></div>
+      })}
+    </div>
   }
 
   renderBuilder() {
