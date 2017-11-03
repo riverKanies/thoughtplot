@@ -9,11 +9,12 @@ const logoContainerStyles = {padding: '20px', width: '206', borderRadius: '30px'
 
 export default class IntroTab extends Component {
     render() {
+        const textStyles = {color: colors.yellow, fontFamily: 'comic sans ms', fontSize: '.46em', marginLeft: '-36px'}
         return (<section style={{display: (this.props.selectedTab === 'intro' ? '' : 'none')}}>
             <header>
             <h1 style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px'}}>
                 <Logo3 logoColor={colors.yellow} />
-                <text style={{color: colors.yellow, fontFamily: 'comic sans ms', fontSize: '.8em', marginLeft: '-8px'}}>hotPlot</text>
+                <text style={textStyles}>ThotPlot</text>
             </h1>
             </header>
             <h4>
