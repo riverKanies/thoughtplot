@@ -8,7 +8,7 @@ export default class RowBuilder extends Component {
 
     this.state = {}
     this.onAddRow = this.onAddRow.bind(this)
-    this.cancelRow = this.cancelRow.bind(this)
+    this.cancelRow = this.deleteRow.bind(this)
   }
 
   render() {
@@ -21,7 +21,7 @@ export default class RowBuilder extends Component {
       <ol>
         {mtx.map((row, i) => {
           if (i==0) return ''
-          return <li key={i}>{row[0].val}{i==(numRows-1) ? <button onClick={this.cancelRow} style={{marginLeft: '10px'}}>X</button>:''}</li>
+          return <li key={i}>{row[0].val}<button onClick={this.deleteRow(i)} style={{marginLeft: '10px'}}>X</button></li>
         })}
       </ol>
       <input id={inputId} placeholder='ThotPlot' onClick={(e)=>e.target.select()}/>
@@ -41,10 +41,12 @@ export default class RowBuilder extends Component {
     this.props.changeMatrix(mtx)
   }
 
-  cancelRow() {
-    const {mtx} = this.props
-    if(mtx.length < 2) return
-    mtx.pop()
-    this.props.changeMatrix(mtx)
+  deleteRow(i) {
+    return () => {
+      const {mtx} = this.props
+      if(mtx.length < 2) return
+      mtx.splice(i,1)
+      this.props.changeMatrix(mtx)
+    }
   }
 }
