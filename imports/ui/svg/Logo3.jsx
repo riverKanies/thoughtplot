@@ -43,7 +43,7 @@ export default class Logo extends Component {
             'z'
         ].join(' ')
 
-        return <svg height="60" width="60" viewBox="-55 -55 110 110">
+        return <svg height={this.props.height || "60"} width={this.props.height || "60"} viewBox="-55 -55 110 110">
             <path d={path} stroke={logoColor} strokeWidth="1" fill={logoColor} />
             <path d={path} stroke={logoColor} strokeWidth="1" fill={logoColor} transform="scale(-1,1)"/>
 

@@ -7,6 +7,7 @@ import colors from './colors'
 import IntroTab from './IntroTab'
 import Share from './Share'
 import {DecisionsList, SharedDecisionsList} from './Decisions'
+import Logo3 from './svg/Logo3'
 
 const cellColClass = 'col-2'
 
@@ -205,7 +206,7 @@ class App extends Component {
         <Share {...this.state} />
         <p>My Decisions:</p>
         <ul>
-          <DecisionsList {...this.props} shareId={this.state.shareId} goTo={this.goTo} shareMatrix={this.shareMatrix}/>
+          <DecisionsList {...this.props} shareId={this.state.shareId} goTo={this.goTo} setTab={this.setTab} shareMatrix={this.shareMatrix}/>
         </ul>
         <p>Shared With Me:</p>
         <ul>
@@ -218,11 +219,15 @@ class App extends Component {
   render() {
     const styles = {width: '100%', border: '2px solid lightgray', borderRadius: '5px', backgroundColor: 'lightgray', color: 'white', fontSize: '0.8em'}
     const stylesActive = { ...styles, borderColor: colors.blue, color: colors.blue, backgroundColor: 'white',}
+    const logoStyles = {background: colors.orange, borderRadius: '5px', height: '28px', textAlign: 'center', paddingTop: '1px'}
     return (
       <div className="container">
         <div className="container" style={{background: colors.purple, margin: '0', width: '100%', padding: '10px 0', borderRadius: '0 0 5px 5px'}}>
           <section className="row">
-            <div className="col-4" style={{background: colors.blue, borderRadius: '5px', textAlign: 'center', height: '28px'}}><AccountsUIWrapper /></div>
+            <div className="col-3" style={{background: colors.blue, borderRadius: '5px', textAlign: 'center', height: '28px'}}><AccountsUIWrapper /></div>
+            <div className="col-1" style={logoStyles} onClick={()=>{this.setTab('intro')(); this.goTo('/')()}}>
+              <Logo3 height="25" logoColor={colors.yellow}/>
+            </div>
             <div className="col-2"><button onClick={this.setTab('intro')} style={this.state.selectedTab === 'intro' ? stylesActive : styles}>Intro</button></div>
             <div className="col-2"><button onClick={this.setTab('builder')} style={this.state.selectedTab === 'builder' ? stylesActive : styles}>Builder</button></div>
             <div className="col-2"><button onClick={this.setTab('matrix')} style={this.state.selectedTab === 'matrix' ? stylesActive : styles}>Plot</button></div>
