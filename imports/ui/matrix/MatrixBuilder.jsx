@@ -40,7 +40,7 @@ export default class MatrixBuilder extends Component {
         <button disabled={this.state.currentStep > 0 ? false : true} onClick={this.toPrevious}>&#8678;</button>
         <button disabled={this.state.currentStep < steps.length-1 ? false : true} onClick={this.toNext}>&#8680;</button>
       </p>
-      <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '10px'}}>
+      <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '5%'}}>
         {steps[this.state.currentStep]}
       </div>
       <br/>

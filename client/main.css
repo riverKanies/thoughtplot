@@ -19,6 +19,23 @@ input, textarea {
     border-radius: 5px;
     text-align: center;
 }
+input::-webkit-input-placeholder { color:lightgray; }
+input:-moz-placeholder { color:lightgray; } /* FF 4-18 */
+input::-moz-placeholder { color:lightgray; } /* FF 19+ */
+input:-ms-input-placeholder { color:lightgray; }
+textarea::-webkit-input-placeholder { color:lightgray; }
+textarea:-moz-placeholder { color:lightgray; } /* FF 4-18 */
+textarea::-moz-placeholder { color:lightgray; } /* FF 19+ */
+textarea:-ms-input-placeholder { color:lightgray; }
+
+input:focus::-webkit-input-placeholder { color:transparent; }
+input:focus:-moz-placeholder { color:transparent; } /* FF 4-18 */
+input:focus::-moz-placeholder { color:transparent; } /* FF 19+ */
+input:focus:-ms-input-placeholder { color:transparent; }
+textarea:focus::-webkit-input-placeholder { color:transparent; }
+textarea:focus:-moz-placeholder { color:transparent; } /* FF 4-18 */
+textarea:focus::-moz-placeholder { color:transparent; } /* FF 19+ */
+textarea:focus:-ms-input-placeholder { color:transparent; }
 
 button:focus {outline: 0;}
 textarea:focus {outline: 0;}
