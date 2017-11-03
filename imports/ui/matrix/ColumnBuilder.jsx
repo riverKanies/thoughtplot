@@ -9,13 +9,12 @@ export default class ColumnBuilder extends Component {
     this.state = {}
 
     this.addColumn = this.addColumn.bind(this)
-    this.cancelColumn = this.cancelColumn.bind(this)
+    this.deleteColumn = this.deleteColumn.bind(this)
   }
 
   render() {
     const colNum = this.props.mtx[0].length-1
     const {mtx} = this.props
-    const numCols = mtx[0].length
     return (<div>
       <p>
         <b>Add Considerations</b><br/>
@@ -26,7 +25,7 @@ export default class ColumnBuilder extends Component {
         {mtx[0].map((labelObj, i) => {
           const label = labelObj.val
           if (i==0) return ''
-          return <li key={i}>{label}{i==(numCols-1) ? <button onClick={this.cancelColumn} style={{marginLeft: '10px'}}>X</button>: ''}</li>
+          return <li key={i}>{label}<button onClick={this.deleteColumn(i)} style={{marginLeft: '10px'}}>X</button></li>
         })}
       </ol>
       <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
@@ -44,12 +43,14 @@ export default class ColumnBuilder extends Component {
     this.props.changeMatrix(mtx)
   }
 
-  cancelColumn() {
-    const { mtx } = this.props
-    if (mtx[0].length < 2) return
-    mtx.map((row) => {
-      return row.pop()
-    })
-    this.props.changeMatrix(mtx)
+  deleteColumn(i) {
+    return () => {
+      const { mtx } = this.props
+      if (mtx[0].length < 2) return
+      mtx.map((row) => {
+        return row.splice(i,1)
+      })
+      this.props.changeMatrix(mtx)
+    }
   }
 }

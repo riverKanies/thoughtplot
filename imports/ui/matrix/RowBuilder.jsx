@@ -8,13 +8,12 @@ export default class RowBuilder extends Component {
 
     this.state = {}
     this.onAddRow = this.onAddRow.bind(this)
-    this.cancelRow = this.deleteRow.bind(this)
+    this.deleteRow = this.deleteRow.bind(this)
   }
 
   render() {
     const rowNum = this.props.mtx.length - 1
     const {mtx} = this.props
-    const numRows = mtx.length     
     return (<div>
       <p><b>Add Options</b><br/>What are the (3) options you're considering?</p>
       <label>Current Options:</label><br/>
@@ -34,7 +33,7 @@ export default class RowBuilder extends Component {
     const newRow = []
     mtx[0].forEach((col, i) => {
       //const val = (i==0) ? "ThotPlot" : 0
-      const val = document.getElementById(inputId).value
+      const val = (i==0) ? document.getElementById(inputId).value : 0
       newRow.push({val: val, note: ''})
     })
     mtx.push(newRow)
