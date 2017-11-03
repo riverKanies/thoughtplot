@@ -18,6 +18,10 @@ const nxtStyles = {
   fontSize: '1.5em',
   marginBottom: '20px'
 }
+const asideStyles = {
+  color: 'lightgray',
+  fontSize: '0.8em'
+}
 
 export default class CellBuilder extends Component {
   constructor(props) {
@@ -51,13 +55,15 @@ export default class CellBuilder extends Component {
     return <div>
       <p><b>Option {i}, Consideration {j}</b></p>
       <text>Based on <b>{consideration}</b> alone, the option <b>{option}</b> should get a score of
-      <input value={value} onChange={this.props.onChangeHandler(i,j)} style={{width: '20px', margin: '0 5px 0 5px'}}/>
-      <br/>
-      {this.renderScoreButtons(value)}
+      <br/><br/>
+      {this.renderScoreButtons(value)}<br/>
+      <text style={asideStyles}>(note that a consideration like cost should get a negative score)</text>
       </text><br/><br/>
-      <label>Note: (describe why you think this score is appropriate)</label><br/>
-      <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='this option will save time in the long run'/><br/><br/>
-      {finished ? <text>Done! <button onClick={this.props.setTab('matrix')} style={nxtStyles}>View Plot &#8680;</button></text> : <button onClick={this.nextCell} style={nxtStyles}>Next Consideration &#8680;</button>}
+      <label>Add a Note:</label><br/>
+      <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='this option will save time in the long run'/><br/>
+      <text style={asideStyles}>(describe why you think this score is appropriate)</text><br/>
+      <br/><br/>
+      {finished ? <text><button onClick={this.props.setTab('matrix')} style={nxtStyles}>View Plot &#8680;</button></text> : <button onClick={this.nextCell} style={nxtStyles}>Next Consideration &#8680;</button>}
     </div>
   }
 

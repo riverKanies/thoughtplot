@@ -21,7 +21,7 @@ export default class RowBuilder extends Component {
       <ol>
         {mtx.map((row, i) => {
           if (i==0) return ''
-          return <li key={i}>{row[0].val}{i==(numRows-1) ? <button onClick={this.cancelRow}>X</button>:''}</li>
+          return <li key={i}>{row[0].val}{i==(numRows-1) ? <button onClick={this.cancelRow} style={{marginLeft: '10px'}}>X</button>:''}</li>
         })}
       </ol>
       <input id={inputId} placeholder='ThotPlot' onClick={(e)=>e.target.select()}/>
