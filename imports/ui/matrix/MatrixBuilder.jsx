@@ -36,9 +36,19 @@ export default class MatrixBuilder extends Component {
       </header>
       <p>Follow these {steps.length} steps to document your decision:</p>
       <p>
-        Step {this.state.currentStep+1}:
-        <button disabled={this.state.currentStep > 0 ? false : true} onClick={this.toPrevious}>&#8678;</button>
-        <button disabled={this.state.currentStep < steps.length-1 ? false : true} onClick={this.toNext}>&#8680;</button>
+        Step:
+        {steps.map((s, i)=>{
+          const styles = {
+            background: i==this.state.currentStep ? colors.blue : 'white',
+            border: '2px solid lightgray',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            margin: '10px',
+            fontSize: '1em'
+          }
+          return <button key={i} style={styles} onClick={this.toStep(i)}>{i+1}</button>
+        })}
       </p>
       <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '5%'}}>
         {steps[this.state.currentStep]}

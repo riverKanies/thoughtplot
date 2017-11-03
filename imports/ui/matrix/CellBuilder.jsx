@@ -80,6 +80,7 @@ export default class CellBuilder extends Component {
   }
 
   nextCell() {
+    scrollToTop(500)
     const i = this.state.currentRow
     const j = this.state.currentColumn
     if (j==this.props.mtx[0].length-1) {
@@ -97,4 +98,14 @@ export default class CellBuilder extends Component {
     }
   }
 
+}
+
+function scrollToTop(scrollDuration) {
+  var scrollStep = -window.scrollY / (scrollDuration / 15),
+      scrollInterval = setInterval(function(){
+      if ( window.scrollY != 0 ) {
+          window.scrollBy( 0, scrollStep );
+      }
+      else clearInterval(scrollInterval); 
+  },15);
 }
