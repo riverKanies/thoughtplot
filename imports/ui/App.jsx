@@ -217,7 +217,7 @@ class App extends Component {
   }
 
   render() {
-    const styles = {width: '100%', border: '2px solid lightgray', borderRadius: '5px', backgroundColor: 'lightgray', color: 'white', fontSize: '0.8em'}
+    const styles = {width: '100%', border: '2px solid lightgray', borderRadius: '5px', backgroundColor: colors.blue, color: 'white', fontSize: '0.8em'}
     const stylesActive = { ...styles, borderColor: colors.blue, color: colors.blue, backgroundColor: 'white',}
     const logoStyles = {background: colors.orange, borderRadius: '5px', height: '28px', textAlign: 'center', paddingTop: '1px'}
     return (
