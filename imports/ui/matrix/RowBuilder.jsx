@@ -16,7 +16,7 @@ export default class RowBuilder extends Component {
     const {mtx} = this.props
     const numRows = mtx.length     
     return (<div>
-      <p><b>Add Options</b><br/>What are the (3) options you're considering. You should add an option (row) for each.</p>
+      <p><b>Add Options</b><br/>What are the (3) options you're considering?</p>
       <label>Current Options:</label><br/>
       <ol>
         {mtx.map((row, i) => {

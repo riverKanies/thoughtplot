@@ -19,7 +19,7 @@ export default class ColumnBuilder extends Component {
     return (<div>
       <p>
         <b>Add Considerations</b><br/>
-        What are the (3) most important considerations for your decision. You should add a consideration (column) for each main area in which your options differ significantly.
+        What are the (3) most important considerations for your decision? Think about where your options differ significantly.
       </p>
       <label>Current Considerations:</label>
       <ol>
