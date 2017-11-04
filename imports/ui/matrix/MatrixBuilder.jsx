@@ -47,7 +47,7 @@ export default class MatrixBuilder extends Component {
             margin: '10px',
             fontSize: '1em'
           }
-          return <button key={i} style={styles} onClick={this.toStep(i)}>{i+1}</button>
+          return <button key={i} style={styles} onClick={this.toStep(i)} >{i+1}</button>
         })}
       </p>
       <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '5%'}}>
@@ -55,6 +55,7 @@ export default class MatrixBuilder extends Component {
       </div>
       <br/>
       <div style={{textAlign: 'center'}}>
+        <text style={{color: 'red'}}>{this.state.error}</text><br/>
         {endOfSteps
           ? <button onClick={this.toNext} style={styles}>Next Step &#8680;</button>
           : <button onClick={this.props.setTab('matrix')} style={styles}>Skip to Plot &#8680;</button>
@@ -68,12 +69,30 @@ export default class MatrixBuilder extends Component {
   }
 
   toNext() {
-    this.setState({currentStep: this.state.currentStep + 1})
+    const error = this.validateStep(this.state.currentStep)
+    if (error) {
+      this.setState({error})
+    } else {
+      this.setState({currentStep: this.state.currentStep + 1, error})
+    }
   }
 
   toStep(step) {
     return () => {
       this.setState({currentStep: step})
     }
+  }
+
+  validateStep(i) {
+    const {decision, mtx} = this.props
+    switch (i) {
+      case 0:
+        return (decision.slice(-1) == '?') ? null : 'Your decision should end with a "?"'
+      case 1:
+        return mtx.length > 1 ? null : 'You must have at least one option'
+      case 2:
+        return mtx[0].length > 1 ? null : 'You must have at least one consideration'
+    }
+    return null
   }
 }
