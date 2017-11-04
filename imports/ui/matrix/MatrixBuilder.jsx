@@ -30,6 +30,8 @@ export default class MatrixBuilder extends Component {
 
     const endOfSteps = this.state.currentStep < steps.length-1
 
+    let error = null
+
     return(<div>
       <header>
         <h1>Plot Builder</h1>
@@ -38,8 +40,10 @@ export default class MatrixBuilder extends Component {
       <p>
         Step:
         {steps.map((s, i)=>{
+          if (!error) error = this.validateStep(i-1)
           const styles = {
             background: i==this.state.currentStep ? colors.blue : 'white',
+            color: !error ? 'black': 'lightgray',
             border: '2px solid lightgray',
             borderRadius: '50%',
             width: '40px',
@@ -47,7 +51,7 @@ export default class MatrixBuilder extends Component {
             margin: '10px',
             fontSize: '1em'
           }
-          return <button key={i} style={styles} onClick={this.toStep(i)} >{i+1}</button>
+          return <button key={i} style={styles} onClick={this.toStep(i)} disabled={!!error}>{i+1}</button>
         })}
       </p>
       <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '5%'}}>
