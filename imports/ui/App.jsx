@@ -117,11 +117,13 @@ class App extends Component {
   }
 
   renderSaveMatrix() {
-    if (!this.props.currentUser) return <button disabled="true">Save Plot (must be logged in)</button>
+    const color = this.props.currentUser ? colors.blue : 'lightgray'
+    const baseBtnStyles = {padding: '10px', border: `2px solid ${color}`, fontSize: '1.2em', color}
+    if (!this.props.currentUser) return <button disabled="true" style={baseBtnStyles}>Save Plot (must be logged in)</button>
     const isCurrentPlot = !!Decisions.findOne({owner: this.props.currentUser._id, decision: this.state.decision})
-    if (!isCurrentPlot) return <button onClick={this.saveMatrix}>Save New Plot</button>
+    if (!isCurrentPlot) return <button onClick={this.saveMatrix} style={baseBtnStyles}>Save New Plot</button>
     const userOwnedDec = Decisions.findOne({_id: this.props.routeDecisionId, owner: this.props.currentUser._id})
-    if (userOwnedDec) return <button onClick={this.updateMatrix}>Update Plot</button>
+    if (userOwnedDec) return <button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button>
     return <button disabled>(view your copy to edit)</button>
   }
 
@@ -136,7 +138,10 @@ class App extends Component {
         {this.renderWeightsRow()}
       </div>
       <div style={{textAlign: 'center', width: '100%'}}>
-        <b>Best: {bestOption.option}, Score: {bestOption.score}</b><br/>
+        <div style={{margin: '20px'}}>
+          <b>Best: <text style={{color: colors.orange}}>{bestOption.option}</text><br/>
+          Score: <text style={{background: colors.yellow, border: '1px solid black', padding: '0 3px'}}>{bestOption.score}</text></b><br/>
+        </div>
         {this.renderSaveMatrix()}
       </div>
     </div>)
