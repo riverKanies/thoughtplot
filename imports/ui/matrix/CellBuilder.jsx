@@ -55,8 +55,12 @@ export default class CellBuilder extends Component {
     const finished = (i==mtx.length-1 && j==mtx[0].length-1)
     const note = this.props.mtx[i][j].note
     return <div>
-      <p><b>Option {i}, Consideration {j}</b></p>
-      <text>Based on <b>{consideration}</b> alone, the option <b>{option}</b> should get a score of
+      <p>
+        <b style={{color: colors.orange}}>{option}</b>
+        <b> - </b>
+        <b style={{color: colors.blue}}>{consideration}</b>
+      </p>
+      <text>Based on <b style={{color: colors.blue}}>{consideration}</b> alone, the option <b style={{color: colors.orange}}>{option}</b> should get a score of:
       <br/><br/>
       {this.renderScoreButtons(value)}<br/>
       <text style={asideStyles}>(note that a consideration like cost should get a negative score)</text>
@@ -70,7 +74,7 @@ export default class CellBuilder extends Component {
   }
 
   render() {
-    return (<div>
+    return (<div id='cellBuilder'>
       <p>
         <b>Score Options</b><br/>
         Give each option a score for each consideration.
@@ -80,7 +84,7 @@ export default class CellBuilder extends Component {
   }
 
   nextCell() {
-    scrollToTop(500)
+    window.scroll(0,findPos(document.getElementById('cellBuilder'))-70)
     const i = this.state.currentRow
     const j = this.state.currentColumn
     if (j==this.props.mtx[0].length-1) {
@@ -100,12 +104,12 @@ export default class CellBuilder extends Component {
 
 }
 
-function scrollToTop(scrollDuration) {
-  var scrollStep = -window.scrollY / (scrollDuration / 15),
-      scrollInterval = setInterval(function(){
-      if ( window.scrollY != 0 ) {
-          window.scrollBy( 0, scrollStep );
-      }
-      else clearInterval(scrollInterval); 
-  },15);
+function findPos(obj) {
+  var curtop = 0;
+  if (obj.offsetParent) {
+      do {
+          curtop += obj.offsetTop;
+      } while (obj = obj.offsetParent);
+  return [curtop];
+  }
 }
