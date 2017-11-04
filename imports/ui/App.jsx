@@ -8,6 +8,7 @@ import IntroTab from './IntroTab'
 import Share from './Share'
 import {DecisionsList, SharedDecisionsList} from './Decisions'
 import Logo3 from './svg/Logo3'
+import { decisionStyles } from './matrix/Decision'
 
 const cellColClass = 'col-2'
 
@@ -180,7 +181,7 @@ class App extends Component {
               <h1>Decision</h1>
             </header>
             <p>This is the decision you are documenting. Feel free to edit it here:</p>
-            <textarea value={this.state.decision} onChange={this.onChangeDecision}/>
+            <textarea value={this.state.decision} onChange={this.onChangeDecision} style={decisionStyles}/>
             <header>
               <h1>Plot</h1>
             </header>
