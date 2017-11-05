@@ -117,14 +117,16 @@ class App extends Component {
   }
 
   renderSaveMatrix() {
-    const color = this.props.currentUser ? colors.blue : 'lightgray'
+    console.log('up to date?', this.matrixIsUpToDate())
+
+    const color = (this.props.currentUser && !this.matrixIsUpToDate()) ? colors.blue : 'lightgray'
     const baseBtnStyles = {padding: '10px', border: `2px solid ${color}`, fontSize: '1.2em', color}
     if (!this.props.currentUser) return <button disabled="true" style={baseBtnStyles}>Save Plot (must be logged in)</button>
     const isCurrentPlot = !!Decisions.findOne({owner: this.props.currentUser._id, decision: this.state.decision})
     if (!isCurrentPlot) return <button onClick={this.saveMatrix} style={baseBtnStyles}>Save New Plot</button>
     const userOwnedDec = Decisions.findOne({_id: this.props.routeDecisionId, owner: this.props.currentUser._id})
     if (userOwnedDec) return <button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button>
-    return <button disabled>(view your copy to edit)</button>
+    return <button disabled style={baseBtnStyles}>(view your copy to edit)</button>
   }
 
   renderPlot() {
@@ -351,6 +353,31 @@ class App extends Component {
 
   goTo(path) {
     return () => FlowRouter.go(path)
+  }
+
+  matrixIsUpToDate() {
+    const {decision, mtx, isWeightedMtx, weights} = this.state
+    const savedDec = Decisions.findOne({decision, owner: this.props.currentUser._id})
+    if (!savedDec) return false
+    const dec = {decision, matrix: mtx, isWeightedMatrix: isWeightedMtx, weights}
+    // check matrix
+    for (let i=0;i<dec.matrix.length; i++) {
+      for (let j=0;j<dec.matrix.length; j++) {
+        const cell = dec.matrix[i][j]
+        const savedCell = savedDec.matrix[i][j]
+        //console.log('comp', cell, savedCell)
+        if (cell.val != savedCell.val || cell.note != savedCell.note) return false
+      }
+    }
+    // check weights
+    for (let i=0;i<dec.weights.length; i++) {
+      console.log('wts', dec.weights[i], savedDec.weights[i])
+      if (dec.weights[i] != savedDec.weights[i]) return false
+    }
+    // isWeightedMatrix
+    console.log('wgted', dec,dec.isWeightedMatrix, savedDec.isWeightedMatrix)
+    if (dec.isWeightedMatrix != savedDec.isWeightedMatrix) return false
+    return true
   }
 }
 
