@@ -366,6 +366,7 @@ class App extends Component {
         const cell = dec.matrix[i][j]
         const savedCell = savedDec.matrix[i][j]
         //console.log('comp', cell, savedCell)
+        if (!cell || !savedCell) return false
         if (cell.val != savedCell.val || cell.note != savedCell.note) return false
       }
     }
