@@ -130,8 +130,8 @@ export default class CellBuilder extends Component {
         <b> - </b>
         <b style={{color: colors.blue}}>{consideration}</b>
       </p>
-      <p>Is <b style={{color: colors.blue}}>{consideration}</b> a cost or a benefit?
-        <button style={this.isCost() ? {background: colors.orange, color: 'white'} : {}} onClick={this.toggleIsCost(j,true)}>Cost</button>
+      <p>Is <b style={{color: colors.blue}}>{consideration}</b> a cost or a benefit?&#8195;
+        <button style={this.isCost() ? {background: colors.orange, color: 'white'} : {}} onClick={this.toggleIsCost(j,true)}>Cost</button>&#8195;
         <button style={this.isCost() === false ? {background: colors.blue, color: 'white'} : {}} onClick={this.toggleIsCost(j,false)}>Benefit</button>
       </p>
       {this.renderScoreSection()}

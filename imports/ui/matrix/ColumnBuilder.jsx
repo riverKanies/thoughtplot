@@ -12,6 +12,7 @@ export default class ColumnBuilder extends Component {
 
     this.addColumn = this.addColumn.bind(this)
     this.deleteColumn = this.deleteColumn.bind(this)
+    this.toggleWeights = this.toggleWeights.bind(this)
   }
 
   render() {
@@ -33,6 +34,8 @@ export default class ColumnBuilder extends Component {
         </ol>
         <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
         <button onClick={this.addColumn}>Add</button><br/>
+
+        <p>All considerations are equally important: <input type='checkbox' checked={!this.props.isWeightedMtx} onChange={this.toggleWeights}/></p>
       </div>
     </div>)
   }
@@ -55,6 +58,15 @@ export default class ColumnBuilder extends Component {
         return row.splice(i,1)
       })
       this.props.changeMatrix(mtx)
+    }
+  }
+
+  toggleWeights(e) {
+    const checked = e.target.checked
+    if (checked) {
+      this.props.removeWeights()
+    } else {
+      this.props.addWeights()
     }
   }
 }

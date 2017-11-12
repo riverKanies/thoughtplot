@@ -169,13 +169,14 @@ class App extends Component {
           this.renderNoDecision() :
           <div>
             <MatrixBuilder
-              decision={this.state.decision}
-              mtx={this.state.mtx}
+              {...this.state}
               onChangeHandler={this.onChangeHandler}
               onChangeNote={this.onChangeNote}
               changeMatrix={this.changeMatrix}
               onChangeDecision={this.onChangeDecision}
-              setTab={this.setTab} />
+              setTab={this.setTab}
+              addWeights={this.addWeights}
+              removeWeights={this.removeWeights} />
           </div>}
       </section>
       <section style={{display: (this.state.selectedTab === 'matrix' ? '' : 'none')}}>
