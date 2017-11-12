@@ -9,8 +9,7 @@ const btnStyles = {
   textAlign: 'center',
   border: `1px solid lightgray`,
   borderRadius: '50%',
-  background: 'white',
-  margin: '3px'
+  background: 'white'
 }
 const nxtStyles = {
   border: `1px solid ${colors.blue}`,
@@ -42,21 +41,41 @@ export default class CellBuilder extends Component {
   renderScoreButtons(value) {
     const isCost = this.isCost()
     if (isCost) return <div className='row'>
-      {range.map((s) => {
+      {range.map((s,i) => {
+        let label = null
+        if (i==range.length-1) label = 'high cost'
+        if (s == 0) label = 'neutral'
         const selectedStyles = (-s == value) ? {background: colors.orange} : {}
-        return <div key={s} className='col-1' style={{textAlign: 'center'}}><button style={{...btnStyles, ...selectedStyles, borderColor: colors.orange}} onClick={this.selectBtn(-s)}>{s}</button></div>
+        return <div key={s} className='col-1' style={{textAlign: 'center'}}>
+          <button style={{...btnStyles, ...selectedStyles, borderColor: colors.orange}} onClick={this.selectBtn(-s)}>{s}</button>
+          {label ? <div style={{color: colors.orange, fontSize:'.6em'}}>{label}</div> : ''}
+        </div>
       })}
     </div>
     if (!isCost && isCost !== false) return <div className='row'>
-      {fullRange.map((s) => {
-        const selectedStyles = (s == value) ? {background: (s<0 ? colors.orange : colors.blue)} : {}
-        return <div key={s} className='col-1' style={{textAlign: 'center'}}><button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button></div>
+      {fullRange.map((s,i) => {
+        let label = null
+        if (i==0) label = 'high cost'
+        if (i==fullRange.length-1) label = 'high benefit'
+        if (s == 0) label = 'neutral'
+        const color = (s<0 ? colors.orange : colors.blue)
+        const selectedStyles = (s == value) ? {background: color} : {}
+        return <div key={s} className='col-1' style={{textAlign: 'center'}}>
+          <button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
+          {label ? <div style={{color: color, fontSize:'.6em'}}>{label}</div> : ''}
+        </div>
       })}
     </div>
     return <div className='row'>
-      {range.map((s) => {
+      {range.map((s,i) => {
+        let label = null
+        if (i==range.length-1) label = 'high benefit'
+        if (s == 0) label = 'neutral'
         const selectedStyles = (s == value) ? {background: colors.blue} : {}
-        return <div key={s} className='col-1' style={{textAlign: 'center'}}><button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button></div>
+        return <div key={s} className='col-1' style={{textAlign: 'center'}}>
+          <button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
+          {label ? <div style={{color: colors.blue, fontSize:'.6em'}}>{label}</div> : ''}
+        </div>
       })}
     </div>
   }
@@ -105,7 +124,6 @@ export default class CellBuilder extends Component {
     const consideration = cell.val
     const finished = (i==mtx.length-1 && j==mtx[0].length-1)
     const note = this.props.mtx[i][j].note
-    const toggleStyle = {background: colors.blue, color: 'white'}
     return <div>
       <p>
         <b style={{color: colors.orange}}>{option}</b>
@@ -113,8 +131,8 @@ export default class CellBuilder extends Component {
         <b style={{color: colors.blue}}>{consideration}</b>
       </p>
       <p>Is <b style={{color: colors.blue}}>{consideration}</b> a cost or a benefit?
-        <button style={this.isCost() ? toggleStyle : {}} onClick={this.toggleIsCost(j,true)}>Cost</button>
-        <button style={this.isCost() === false ? toggleStyle : {}} onClick={this.toggleIsCost(j,false)}>Benefit</button>
+        <button style={this.isCost() ? {background: colors.orange, color: 'white'} : {}} onClick={this.toggleIsCost(j,true)}>Cost</button>
+        <button style={this.isCost() === false ? {background: colors.blue, color: 'white'} : {}} onClick={this.toggleIsCost(j,false)}>Benefit</button>
       </p>
       {this.renderScoreSection()}
       <br/><br/>
