@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import StepTitle from './StepTitle'
+import colors from '../colors'
 
 
 const inputId = 'new_consideration'
@@ -13,6 +14,45 @@ export default class ColumnBuilder extends Component {
     this.addColumn = this.addColumn.bind(this)
     this.deleteColumn = this.deleteColumn.bind(this)
     this.toggleWeights = this.toggleWeights.bind(this)
+  }
+
+  renderWeightButtons(i) {
+    const range = [1,2,3,5]
+    const weight = this.props.weights[i]
+    return range.map((wgt,j)=>{
+      return <text key={j}>&#8195;<button style={{background: (weight == wgt) ? colors.blue : ''}} onClick={this.props.onChangeWeightHandler(i,wgt)}>{wgt}x</button></text>
+    })
+  }
+
+  renderWeightSection() {
+    if (!this.props.isWeightedMtx) return ''
+    const labels = this.props.mtx[0]
+    const { leastImportant } = this.state
+    return <div>
+      <p>Which consideration is least important?</p>
+      <ul>
+        {labels.map((labelObj,i)=>{
+          if (i==0) return
+          const isLeast = leastImportant == i
+          const style = {background: (isLeast ? colors.blue : ''), color: (isLeast ? 'white' : ''), border: '1px solid lightgray', width: '100px', textAlign: 'center', borderRadius: '3px'}
+          return <li key={i}><div onClick={this.setLeastImportant(i)} style={style}>{labelObj.val}</div></li>
+        })}
+      </ul>
+      {(leastImportant)
+        ? 
+          <div>
+            <p>Compared to <b style={{color: colors.blue}}>{labels[leastImportant].val}</b>, how important are the other considerations?</p>
+            <ul>
+              {labels.map((labelObj,i)=>{
+                if (i==0) return
+                if (i == leastImportant) return ''
+                return <li key={i}>{labelObj.val}{this.renderWeightButtons(i)}</li>
+              })}
+            </ul>
+          </div>
+        : ''
+      }
+    </div>
   }
 
   render() {
@@ -36,6 +76,7 @@ export default class ColumnBuilder extends Component {
         <button onClick={this.addColumn}>Add</button><br/>
 
         <p>All considerations are equally important: <input type='checkbox' checked={!this.props.isWeightedMtx} onChange={this.toggleWeights}/></p>
+        {this.renderWeightSection()}
       </div>
     </div>)
   }
@@ -57,7 +98,9 @@ export default class ColumnBuilder extends Component {
       mtx.map((row) => {
         return row.splice(i,1)
       })
+      this.setState({leastImportant: null})
       this.props.changeMatrix(mtx)
+      this.props.removeWeights()
     }
   }
 
@@ -69,4 +112,11 @@ export default class ColumnBuilder extends Component {
       this.props.addWeights()
     }
   }
+
+  setLeastImportant(i) {
+    return () => {
+      this.setState({leastImportant: i})
+    }
+  }
+
 }

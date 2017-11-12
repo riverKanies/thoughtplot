@@ -174,6 +174,7 @@ class App extends Component {
               onChangeNote={this.onChangeNote}
               changeMatrix={this.changeMatrix}
               onChangeDecision={this.onChangeDecision}
+              onChangeWeightHandler={this.onChangeWeightHandler}
               setTab={this.setTab}
               addWeights={this.addWeights}
               removeWeights={this.removeWeights} />
@@ -294,10 +295,10 @@ class App extends Component {
     this.setState({decision: e.target.value})
   }
 
-  onChangeWeightHandler(i) {
+  onChangeWeightHandler(i, weight) {
     return (e) => {
       const { weights } = this.state
-      weights[i] = e.target.value
+      weights[i] = weight || e.target.value
       this.setState({weights: weights})
     }
   }
