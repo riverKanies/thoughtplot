@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
+import StepTitle from './StepTitle'
 
 export const decisionStyles = {
-  width: '100%', height: '100px', margin: '10px 0', fontSize: '1.5em'
+  width: '90%', height: '100px', fontSize: '1.5em'
 }
 
 export default class Decision extends Component {
@@ -12,8 +13,9 @@ export default class Decision extends Component {
   }
 
   render() {
-    return (<div>
-      <b>Decision:</b><br/><br/>
+    return (<div style={{textAlign: 'center'}}>
+      <StepTitle title='Decision' />
+      <br/><br/>
       <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="How should my team document decisions?" style={decisionStyles}/>
     </div>)
   }

@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import StepTitle from './StepTitle'
 import colors from '../colors'
 
 const range = [0,1,2,3,4,5]
@@ -40,7 +41,6 @@ export default class CellBuilder extends Component {
 
   renderScoreButtons(value) {
     const isCost = this.isCost()
-    console.log('btns', isCost)
     if (isCost) return <div className='row'>
       {range.map((s) => {
         const selectedStyles = (-s == value) ? {background: colors.orange} : {}
@@ -88,7 +88,6 @@ export default class CellBuilder extends Component {
     const option = mtx[i][0].val
     const cell = mtx[0][j]
     const consideration = cell.val
-    console.log('score', isCost)
     return <text>
       {this.renderScoreDescription()}
       {this.renderScoreButtons(value)}
@@ -127,13 +126,12 @@ export default class CellBuilder extends Component {
   }
 
   render() {
-    console.log('render',this.state.isCostArray)
     return (<div id='cellBuilder'>
-      <p>
-        <b>Score Options</b><br/>
-        Give each option a score for each consideration.
-      </p>
-      {this.renderBuilder()}
+      <StepTitle title='Score Options' />
+      <div style={{margin: '0 5%'}}>
+        <p>Give each option a score for each consideration.</p>
+        {this.renderBuilder()}
+      </div>
     </div>)
   }
 
@@ -160,7 +158,6 @@ export default class CellBuilder extends Component {
     return () => {
       const { isCostArray } = this.state
       isCostArray[j] = isCost
-      console.log('toggle', isCostArray)
       this.setState({isCostArray: isCostArray})
     }
   }

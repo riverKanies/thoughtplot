@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react'
+import StepTitle from './StepTitle'
+
 
 const inputId = 'new_consideration'
 
@@ -16,20 +18,22 @@ export default class ColumnBuilder extends Component {
     const colNum = this.props.mtx[0].length-1
     const {mtx} = this.props
     return (<div>
-      <p>
-        <b>Add Considerations</b><br/>
-        What are the (3) most important considerations for your decision? Think about where your options differ significantly.
-      </p>
-      <label>Current Considerations:</label>
-      <ol>
-        {mtx[0].map((labelObj, i) => {
-          const label = labelObj.val
-          if (i==0) return ''
-          return <li key={i}>{label}<button onClick={this.deleteColumn(i)} style={{marginLeft: '10px'}}>X</button></li>
-        })}
-      </ol>
-      <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
-      <button onClick={this.addColumn}>Add</button><br/>
+      <StepTitle title='Add Considerations' />
+      <div style={{margin: '0 5%'}}>
+        <p>
+          What are the (3) most important considerations for your decision? Think about where your options differ significantly.
+        </p>
+        <label>Current Considerations:</label>
+        <ol>
+          {mtx[0].map((labelObj, i) => {
+            const label = labelObj.val
+            if (i==0) return ''
+            return <li key={i}>{label}<button onClick={this.deleteColumn(i)} style={{marginLeft: '10px'}}>X</button></li>
+          })}
+        </ol>
+        <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
+        <button onClick={this.addColumn}>Add</button><br/>
+      </div>
     </div>)
   }
 

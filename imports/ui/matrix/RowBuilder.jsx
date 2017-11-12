@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react'
+import StepTitle from './StepTitle'
+
 
 const inputId = 'new_option'
 
@@ -15,16 +17,19 @@ export default class RowBuilder extends Component {
     const rowNum = this.props.mtx.length - 1
     const {mtx} = this.props
     return (<div>
-      <p><b>Add Options</b><br/>What are the (3) options you're considering?</p>
-      <label>Current Options:</label><br/>
-      <ol>
-        {mtx.map((row, i) => {
-          if (i==0) return ''
-          return <li key={i}>{row[0].val}<button onClick={this.deleteRow(i)} style={{marginLeft: '10px'}}>X</button></li>
-        })}
-      </ol>
-      <input id={inputId} placeholder='ThotPlot' onClick={(e)=>e.target.select()}/>
-      <button onClick={this.onAddRow}>Add</button><br/>
+      <StepTitle title='Add Options' />
+      <div style={{margin: '0 5%'}}>
+        <p>What are the (3) options you're considering?</p>
+        <label>Current Options:</label><br/>
+        <ol>
+          {mtx.map((row, i) => {
+            if (i==0) return ''
+            return <li key={i}>{row[0].val}<button onClick={this.deleteRow(i)} style={{marginLeft: '10px'}}>X</button></li>
+          })}
+        </ol>
+        <input id={inputId} placeholder='ThotPlot' onClick={(e)=>e.target.select()}/>
+        <button onClick={this.onAddRow}>Add</button><br/>
+      </div>
     </div>)
   }
 

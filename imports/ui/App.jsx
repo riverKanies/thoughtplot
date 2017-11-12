@@ -117,8 +117,6 @@ class App extends Component {
   }
 
   renderSaveMatrix() {
-    console.log('up to date?', this.matrixIsUpToDate())
-
     const color = (this.props.currentUser && !this.matrixIsUpToDate()) ? colors.blue : 'lightgray'
     const baseBtnStyles = {padding: '10px', border: `2px solid ${color}`, fontSize: '1.2em', color}
     if (!this.props.currentUser) return <button disabled="true" style={baseBtnStyles}>Save Plot (must be logged in)</button>
@@ -372,11 +370,9 @@ class App extends Component {
     }
     // check weights
     for (let i=0;i<dec.weights.length; i++) {
-      console.log('wts', dec.weights[i], savedDec.weights[i])
       if (dec.weights[i] != savedDec.weights[i]) return false
     }
     // isWeightedMatrix
-    console.log('wgted', dec,dec.isWeightedMatrix, savedDec.isWeightedMatrix)
     if (dec.isWeightedMatrix != savedDec.isWeightedMatrix) return false
     return true
   }

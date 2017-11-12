@@ -38,8 +38,7 @@ export default class MatrixBuilder extends Component {
         <h1>Plot Builder</h1>
       </header>
       <p>Follow these {steps.length} steps to document your decision:</p>
-      <p>
-        Step:
+      <div style={{marginBottom: '-30px', textAlign: 'center'}}>
         {steps.map((s, i)=>{
           if (!error) error = this.validateStep(i-1)
           const styles = {
@@ -54,8 +53,8 @@ export default class MatrixBuilder extends Component {
           }
           return <button key={i} style={styles} onClick={this.toStep(i)} disabled={!!error}>{i+1}</button>
         })}
-      </p>
-      <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '5%'}}>
+      </div>
+      <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '0', paddingBottom: '20px'}}>
         {steps[this.state.currentStep]}
       </div>
       <br/>
