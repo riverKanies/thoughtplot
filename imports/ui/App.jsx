@@ -124,7 +124,7 @@ class App extends Component {
     if (!isCurrentPlot) return <button onClick={this.saveMatrix} style={baseBtnStyles}>Save New Plot</button>
     const userOwnedDec = Decisions.findOne({_id: this.props.routeDecisionId, owner: this.props.currentUser._id})
     if (userOwnedDec) return <button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button>
-    return <button disabled style={baseBtnStyles}>(view your copy to edit)</button>
+    return <button onClick={this.setTab('list')} style={baseBtnStyles}>view your copy &#8680;</button>
   }
 
   renderPlot() {
@@ -218,7 +218,7 @@ class App extends Component {
         </ul>
         <p>Shared With Me:</p>
         <ul>
-          <SharedDecisionsList {...this.props} goTo={this.goTo}/>
+          <SharedDecisionsList {...this.props} goTo={this.goTo} setTab={this.setTab}/>
         </ul>
       </section>
     </div>)
@@ -365,7 +365,6 @@ class App extends Component {
       for (let j=0;j<dec.matrix.length; j++) {
         const cell = dec.matrix[i][j]
         const savedCell = savedDec.matrix[i][j]
-        //console.log('comp', cell, savedCell)
         if (!cell || !savedCell) return false
         if (cell.val != savedCell.val || cell.note != savedCell.note) return false
       }
