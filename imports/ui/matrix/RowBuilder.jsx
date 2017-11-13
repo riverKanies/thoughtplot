@@ -9,6 +9,8 @@ export default class RowBuilder extends Component {
     super(props)
 
     this.state = {}
+    this.state.openNotes = []
+
     this.onAddRow = this.onAddRow.bind(this)
     this.deleteRow = this.deleteRow.bind(this)
   }
@@ -24,7 +26,18 @@ export default class RowBuilder extends Component {
         <ol>
           {mtx.map((row, i) => {
             if (i==0) return ''
-            return <li key={i}>{row[0].val}<button onClick={this.deleteRow(i)} style={{marginLeft: '10px'}}>X</button></li>
+            const note= row[0].note
+            return <li key={i} style={{marginBottom: '10px'}}>{row[0].val}
+              <button onClick={this.deleteRow(i)} style={{margin: '0 10px'}}>X</button>
+              <button onClick={this.toggleNote(i)}>
+                {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
+                note
+              </button>
+              {this.state.openNotes[i]
+                ? <div style={{paddingTop: '10px', paddingBottom: '5px'}}><textarea value={note} onChange={this.props.onChangeNote(i,0)} placeholder='(describe the option in more detail)'/></div>
+                : ''
+              }
+            </li>
           })}
         </ol>
         <input id={inputId} placeholder='ThotPlot' onClick={(e)=>e.target.select()}/>
@@ -51,6 +64,14 @@ export default class RowBuilder extends Component {
       if(mtx.length < 2) return
       mtx.splice(i,1)
       this.props.changeMatrix(mtx)
+    }
+  }
+
+  toggleNote(i) {
+    return () => {
+      let openNotes = this.state.openNotes
+      openNotes[i] = !openNotes[i]
+      this.setState({openNotes})
     }
   }
 }
