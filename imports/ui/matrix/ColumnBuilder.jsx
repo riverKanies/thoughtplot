@@ -21,7 +21,7 @@ export default class ColumnBuilder extends Component {
     const range = [1,2,3,5]
     const weight = this.props.weights[i]
     return range.map((wgt,j)=>{
-      return <text key={j}>&#8195;<button style={{background: (weight == wgt) ? colors.blue : ''}} onClick={this.props.onChangeWeightHandler(i,wgt)}>{wgt}x</button></text>
+      return <text key={j}>&#8195;<button style={{background: (weight == wgt) ? colors.blue : '', color: (weight == wgt) ? 'white' : ''}} onClick={this.props.onChangeWeightHandler(i,wgt)}>{wgt}x</button></text>
     })
   }
 
@@ -71,14 +71,17 @@ export default class ColumnBuilder extends Component {
             const label = labelObj.val
             const note = labelObj.note
             if (i==0) return ''
-            return <li key={i}>{label}
-              <button onClick={this.deleteColumn(i)} style={{margin: '0 10px'}}>X</button>
-              <button onClick={this.toggleNote(i)}>
-                {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
-                note
-              </button>
+            return <li key={i} style={{background: colors.blue, width: '200px', padding: '15px', borderRadius: '5px'}}>
+              <text style={{color: 'white'}}>{label}</text>
+              <text style={{float: 'right'}}>
+                <button onClick={this.deleteColumn(i)} style={{margin: '0 10px'}}>X</button>
+                <button onClick={this.toggleNote(i)}>
+                  {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
+                  note
+                </button>
+              </text>
               {this.state.openNotes[i]
-                ? <div style={{paddingTop: '10px', paddingBottom: '5px'}}><textarea value={note} onChange={this.props.onChangeNote(0,i)} placeholder='(describe the consideration in more detail)'/></div>
+                ? <div style={{paddingTop: '10px', paddingBottom: '5px', textAlign: 'right'}}><textarea value={note} onChange={this.props.onChangeNote(0,i)} placeholder='(describe the consideration in more detail)'/></div>
                 : ''
               }
             </li>

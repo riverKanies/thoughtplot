@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import StepTitle from './StepTitle'
+import colors from '../colors'
 
 
 const inputId = 'new_option'
@@ -27,14 +28,17 @@ export default class RowBuilder extends Component {
           {mtx.map((row, i) => {
             if (i==0) return ''
             const note= row[0].note
-            return <li key={i}>{row[0].val}
-              <button onClick={this.deleteRow(i)} style={{margin: '0 10px'}}>X</button>
-              <button onClick={this.toggleNote(i)}>
-                {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
-                note
-              </button>
+            return <li key={i} style={{background: colors.blue, width: '200px', padding: '15px', borderRadius: '5px'}}>
+              <text style={{color: 'white'}}>{row[0].val}</text>
+              <text style={{float: 'right'}}>
+                <button onClick={this.deleteRow(i)} style={{margin: '0 10px'}}>X</button>
+                <button onClick={this.toggleNote(i)}>
+                  {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
+                  note
+                </button>
+              </text>
               {this.state.openNotes[i]
-                ? <div style={{paddingTop: '10px', paddingBottom: '5px'}}><textarea value={note} onChange={this.props.onChangeNote(i,0)} placeholder='(describe the option in more detail)'/></div>
+                ? <div style={{paddingTop: '10px', paddingBottom: '5px', textAlign: 'right'}}><textarea value={note} onChange={this.props.onChangeNote(i,0)} placeholder='(describe the option in more detail)'/></div>
                 : ''
               }
             </li>
