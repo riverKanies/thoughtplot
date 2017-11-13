@@ -8,6 +8,7 @@ import IntroTab from './IntroTab'
 import Share from './Share'
 import {DecisionsList, SharedDecisionsList} from './Decisions'
 import Logo3 from './svg/Logo3'
+import Note from './Note'
 import { decisionStyles } from './matrix/Decision'
 
 const cellColClass = 'col-2'
@@ -108,7 +109,7 @@ class App extends Component {
     if (!this.state.isWeightedMtx) return <div className='row'><div className={cellColClass}><button onClick={this.addWeights}>Add Weights</button></div></div>
     return <div className='row'>{this.state.mtx[0].map((labelObj, i) => {
       const label = labelObj.val
-      if (label == null) return <div className={cellColClass} key='0'>Weights<button onClick={this.removeWeights}>X</button></div>
+      if (label == null) return <div className={cellColClass} key='0'>Weights <button onClick={this.removeWeights}>X</button></div>
       return (<div className={cellColClass} key={i}>
         <input value={this.state.weights[i]} onChange={this.onChangeWeightHandler(i)} style={{background: colors.purple, color: 'white', width: '20px'}}/>
         <text className='hidden-when-big' style={{color: colors.blue, marginLeft: '10px'}}>{this.state.mtx[0][i].val}</text>
@@ -185,26 +186,20 @@ class App extends Component {
           this.renderNoDecision() :
           <div>
             <header>
-              <h1>Decision</h1>
+              <h1 style={{color: colors.blue, textAlign: 'center'}}>Decision</h1>
             </header>
-            <p>This is the decision you are documenting. Feel free to edit it here:</p>
-            <textarea value={this.state.decision} onChange={this.onChangeDecision} style={decisionStyles}/>
+            <p style={{textAlign: 'center'}}>This is the decision you are documenting. Feel free to edit it here:</p>
+            <div style={{textAlign: 'center'}}><textarea value={this.state.decision} onChange={this.onChangeDecision} style={decisionStyles}/></div>
+            <br/><br/>
             <header>
-              <h1>Plot</h1>
+              <h1 style={{color: colors.blue, textAlign: 'center'}}>Plot</h1>
             </header>
-            <p>This is the final ThotPlot. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
+            <p style={{textAlign: 'center'}}>This is the final ThotPlot. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
             {this.renderPlot()}
             <br/><br/>
-            <h3>Notes:</h3>
-            <p><b>Scoring</b>: The values you fill in are simply summed for each option to determine the final overall score for that option.
-            However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the plot)
-            each consideration column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the non-weighted values).
-            </p>
-            <p><b>Self Review</b>: Look over your ThotPlot, paying special attention to the overall scores.
-            Do the scores align with your intuition about which choice is best?
-              If not, modify some of your scores to capture your intuition as best you can.
-              Is there something relevant to the decision that you haven't yet made a consideration column for?
-            </p>
+            <h3 style={{color: colors.blue, textAlign: 'center'}}>Notes:</h3>
+            <Note label='Scoring' content="The values you fill in are simply summed for each option to determine the final overall score for that option. However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the plot) each consideration column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the non-weighted values)."/>
+            <Note label='Self Review' content="Look over your ThotPlot, paying special attention to the overall scores. Do the scores align with your intuition about which choice is best? If not, modify some of your scores to capture your intuition as best you can. Is there something relevant to the decision that you haven't yet made a consideration column for?" />
           </div>}
       </section>
       <section style={{display: (this.state.selectedTab === 'list' ? '' : 'none')}}>

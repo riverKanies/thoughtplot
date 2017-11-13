@@ -35,9 +35,9 @@ export default class MatrixBuilder extends Component {
 
     return(<div>
       <header>
-        <h1>Plot Builder</h1>
+        <h1 style={{color: colors.blue, textAlign: 'center'}}>Plot Builder</h1>
       </header>
-      <p>Follow these {steps.length} steps to document your decision:</p>
+      <p style={{textAlign: 'center'}}>Follow these {steps.length} steps to document your decision:</p>
       <div style={{marginBottom: '-30px', textAlign: 'center'}}>
         {steps.map((s, i)=>{
           if (!error) error = this.validateStep(i-1)
