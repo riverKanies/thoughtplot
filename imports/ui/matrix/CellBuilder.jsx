@@ -45,7 +45,7 @@ export default class CellBuilder extends Component {
         let label = null
         if (i==range.length-1) label = 'high cost'
         if (s == 0) label = 'neutral'
-        const selectedStyles = (-s == value) ? {background: colors.orange} : {}
+        const selectedStyles = (-s == value) ? {background: colors.orange, color: 'white'} : {}
         return <div key={s} className='col-1' style={{textAlign: 'center'}}>
           <button style={{...btnStyles, ...selectedStyles, borderColor: colors.orange}} onClick={this.selectBtn(-s)}>{s}</button>
           {label ? <div style={{color: colors.orange, fontSize:'.6em'}}>{label}</div> : ''}
@@ -59,7 +59,7 @@ export default class CellBuilder extends Component {
         if (i==fullRange.length-1) label = 'high benefit'
         if (s == 0) label = 'neutral'
         const color = (s<0 ? colors.orange : colors.blue)
-        const selectedStyles = (s == value) ? {background: color} : {}
+        const selectedStyles = (s == value) ? {background: color, color: 'white'} : {}
         return <div key={s} className='col-1' style={{textAlign: 'center'}}>
           <button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
           {label ? <div style={{color: color, fontSize:'.6em'}}>{label}</div> : ''}
@@ -71,7 +71,7 @@ export default class CellBuilder extends Component {
         let label = null
         if (i==range.length-1) label = 'high benefit'
         if (s == 0) label = 'neutral'
-        const selectedStyles = (s == value) ? {background: colors.blue} : {}
+        const selectedStyles = (s == value) ? {background: colors.blue, color: 'white'} : {}
         return <div key={s} className='col-1' style={{textAlign: 'center'}}>
           <button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
           {label ? <div style={{color: colors.blue, fontSize:'.6em'}}>{label}</div> : ''}

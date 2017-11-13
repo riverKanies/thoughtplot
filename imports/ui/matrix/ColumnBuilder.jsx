@@ -75,7 +75,12 @@ export default class ColumnBuilder extends Component {
         <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
         <button onClick={this.addColumn}>Add</button><br/>
 
-        <p>All considerations are equally important: <input type='checkbox' checked={!this.props.isWeightedMtx} onChange={this.toggleWeights}/></p>
+        <p>
+          <button onClick={this.toggleWeights} style={{background: (!this.props.isWeightedMtx ? colors.blue : 'white'), border: '5px solid lightgray', marginRight: '10px', width: '40px', height: '40px', fontSize: '1em'}}>
+            <text style={{color: 'white'}}>&#10004;</text>
+          </button>
+          All considerations are equally important
+        </p>
         {this.renderWeightSection()}
       </div>
     </div>)
@@ -104,9 +109,8 @@ export default class ColumnBuilder extends Component {
     }
   }
 
-  toggleWeights(e) {
-    const checked = e.target.checked
-    if (checked) {
+  toggleWeights() {
+    if (this.props.isWeightedMtx) {
       this.props.removeWeights()
     } else {
       this.props.addWeights()

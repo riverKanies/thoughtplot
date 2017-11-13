@@ -41,9 +41,10 @@ export default class MatrixBuilder extends Component {
       <div style={{marginBottom: '-30px', textAlign: 'center'}}>
         {steps.map((s, i)=>{
           if (!error) error = this.validateStep(i-1)
+          const curStep = i == this.state.currentStep
           const styles = {
-            background: i==this.state.currentStep ? colors.blue : 'white',
-            color: !error ? 'black': 'lightgray',
+            background: curStep ? colors.blue : 'white',
+            color: !error ? (curStep ? 'white':'black'): 'lightgray',
             border: '2px solid lightgray',
             borderRadius: '50%',
             width: '40px',
