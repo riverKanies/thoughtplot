@@ -10,6 +10,7 @@ export default class ColumnBuilder extends Component {
     super(props)
 
     this.state = {}
+    this.state.openNotes = []
 
     this.addColumn = this.addColumn.bind(this)
     this.deleteColumn = this.deleteColumn.bind(this)
@@ -68,8 +69,16 @@ export default class ColumnBuilder extends Component {
         <ol>
           {mtx[0].map((labelObj, i) => {
             const label = labelObj.val
+            const note = labelObj.note
             if (i==0) return ''
-            return <li key={i}>{label}<button onClick={this.deleteColumn(i)} style={{marginLeft: '10px'}}>X</button></li>
+            return <li key={i}>{label}
+              <button onClick={this.deleteColumn(i)} style={{marginLeft: '10px'}}>X</button>
+              <button onClick={this.toggleNote(i)}>note</button><br/>
+              {this.state.openNotes[i]
+                ? <div style={{paddingTop: '10px', paddingBottom: '20px'}}><textarea value={note} onChange={this.props.onChangeNote(0,i)} placeholder='(describe the consideration in more detail)'/><br/></div>
+                : ''
+              }
+            </li>
           })}
         </ol>
         <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
@@ -120,6 +129,15 @@ export default class ColumnBuilder extends Component {
   setLeastImportant(i) {
     return () => {
       this.setState({leastImportant: i})
+    }
+  }
+
+  toggleNote(i) {
+    return () => {
+      console.log('toggle', i)
+      let openNotes = this.state.openNotes
+      openNotes[i] = !openNotes[i]
+      this.setState({openNotes})
     }
   }
 

@@ -361,6 +361,7 @@ class App extends Component {
     if (!savedDec) return false
     const dec = {decision, matrix: mtx, isWeightedMatrix: isWeightedMtx, weights}
     // check matrix
+    if (dec.matrix.length != savedDec.matrix.length || dec.matrix[0].length != savedDec.matrix[0].length) return false
     for (let i=0;i<dec.matrix.length; i++) {
       for (let j=0;j<dec.matrix.length; j++) {
         const cell = dec.matrix[i][j]
