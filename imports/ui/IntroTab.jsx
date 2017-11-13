@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import Logo from './svg/Logo'
-import Logo2 from './svg/Logo2'
-import Logo3 from './svg/Logo3'
+import Logo4 from './svg/Logo4'
 import Note from './Note'
 
 import colors from './colors'
@@ -10,13 +8,13 @@ const logoContainerStyles = {padding: '20px', width: '206', borderRadius: '30px'
 
 export default class IntroTab extends Component {
     render() {
-        const textStyles = {color: colors.yellow, fontFamily: "'Varela Round', sans-serif", fontSize: '.46em', marginLeft: '-35.4px'}
+        const textStyles = {color: colors.yellow, fontFamily: "'Varela Round', sans-serif", fontSize: '1.1em', marginLeft: '-23px'} //-35.5px
         return (<section style={{display: (this.props.selectedTab === 'intro' ? '' : 'none')}}>
             <header>
-            <h1 style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px'}}>
-                <Logo3 logoColor={colors.yellow} />
-                <text style={textStyles}>ThotPlot</text>
-            </h1>
+            <div style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px', margin: '40px'}}>
+                <Logo4 logoColor={colors.yellow} />
+                <text style={textStyles}>hotPlot</text>
+            </div>
             </header>
             <h4 style={{color: colors.blue, textAlign: 'center', margin: '0 10%'}}>
             ThotPlot makes it easy to communicate complicated decisions to your team so that you can spend less time in meetings and more time adding value to your business.
