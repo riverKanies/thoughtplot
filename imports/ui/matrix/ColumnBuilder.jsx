@@ -71,11 +71,14 @@ export default class ColumnBuilder extends Component {
             const label = labelObj.val
             const note = labelObj.note
             if (i==0) return ''
-            return <li key={i}>{label}
+            return <li key={i} style={{marginBottom: '10px'}}>{label}
               <button onClick={this.deleteColumn(i)} style={{marginLeft: '10px'}}>X</button>
-              <button onClick={this.toggleNote(i)}>note</button><br/>
+              <button onClick={this.toggleNote(i)}>
+                {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
+                note
+              </button>
               {this.state.openNotes[i]
-                ? <div style={{paddingTop: '10px', paddingBottom: '20px'}}><textarea value={note} onChange={this.props.onChangeNote(0,i)} placeholder='(describe the consideration in more detail)'/><br/></div>
+                ? <div style={{paddingTop: '10px', paddingBottom: '5px'}}><textarea value={note} onChange={this.props.onChangeNote(0,i)} placeholder='(describe the consideration in more detail)'/></div>
                 : ''
               }
             </li>
@@ -134,7 +137,6 @@ export default class ColumnBuilder extends Component {
 
   toggleNote(i) {
     return () => {
-      console.log('toggle', i)
       let openNotes = this.state.openNotes
       openNotes[i] = !openNotes[i]
       this.setState({openNotes})
