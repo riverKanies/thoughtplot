@@ -66,7 +66,7 @@ export default class ColumnBuilder extends Component {
           What are the (3) most important considerations for your decision? Think about where your options differ significantly.
         </p>
         <label>Current Considerations:</label>
-        <ol>
+        <ul>
           {mtx[0].map((labelObj, i) => {
             const label = labelObj.val
             const note = labelObj.note
@@ -83,7 +83,7 @@ export default class ColumnBuilder extends Component {
               }
             </li>
           })}
-        </ol>
+        </ul>
         <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
         <button onClick={this.addColumn}>Add</button><br/>
 

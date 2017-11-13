@@ -23,7 +23,7 @@ export default class RowBuilder extends Component {
       <div style={{margin: '0 5%'}}>
         <p>What are the (3) options you're considering?</p>
         <label>Current Options:</label><br/>
-        <ol>
+        <ul>
           {mtx.map((row, i) => {
             if (i==0) return ''
             const note= row[0].note
@@ -39,7 +39,7 @@ export default class RowBuilder extends Component {
               }
             </li>
           })}
-        </ol>
+        </ul>
         <input id={inputId} placeholder='ThotPlot' onClick={(e)=>e.target.select()}/>
         <button onClick={this.onAddRow}>Add</button><br/>
       </div>
