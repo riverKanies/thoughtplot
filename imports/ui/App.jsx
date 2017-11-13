@@ -224,9 +224,9 @@ class App extends Component {
     const stylesActive = { ...styles, borderColor: colors.blue, color: colors.blue, backgroundColor: 'white',}
     const logoStyles = {background: colors.orange, borderRadius: '5px', height: '28px', textAlign: 'center', paddingTop: '1px'}
     return (
-      <div className="container">
-        <div className="container" style={{background: colors.purple, margin: '0', width: '100%', padding: '10px 0', borderRadius: '0 0 5px 5px'}}>
-          <section className="row">
+      <div className="container" style={{margin: '0', width: '100%'}}>
+        <div className="container" style={{background: colors.purple, margin: '0', width: '100%', padding: '10px 5%'}}>
+          <section className="row" style={{width: '90%'}}>
             <div className="col-3" style={{background: colors.blue, borderRadius: '5px', textAlign: 'center', height: '28px'}}><AccountsUIWrapper /></div>
             <div className="col-1" style={logoStyles} onClick={()=>{this.setTab('intro')(); this.goTo('/')()}}>
               <Logo3 height="25" logoColor={colors.yellow}/>
@@ -237,7 +237,9 @@ class App extends Component {
             <div className="col-2"><button onClick={this.setTab('list')} style={this.state.selectedTab === 'list' ? stylesActive : styles}>List</button></div>
           </section>
         </div>
-        {this.renderTab()}
+        <div className="container">
+          {this.renderTab()}
+        </div>
         <br/><br/><br/><br/><br/><br/>
       </div>
     )
