@@ -71,7 +71,7 @@ export default class ColumnBuilder extends Component {
             const label = labelObj.val
             const note = labelObj.note
             if (i==0) return ''
-            return <li key={i} style={{marginBottom: '10px'}}>{label}
+            return <li key={i}>{label}
               <button onClick={this.deleteColumn(i)} style={{margin: '0 10px'}}>X</button>
               <button onClick={this.toggleNote(i)}>
                 {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}

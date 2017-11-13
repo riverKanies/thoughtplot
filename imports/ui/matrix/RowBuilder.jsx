@@ -27,7 +27,7 @@ export default class RowBuilder extends Component {
           {mtx.map((row, i) => {
             if (i==0) return ''
             const note= row[0].note
-            return <li key={i} style={{marginBottom: '10px'}}>{row[0].val}
+            return <li key={i}>{row[0].val}
               <button onClick={this.deleteRow(i)} style={{margin: '0 10px'}}>X</button>
               <button onClick={this.toggleNote(i)}>
                 {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
