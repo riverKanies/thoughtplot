@@ -55,7 +55,7 @@ export default class MatrixBuilder extends Component {
           return <button key={i} style={styles} onClick={this.toStep(i)} disabled={!!error}>{i+1}</button>
         })}
       </div>
-      <div style={{border: '2px solid lightgray', borderRadius: '20px', padding: '0', paddingBottom: '20px'}}>
+      <div style={{border: '1px solid lightgray', borderRadius: '20px', padding: '0', paddingBottom: '20px'}}>
         {steps[this.state.currentStep]}
       </div>
       <br/>

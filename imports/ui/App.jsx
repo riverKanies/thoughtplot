@@ -133,7 +133,7 @@ class App extends Component {
     const { mtx } = this.state
     if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>Error, must have at least one option and one consideration!</text>
     return (<div>
-      <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px', padding: '10px 0', margin: '0', width: '100%'}}>
+      <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px', padding: '10px 0', margin: '0', width: '100%', background: 'white'}}>
         {this.renderLabelRow()}
         {this.renderOptionRows()}
         {this.renderWeightsRow()}

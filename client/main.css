@@ -1,6 +1,6 @@
 /* CSS declarations go here */
 #render-target {
-    background: white;
+    background: #f7f9ff;
 }
 
 @media (max-width: 719px) {
