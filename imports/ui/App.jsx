@@ -97,7 +97,7 @@ class App extends Component {
       <div className='tooltipcontainer'>
         <input value={val} onChange={this.onChangeHandler(i,j)} style={styles}/>
         <span className='tooltip'>
-          <textarea value={note} onChange={this.onChangeNote(i,j)} style={{color: 'white', background: 'black', border: '0px'}}/>
+          <textarea value={note} onChange={this.onChangeNote(i,j)} style={{color: 'white', background: 'black', border: '0px'}} placeholder="(add a note here)"/>
         </span>
       </div>
       {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{fontSize: '.8em', margin: '8px 0px'}}>*{this.state.weights[j]}=<text>{val * this.state.weights[j]}</text></text> : ''}
