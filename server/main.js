@@ -7,7 +7,8 @@ Meteor.startup(() => {
     sendVerificationEmail: true
   })
   Accounts.emailTemplates.siteName = "ThotPlot"
-  Accounts.emailTemplates.from = "thotplot@thotplot.com"
+  Accounts.emailTemplates.from = "river.kanies@gmail.com" //"thotplot@thotplot.com"
+  Accounts.emailTemplates.replyTo
   Accounts.emailTemplates.verifyEmail = {
     subject(user) {
       return 'Verify your email for ThotPlot'
@@ -15,7 +16,7 @@ Meteor.startup(() => {
     text(user, url) {
       const verificationCode = url.split('#')[1]
       const correctUrl = 'http://www.thotplot.com/#'+verificationCode
-      return `Thanks for using ThotPlot, click the following link to verify your email: ${correctUrl}`
+      return `Thanks for using ThotPlot! Click the following link to verify your email: ${correctUrl}.\n\nFeel free to reply with any questions.\n\n-river`
     }
   }
 
@@ -32,6 +33,8 @@ Accounts.onCreateUser(function(options, user) {
     user.profile = {}
     user.profile.collaborators = []
   }
+  const email = user.emails[0].address || null
+  if (email) Email.send({from: 'thotplot@thotplot.com', to: 'river.kanies@gmail.com', subject: "New User", text: `${email}`})
   return user
 });
 
