@@ -127,7 +127,7 @@ class App extends Component {
     const isCurrentPlot = !!Decisions.findOne({owner: this.props.currentUser._id, decision: this.state.decision})
     if (!isCurrentPlot) return <button onClick={this.saveMatrix} style={baseBtnStyles}>Save New Plot</button>
     const userOwnedDec = Decisions.findOne({_id: this.props.routeDecisionId, owner: this.props.currentUser._id})
-    if (userOwnedDec) return <button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button>
+    if (userOwnedDec) return <div><button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button><br/><br/><button onClick={this.setTab('list')} style={{color: colors.blue}}>Share Decision &#8680;</button></div>
     return <button onClick={this.setTab('list')} style={baseBtnStyles}>view your copy &#8680;</button>
   }
 
