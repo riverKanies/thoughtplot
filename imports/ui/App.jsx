@@ -10,6 +10,7 @@ import {DecisionsList, SharedDecisionsList} from './Decisions'
 import Logo3 from './svg/Logo3'
 import Note from './Note'
 import { decisionStyles } from './matrix/Decision'
+import utils from './matrix/utils'
 
 const cellColClass = 'col-2'
 
@@ -102,7 +103,7 @@ class App extends Component {
           <textarea value={note} onChange={this.onChangeNote(i,j)} style={{color: 'white', background: 'black', border: '0px'}} placeholder="(add a note here)"/>
         </span>
       </div>
-      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{fontSize: '.8em', margin: '8px 0px'}}>*{this.state.weights[j]}=<text>{val * this.state.weights[j]}</text></text> : ''}
+      {this.state.isWeightedMtx && j>0 && i>0 ? <text style={{fontSize: '.8em', margin: '8px 0px'}}>*{this.state.weights[j]}=<text>{utils.toDec(val * this.state.weights[j])}</text></text> : ''}
       <text className='hidden-when-big' style={{color: colors.blue, marginLeft: '10px'}}>{this.state.mtx[0][j].val}</text>
     </div>
   }
@@ -310,8 +311,8 @@ class App extends Component {
 
   scoreRow(row) {
     return !this.state.isWeightedMtx ?
-      row.slice(1).reduce((a,b) => (parseInt(a)+parseInt(b.val)), 0) :
-      row.slice(1).reduce((a,b,j) => (parseInt(a)+parseInt(b.val)*this.state.weights[j+1]), 0)
+      row.slice(1).reduce((a,b) => utils.toDec(parseFloat(a)+parseFloat(b.val)), 0) :
+      row.slice(1).reduce((a,b,j) => utils.toDec(parseFloat(a)+parseFloat(b.val)*this.state.weights[j+1]), 0)
   }
 
   bestOption(mtx) {
