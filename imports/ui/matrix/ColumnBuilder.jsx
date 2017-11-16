@@ -63,7 +63,7 @@ export default class ColumnBuilder extends Component {
       <StepTitle title='Add Considerations' />
       <div style={{margin: '0 5%'}}>
         <p>
-          What are the (3) most important considerations for your decision? Think about where your options differ significantly.
+          List the most important considerations for your decision (think about how your options differ):
         </p>
         <label>Current Considerations:</label>
         <ul>
@@ -71,17 +71,15 @@ export default class ColumnBuilder extends Component {
             const label = labelObj.val
             const note = labelObj.note
             if (i==0) return ''
-            return <li key={i} style={{background: colors.blue, width: '200px', padding: '15px', borderRadius: '5px'}}>
+            return <li key={i} style={{background: colors.blue, width: '200px', padding: '15px', paddingRight: '25px', borderRadius: '5px'}}>
               <text style={{color: 'white'}}>{label}</text>
-              <text style={{float: 'right'}}>
-                <button onClick={this.deleteColumn(i)} style={{margin: '0 10px'}}>X</button>
-                <button onClick={this.toggleNote(i)}>
-                  {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
-                  note
-                </button>
-              </text>
+              <button onClick={this.deleteColumn(i)} style={{margin: '0 10px'}}>X</button><br/>
+              <button onClick={this.toggleNote(i)}>
+                {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
+                note
+              </button>
               {this.state.openNotes[i]
-                ? <div style={{paddingTop: '10px', paddingBottom: '5px', textAlign: 'right'}}><textarea value={note} onChange={this.props.onChangeNote(0,i)} placeholder='(describe the consideration in more detail)'/></div>
+                ? <div style={{paddingTop: '10px', paddingBottom: '5px'}}><textarea value={note} onChange={this.props.onChangeNote(0,i)} placeholder='(describe the consideration in more detail)' style={{width: '100%'}}/></div>
                 : ''
               }
             </li>

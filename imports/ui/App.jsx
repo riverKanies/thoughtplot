@@ -19,6 +19,7 @@ class App extends Component {
 
     this.state = {}
     this.state.selectedTab = localStorage.getItem('mtxplayTab') || 'intro'
+    this.state.backWArning = false
 
     const dec = props.decision
     if (dec) {
@@ -48,6 +49,7 @@ class App extends Component {
     this.saveMatrix = this.saveMatrix.bind(this)
     this.updateMatrix = this.updateMatrix.bind(this)
     this.shareMatrix = this.shareMatrix.bind(this)
+    this.backWarning = this.backWarning.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -220,11 +222,13 @@ class App extends Component {
   }
 
   render() {
+    window.addEventListener("beforeunload", this.backWarning)
     const styles = {width: '100%', border: '2px solid lightgray', borderRadius: '5px', backgroundColor: colors.blue, color: 'white', fontSize: '0.8em'}
     const stylesActive = { ...styles, borderColor: colors.blue, color: colors.blue, backgroundColor: 'white',}
     const logoStyles = {background: colors.orange, borderRadius: '5px', height: '28px', textAlign: 'center', paddingTop: '1px'}
     return (
       <div style={{margin: '0', width: '100%'}}>
+        <div hidden={!this.state.backWarning} style={{color: 'red'}}>Do not use browser back button! Your data will be erased! This is a single page app. Please use in app navigation.</div>
         <div style={{background: colors.purple, margin: '0', width: '90%', padding: '10px 5%'}}>
           <section className="row">
             <div className="col-3" style={{background: colors.blue, borderRadius: '5px', textAlign: 'center', height: '28px'}}><AccountsUIWrapper /></div>
@@ -374,6 +378,13 @@ class App extends Component {
     // isWeightedMatrix
     if (dec.isWeightedMatrix != savedDec.isWeightedMatrix) return false
     return true
+  }
+
+  backWarning (event) {
+    const text = 'This action will erase your data!'
+    event.returnValue = text
+    this.setState({backWarning: true})
+    return text
   }
 }
 

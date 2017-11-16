@@ -22,23 +22,21 @@ export default class RowBuilder extends Component {
     return (<div>
       <StepTitle title='Add Options' />
       <div style={{margin: '0 5%'}}>
-        <p>What are the (3) options you're considering?</p>
+        <p>List your options:</p>
         <label>Current Options:</label><br/>
         <ul>
           {mtx.map((row, i) => {
             if (i==0) return ''
             const note= row[0].note
-            return <li key={i} style={{background: colors.blue, width: '200px', padding: '15px', borderRadius: '5px'}}>
+            return <li key={i} style={{background: colors.blue, width: '200px', padding: '15px', paddingRight: '25px', borderRadius: '5px'}}>
               <text style={{color: 'white'}}>{row[0].val}</text>
-              <text style={{float: 'right'}}>
-                <button onClick={this.deleteRow(i)} style={{margin: '0 10px'}}>X</button>
-                <button onClick={this.toggleNote(i)}>
-                  {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
-                  note
-                </button>
-              </text>
+              <button onClick={this.deleteRow(i)} style={{margin: '0 10px'}}>X</button><br/>
+              <button onClick={this.toggleNote(i)}>
+                {this.state.openNotes[i] ? <text>&#9663; </text> : <text>&#9657; </text>}
+                note
+              </button>
               {this.state.openNotes[i]
-                ? <div style={{paddingTop: '10px', paddingBottom: '5px', textAlign: 'right'}}><textarea value={note} onChange={this.props.onChangeNote(i,0)} placeholder='(describe the option in more detail)'/></div>
+                ? <div style={{paddingTop: '10px', paddingBottom: '5px'}}><textarea value={note} onChange={this.props.onChangeNote(i,0)} placeholder='(describe the option in more detail)' style={{width: '100%'}}/></div>
                 : ''
               }
             </li>

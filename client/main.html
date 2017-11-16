@@ -11,12 +11,4 @@
 
 <body>
   <div id="render-target"></div>
-
-  <script type="text/javascript">
-    window.addEventListener("beforeunload", function (event) {
-      const text = 'This action will erase your data!'
-      event.returnValue = text
-      return text
-    });
-  </script>
 </body>
