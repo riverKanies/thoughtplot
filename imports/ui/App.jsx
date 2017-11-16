@@ -364,7 +364,7 @@ class App extends Component {
     // check matrix
     if (dec.matrix.length != savedDec.matrix.length || dec.matrix[0].length != savedDec.matrix[0].length) return false
     for (let i=0;i<dec.matrix.length; i++) {
-      for (let j=0;j<dec.matrix.length; j++) {
+      for (let j=0;j<dec.matrix[0].length; j++) {
         const cell = dec.matrix[i][j]
         const savedCell = savedDec.matrix[i][j]
         if (!cell || !savedCell) return false
