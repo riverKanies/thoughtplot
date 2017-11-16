@@ -153,7 +153,8 @@ class App extends Component {
 
   renderNoDecision () {
     return <div>
-      <h1>No such decision!</h1>
+      <h1>No decision found...</h1>
+      {this.props.currentUser ? '' : <p> &#8679; Sign in to see if you have access to this decision</p>}
       <button onClick={this.goTo('/')}>Home</button>
     </div>
   }
