@@ -15,6 +15,7 @@ export default class ColumnBuilder extends Component {
     this.addColumn = this.addColumn.bind(this)
     this.deleteColumn = this.deleteColumn.bind(this)
     this.toggleWeights = this.toggleWeights.bind(this)
+    this.checkEnter = this.checkEnter.bind(this)
   }
 
   renderWeightButtons(i) {
@@ -85,7 +86,7 @@ export default class ColumnBuilder extends Component {
             </li>
           })}
         </ul>
-        <input id={inputId} placeholder='time' onClick={(e)=>e.target.select()} />
+        <input id={inputId} placeholder='time' onKeyPress={this.checkEnter} onClick={(e)=>e.target.select()} />
         <button onClick={this.addColumn}>Add</button><br/>
 
         <p>
@@ -102,7 +103,10 @@ export default class ColumnBuilder extends Component {
   addColumn() {
     const { mtx } = this.props
     mtx.map((row, i) => {
-      const val = document.getElementById(inputId).value
+      const input = document.getElementById(inputId)
+      const val = input.value
+      input.value = ''
+      input.focus()
       if (i==0) return row.push({val: val, note: ''})
       return row.push({val: 0, note: ''})
     })
@@ -142,6 +146,10 @@ export default class ColumnBuilder extends Component {
       openNotes[i] = !openNotes[i]
       this.setState({openNotes})
     }
+  }
+
+  checkEnter (e) {
+    if (e.which == 13 || e.keyCode == 13) this.addColumn()
   }
 
 }
