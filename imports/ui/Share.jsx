@@ -20,6 +20,7 @@ export default class Share extends Component {
         const userExistsStatus = userExists ? <text style={{color: 'lightgreen'}}>Found!</text> : (userExists === false ? <text style={{color: 'red'}}>No such user!</text> : '')
         return (<div style={{border: '2px solid lightgray', borderRadius: '5px', padding: '10px'}}>
           <p><b>Select Collaborators for: </b>{dec.decision}</p>
+          <p>Note: Collaborators will recieve an email invitation when added to your decision.</p>
           <p>Decision Collaborators:</p>
           <ul>
             {dec.collaborators.map((email, i)=>{
@@ -31,16 +32,16 @@ export default class Share extends Component {
             {Meteor.user().profile.collaborators.map((email, i)=>{
               return <li key={i}>
                 {email}
-                <button onClick={this.addCollaboratorToDecision(email)}>Add</button>
+                <button onClick={this.addCollaboratorToDecision(email)}>Add to Decision</button>
                 <button onClick={this.removeCollaborator(email)}>X</button>
               </li>
             })}
           </ul>
           <label>Find Collaborators by Email:</label><br/>
-          <input id='new_collaborator'/><br/>
+          <input id='new_collaborator'/>
+          <button onClick={this.addCollaborator}>Add to My Collaborators</button><br/>
           <button onClick={this.findUser}>Find</button>
           {userExistsStatus}<br/>
-          <button onClick={this.addCollaborator}>Add to My Collaborators</button>
         </div>)
     }
 
