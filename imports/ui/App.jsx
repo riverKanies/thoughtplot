@@ -129,7 +129,7 @@ class App extends Component {
     const isCurrentPlot = !!Decisions.findOne({owner: this.props.currentUser._id, decision: this.state.decision})
     if (!isCurrentPlot) return <button onClick={this.saveMatrix} style={baseBtnStyles}>Save New Plot</button>
     const userOwnedDec = Decisions.findOne({_id: this.props.routeDecisionId, owner: this.props.currentUser._id})
-    if (userOwnedDec) return <div><button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button><br/><br/><button onClick={this.setTab('list')} style={{color: colors.blue}}>Share Decision &#8680;</button></div>
+    if (userOwnedDec) return <div><button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button><br/><br/><button onClick={this.setTab('list')} style={{color: colors.blue}}>Communicate Decision &#8680;</button></div>
     return <button onClick={this.setTab('list')} style={baseBtnStyles}>view your copy &#8680;</button>
   }
 
@@ -144,10 +144,9 @@ class App extends Component {
         {this.renderWeightsRow()}
       </div>
       <div style={{textAlign: 'center', width: '100%'}}>
-        <div style={{margin: '20px'}}>
-          <b>Best: <text style={{color: colors.orange}}>{bestOption.option}</text><br/>
-          Score: <text style={{background: colors.yellow, border: '1px solid black', padding: '0 3px'}}>{bestOption.score}</text></b><br/>
-        </div>
+        <div style={{background: 'white', margin: '0 auto', padding: '10px', border: '2px solid lightgray', borderTop: '0px', borderRadius: '0 0 10px 10px', width: '180px'}}>
+          <b>Best: <text style={{color: colors.orange}}>{bestOption.option}</text></b><br/>
+        </div><br/>
         {this.renderSaveMatrix()}
       </div>
     </div>)
@@ -197,16 +196,18 @@ class App extends Component {
             </header>
             <p style={{textAlign: 'center'}}>This is the decision you are documenting. Feel free to edit it here:</p>
             <div style={{textAlign: 'center'}}><textarea value={this.state.decision} onChange={this.onChangeDecision} style={decisionStyles}/></div>
-            <br/><br/>
+            <br/>
             <header>
               <h1 style={{color: colors.blue, textAlign: 'center'}}>Plot</h1>
             </header>
             <p style={{textAlign: 'center'}}>This is the final ThotPlot. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
             {this.renderPlot()}
-            <br/><br/>
+            <br/>
+            <h3 style={{color: colors.blue, textAlign: 'center'}}>Next Steps:</h3>
+            <Note label='Communicate' content="Click the button above to go to your List of decisions. From there you can invite people to view your decision, select a decision to view, or delete old decisions" />
+            <Note label='Self Review' content="Look over your ThotPlot, paying special attention to the overall scores. Do the scores align with your intuition about which choice is best? If not, modify some of your scores to capture your intuition as best you can." />
             <h3 style={{color: colors.blue, textAlign: 'center'}}>Notes:</h3>
             <Note label='Scoring' content="The values you fill in are simply summed for each option to determine the final overall score for that option. However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the plot) each consideration column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the non-weighted values)."/>
-            <Note label='Self Review' content="Look over your ThotPlot, paying special attention to the overall scores. Do the scores align with your intuition about which choice is best? If not, modify some of your scores to capture your intuition as best you can. Is there something relevant to the decision that you haven't yet made a consideration column for?" />
           </div>}
       </section>
       <section style={{display: (this.state.selectedTab === 'list' ? '' : 'none')}}>

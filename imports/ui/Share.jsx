@@ -16,30 +16,37 @@ export default class Share extends Component {
         if (!id) return null
         const dec = (Decisions.findOne(id))
         if (!dec) return null
+        console.log(dec, dec.collaborators == [])
         const userExists = this.state.userExists
         const userExistsStatus = userExists ? <text style={{color: 'lightgreen'}}>Found!</text> : (userExists === false ? <text style={{color: 'red'}}>No such user!</text> : '')
         return (<div style={{border: '2px solid lightgray', borderRadius: '5px', padding: '10px'}}>
-          <p><b>Select Collaborators for: </b>{dec.decision}</p>
-          <p>Note: Collaborators will recieve an email invitation when added to your decision.</p>
-          <p>Decision Collaborators:</p>
+          <p><b>Communicate the decision: </b>{dec.decision}</p>
+          <p>Give relevant people permission to view your decision (they will receive an email invitation)</p>
+          <p>Decision Invitees:</p>
           <ul>
-            {dec.collaborators.map((email, i)=>{
-              return <li key={i}>{email}<button onClick={this.removeCollaboratorFromDecision(email)}>X</button></li>
-            })}
+            {(dec.collaborators.length === 0)
+                ? <li style={{color: 'lightgray'}}>(none yet)</li>
+                : dec.collaborators.map((email, i)=>{
+                    return <li key={i}>{email}<button onClick={this.removeCollaboratorFromDecision(email)}>X</button></li>
+                  })
+            }
           </ul>
-          <p>My Collaborators:</p>
+          <p>My People:</p>
           <ul>
-            {Meteor.user().profile.collaborators.map((email, i)=>{
-              return <li key={i}>
-                {email}
-                <button onClick={this.addCollaboratorToDecision(email)}>Add to Decision</button>
-                <button onClick={this.removeCollaborator(email)}>X</button>
-              </li>
-            })}
+            {(Meteor.user().profile.collaborators.length === 0)
+                ? <li style={{color: 'lightgray'}}>(none yet)</li>
+                : Meteor.user().profile.collaborators.map((email, i)=>{
+                    return <li key={i}>
+                        {email}
+                        <button onClick={this.addCollaboratorToDecision(email)}>Add to Decision</button>
+                        <button onClick={this.removeCollaborator(email)}>X</button>
+                    </li>
+                  })
+            }
           </ul>
-          <label>Find Collaborators by Email:</label><br/>
+          <label>Find by email:</label><br/>
           <input id='new_collaborator'/>
-          <button onClick={this.addCollaborator}>Add to My Collaborators</button><br/>
+          <button onClick={this.addCollaborator}>Save to My People</button><br/>
           <button onClick={this.findUser}>Find</button>
           {userExistsStatus}<br/>
         </div>)

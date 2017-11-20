@@ -20,7 +20,8 @@ export default class IntroTab extends Component {
             <header>
             <div style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px', margin: '40px'}}>
                 <Logo4 logoColor={colors.yellow} />
-                <text style={textStyles}>hotPlot</text>
+                <text style={textStyles}>hotPlot</text><br/>
+                <div style={{...textStyles, marginLeft: '28px', fontSize: '8px', marginTop: '-5px'}}>plot your thoughts</div>
             </div>
             </header>
             <div style={{textAlign: 'center'}}>
