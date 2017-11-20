@@ -21,6 +21,7 @@ class App extends Component {
     this.state = {}
     this.state.selectedTab = localStorage.getItem('mtxplayTab') || 'intro'
     this.state.backWArning = false
+    this.state.currentStep = 0
 
     const dec = props.decision
     if (dec) {
@@ -42,6 +43,7 @@ class App extends Component {
 
     this.onChangeHandler = this.onChangeHandler.bind(this)
     this.onChangeNote = this.onChangeNote.bind(this)
+    this.onChangeStep = this.onChangeStep.bind(this)
     this.onChangeDecision = this.onChangeDecision.bind(this)
     this.changeMatrix = this.changeMatrix.bind(this)
     this.addWeights = this.addWeights.bind(this)
@@ -168,7 +170,7 @@ class App extends Component {
 
   renderTab() {
     return (<div>
-      <IntroTab renderTryit={this.renderTryit} selectedTab={this.state.selectedTab}/>
+      <IntroTab renderTryit={this.renderTryit} selectedTab={this.state.selectedTab} setTab={this.setTab} decision={this.state.decision} onChangeDecision={this.onChangeDecision}/>
       <section style={{display: (this.state.selectedTab === 'builder' ? '' : 'none')}}>
         {this.props.routeDecisionId && !this.props.decision ?
           this.renderNoDecision() :
@@ -177,6 +179,7 @@ class App extends Component {
               {...this.state}
               onChangeHandler={this.onChangeHandler}
               onChangeNote={this.onChangeNote}
+              onChangeStep={this.onChangeStep}
               changeMatrix={this.changeMatrix}
               onChangeDecision={this.onChangeDecision}
               onChangeWeightHandler={this.onChangeWeightHandler}
@@ -294,8 +297,15 @@ class App extends Component {
     }
   }
 
+  onChangeStep(currentStep) {
+    this.setState({currentStep})
+  }
+
   onChangeDecision(e) {
-    this.setState({decision: e.target.value})
+    let val = e.target.value
+    const regex = new RegExp(/\S\w*/)
+    if (this.state.currentStep == 0 && this.state.selectedTab == 'intro' && regex.exec(val)) return this.setState({currentStep: 1, decision: val})
+    this.setState({decision: val})
   }
 
   onChangeWeightHandler(i, weight) {

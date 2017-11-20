@@ -1,12 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import Logo4 from './svg/Logo4'
 import Note from './Note'
+import { decisionStyles } from './matrix/Decision'
+
 
 import colors from './colors'
 
 const logoContainerStyles = {padding: '20px', width: '206', borderRadius: '30px', margin: '20px'}
 
 export default class IntroTab extends Component {
+    constructor (props) {
+        super(props)
+
+        this.checkEnter = this.checkEnter.bind(this)
+    }
     render() {
         const textStyles = {color: colors.yellow, fontFamily: "'Varela Round', sans-serif", fontSize: '1.1em', marginLeft: '-23px'} //-35.5px
         return (<section style={{display: (this.props.selectedTab === 'intro' ? '' : 'none')}}>
@@ -16,9 +23,12 @@ export default class IntroTab extends Component {
                 <text style={textStyles}>hotPlot</text>
             </div>
             </header>
-            <h4 style={{color: colors.blue, textAlign: 'center', margin: '0 10%'}}>
-            ThotPlot makes it easy to communicate complicated decisions to your team so that you can spend less time in meetings and more time adding value to your business.
-            </h4>
+            <div style={{textAlign: 'center'}}>
+                <h4 style={{color: colors.blue, margin: '0 10%'}}>
+                    Make a hard decision now
+                </h4><br/>
+                <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="Describe your decision in a few words" style={decisionStyles} onKeyPress={this.checkEnter} />
+            </div>
             {this.props.renderTryit()}<br/>
             <h3 style={{color: colors.blue, textAlign: 'center'}}>Further Reading:</h3>
             <Note label='What Is' content="People make decisions based on many variables (often political), but communicate those decisions by telling a short story that hits on the one 'most important' point. This often involves stacking data or pointing out only what is most likely to get a thumbs up from the team."/>
@@ -27,5 +37,9 @@ export default class IntroTab extends Component {
             <p style={{textAlign: 'center'}}>Use ThotPlot to improve decision making and communication for your team:</p>
             {this.props.renderTryit()}
         </section>)
+    }
+
+    checkEnter (e) {
+        if (e.which == 13 || e.keyCode == 13) this.props.setTab('builder')()
     }
 }

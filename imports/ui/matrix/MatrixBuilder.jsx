@@ -14,22 +14,20 @@ export default class MatrixBuilder extends Component {
     super(props)
 
     this.state = {}
-    this.state.currentStep = 0
 
-    this.toPrevious = this.toPrevious.bind(this)
     this.toNext = this.toNext.bind(this)
     this.toStep = this.toStep.bind(this)
   }
 
   render() {
     const steps = [
-      <Decision {...this.props} />,
+      <Decision {...this.props} toNext={this.toNext}/>,
       <RowBuilder {...this.props} />,
       <ColumnBuilder {...this.props} />,
       <CellBuilder {...this.props} />,
     ]
 
-    const endOfSteps = this.state.currentStep < steps.length-1
+    const endOfSteps = this.props.currentStep < steps.length-1
 
     let error = null
 
@@ -41,7 +39,7 @@ export default class MatrixBuilder extends Component {
       <div style={{marginBottom: '-30px', textAlign: 'center'}}>
         {steps.map((s, i)=>{
           if (!error) error = this.validateStep(i-1)
-          const curStep = i == this.state.currentStep
+          const curStep = i == this.props.currentStep
           const styles = {
             background: curStep ? colors.blue : 'white',
             color: !error ? (curStep ? 'white':'black'): 'lightgray',
@@ -56,43 +54,42 @@ export default class MatrixBuilder extends Component {
         })}
       </div>
       <div style={{border: '1px solid lightgray', borderRadius: '20px', padding: '0', paddingBottom: '20px'}}>
-        {steps[this.state.currentStep]}
+        {steps[this.props.currentStep]}
       </div>
       <br/>
       <div style={{textAlign: 'center'}}>
         <text style={{color: 'red'}}>{this.state.error}</text><br/>
         {endOfSteps
-          ? <button onClick={this.toNext} style={!this.validateStep(this.state.currentStep) ? styles : {...styles, ...stylesDisabled}}>Next Step &#8680;</button>
+          ? <button onClick={this.toNext} style={!this.validateStep(this.props.currentStep) ? styles : {...styles, ...stylesDisabled}}>Next Step &#8680;</button>
           : <button onClick={this.props.setTab('matrix')} style={styles}>Skip to Plot &#8680;</button>
         }
       </div>
     </div>)
   }
 
-  toPrevious() {
-    this.setState({currentStep: this.state.currentStep - 1})
-  }
-
   toNext() {
-    const error = this.validateStep(this.state.currentStep)
+    const error = this.validateStep(this.props.currentStep)
     if (error) {
       this.setState({error})
     } else {
-      this.setState({currentStep: this.state.currentStep + 1, error})
+      this.setState({error})
+      this.props.onChangeStep(this.props.currentStep + 1)
     }
   }
 
   toStep(step) {
     return () => {
-      this.setState({currentStep: step, error: null})
+      this.setState({error: null})
+      this.props.onChangeStep(step)
     }
   }
 
   validateStep(i) {
     const {decision, mtx} = this.props
+    const regex = new RegExp(/\S\w*/)
     switch (i) {
       case 0:
-        return (decision.slice(-1) == '?') ? null : 'Your decision should end with a "?"'
+        return (regex.exec(decision)) ? null : 'decision cannot be blank'
       case 1:
         return mtx.length > 1 ? null : 'You must have at least one option'
       case 2:
