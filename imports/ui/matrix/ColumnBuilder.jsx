@@ -86,7 +86,7 @@ export default class ColumnBuilder extends Component {
             </li>
           })}
         </ul>
-        <input id={inputId} placeholder='time' onKeyPress={this.checkEnter} onClick={(e)=>e.target.select()} />
+        <input id={inputId} placeholder='Consideration (e.g. time)' onKeyPress={this.checkEnter} onClick={(e)=>e.target.select()} />
         <button onClick={this.addColumn}>Add</button><br/>
 
         <p>

@@ -16,7 +16,6 @@ export default class Share extends Component {
         if (!id) return null
         const dec = (Decisions.findOne(id))
         if (!dec) return null
-        console.log(dec, dec.collaborators == [])
         const userExists = this.state.userExists
         const userExistsStatus = userExists ? <text style={{color: 'lightgreen'}}>Found!</text> : (userExists === false ? <text style={{color: 'red'}}>No such user!</text> : '')
         return (<div style={{border: '2px solid lightgray', borderRadius: '5px', padding: '10px'}}>

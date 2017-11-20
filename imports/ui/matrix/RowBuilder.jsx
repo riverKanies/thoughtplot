@@ -43,7 +43,7 @@ export default class RowBuilder extends Component {
             </li>
           })}
         </ul>
-        <input id={inputId} placeholder='ThotPlot' onKeyPress={this.checkEnter} onClick={(e)=>e.target.select()}/>
+        <input id={inputId} placeholder='Option Name' onKeyPress={this.checkEnter} onClick={(e)=>e.target.select()}/>
         <button onClick={this.onAddRow}>Add</button><br/>
       </div>
     </div>)
@@ -53,7 +53,6 @@ export default class RowBuilder extends Component {
     const { mtx } = this.props
     const newRow = []
     mtx[0].forEach((col, i) => {
-      //const val = (i==0) ? "ThotPlot" : 0
       const input = document.getElementById(inputId)
       const val = (i==0) ? input.value : 0
       input.value = ''
