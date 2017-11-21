@@ -24,11 +24,11 @@ export default class IntroTab extends Component {
                 <div style={{...textStyles, marginLeft: '28px', fontSize: '11.7px', marginTop: '-2px'}}>plot your thoughts</div>
             </div>
             </header>
-            <div style={{textAlign: 'center'}}>
-                <h4 style={{color: colors.blue, margin: '0 10%'}}>
+            <div style={{textAlign: 'center', background: 'white', width: '300px', margin: '0 auto', borderRadius: '5px', paddingTop: '20px'}}>
+                <h3 style={{color: colors.blue, margin: '0 0 15px 0', borderBottom: `2px solid ${colors.blue}`, width: '270', margin: '0 auto'}}>
                     Make a hard decision now
-                </h4><br/>
-                <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="Describe your decision in a few words" style={decisionStyles} onKeyPress={this.checkEnter} />
+                </h3>
+                <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="Describe your decision in a few words" style={{width: '280px', fontSize: '1.4em', margin: '0', border: '0px', resize: 'none'}} onKeyPress={this.checkEnter} />
             </div>
             {this.props.renderTryit()}<br/>
             <h3 style={{color: colors.blue, textAlign: 'center'}}>Further Reading:</h3>
