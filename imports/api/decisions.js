@@ -64,7 +64,7 @@ Meteor.methods({
     if (Meteor.isServer) {
       const user = Meteor.users.findOne(this.userId)
       const dec = Decisions.findOne(decId)
-      if (user && dec) Email.send({from: 'river.kanies@gmail.com', to: email, subject: "You've been invited to collaborate on a ThoughtPlot!", text: `${user.emails[0].address} has added you as a collaborator on the following decision: ${dec.decision}\n\nView the decision at: http://www.thoughtplot.com/decisions/${dec._id}`})
+      if (user && dec) Email.send({from: 'river.kanies@gmail.com', to: email, subject: "You've been invited to collaborate on a ThoughtPlot!", text: `${user.emails[0].address} has added you as a collaborator on the following decision: ${dec.decision}\n\nView the decision at: http://www.thoughtplot.io/decisions/${dec._id}`})
     }
   },
   'decisions.removeCollaborator'(email, decId) {

@@ -7,7 +7,7 @@ Meteor.startup(() => {
     sendVerificationEmail: true
   })
   Accounts.emailTemplates.siteName = "ThoughtPlot"
-  Accounts.emailTemplates.from = "river.kanies@gmail.com" //"thoughtplot@thoughtplot.com"
+  Accounts.emailTemplates.from = "river.kanies@gmail.com" //"thoughtplot@thoughtplot.io"
   Accounts.emailTemplates.replyTo
   Accounts.emailTemplates.verifyEmail = {
     subject(user) {
@@ -15,7 +15,7 @@ Meteor.startup(() => {
     },
     text(user, url) {
       const verificationCode = url.split('#')[1]
-      const correctUrl = 'http://www.thoughtplot.com/#'+verificationCode
+      const correctUrl = 'http://www.thoughtplot.io/#'+verificationCode
       return `Thanks for using ThoughtPlot! Click the following link to verify your email: ${correctUrl}.\n\nFeel free to reply with any questions.\n\n-river`
     }
   }
@@ -34,7 +34,7 @@ Accounts.onCreateUser(function(options, user) {
     user.profile.collaborators = []
   }
   const email = user.emails[0].address || null
-  if (email) Email.send({from: 'thoughtplot@thoughtplot.com', to: 'river.kanies@gmail.com', subject: "New User", text: `${email}`})
+  if (email) Email.send({from: 'thoughtplot@thoughtplot.io', to: 'river.kanies@gmail.com', subject: "New User", text: `${email}`})
   return user
 });
 
