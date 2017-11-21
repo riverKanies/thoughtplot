@@ -200,12 +200,12 @@ class App extends Component {
             <header>
               <h1 style={{color: colors.blue, textAlign: 'center'}}>Plot</h1>
             </header>
-            <p style={{textAlign: 'center'}}>This is the final ThotPlot. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
+            <p style={{textAlign: 'center'}}>This is the final ThoughtPlot. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
             {this.renderPlot()}
             <br/>
             <h3 style={{color: colors.blue, textAlign: 'center'}}>Next Steps:</h3>
             <Note label='Communicate' content="Click the button above to go to your List of decisions. From there you can invite people to view your decision, select a decision to view, or delete old decisions" />
-            <Note label='Self Review' content="Look over your ThotPlot, paying special attention to the overall scores. Do the scores align with your intuition about which choice is best? If not, modify some of your scores to capture your intuition as best you can." />
+            <Note label='Self Review' content="Look over your ThoughtPlot, paying special attention to the overall scores. Do the scores align with your intuition about which choice is best? If not, modify some of your scores to capture your intuition as best you can." />
             <h3 style={{color: colors.blue, textAlign: 'center'}}>Notes:</h3>
             <Note label='Scoring' content="The values you fill in are simply summed for each option to determine the final overall score for that option. However, if you choose to add weights (by clicking 'Add Weights' at the bottom of the plot) each consideration column will be multiplied by its weight value when summed for the final score (weighted values are shown to the right of the non-weighted values)."/>
           </div>}
