@@ -20,7 +20,7 @@ class App extends Component {
 
     this.state = {}
     this.state.selectedTab = localStorage.getItem('mtxplayTab') || 'intro'
-    this.state.backWArning = false
+    this.state.backWarning = false
     this.state.currentStep = 0
 
     const dec = props.decision
@@ -145,7 +145,7 @@ class App extends Component {
       </div>
       <div style={{textAlign: 'center', width: '100%'}}>
         <div style={{background: 'white', margin: '0 auto', padding: '10px', border: '2px solid lightgray', borderTop: '0px', borderRadius: '0 0 10px 10px', width: '180px'}}>
-          <b>Best: <text style={{color: colors.orange}}>{bestOption.option}</text></b><br/>
+          <b>Best Option: <text style={{color: colors.orange}}>{bestOption.option}</text></b><br/>
         </div><br/>
         {this.renderSaveMatrix()}
       </div>
@@ -394,6 +394,7 @@ class App extends Component {
   }
 
   backWarning (event) {
+    if (Meteor.isDevelopment) return null
     const text = 'This action will erase your data!'
     event.returnValue = text
     this.setState({backWarning: true})

@@ -24,7 +24,7 @@ export default class IntroTab extends Component {
             </div>
             </header>
             <div style={{textAlign: 'center', background: 'white', width: '300px', margin: '0 auto', borderRadius: '5px', paddingTop: '20px'}}>
-                <h3 style={{color: colors.blue, margin: '0 0 15px 0', borderBottom: `2px solid ${colors.blue}`, width: '270', margin: '0 auto'}}>
+                <h3 style={{color: colors.blue, margin: '0 0 15px 0', borderBottom: `2px solid ${colors.blue}`, width: '270px', margin: '0 auto'}}>
                     Make a hard decision now
                 </h3>
                 <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="Describe your decision in a few words" style={{width: '280px', fontSize: '1.4em', margin: '0', border: '0px', resize: 'none'}} onKeyPress={this.checkEnter} />
