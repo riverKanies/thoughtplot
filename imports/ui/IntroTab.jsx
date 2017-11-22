@@ -21,7 +21,6 @@ export default class IntroTab extends Component {
             <div style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px', margin: '40px'}}>
                 <Logo4 logoColor={colors.yellow} />
                 <text style={textStyles}>houghtPlot</text><br/>
-                <div style={{...textStyles, marginLeft: '28px', fontSize: '11.7px', marginTop: '-2px'}}>plot your thoughts</div>
             </div>
             </header>
             <div style={{textAlign: 'center', background: 'white', width: '300px', margin: '0 auto', borderRadius: '5px', paddingTop: '20px'}}>
@@ -32,6 +31,7 @@ export default class IntroTab extends Component {
             </div>
             {this.props.renderTryit()}<br/>
             <h3 style={{color: colors.blue, textAlign: 'center'}}>Further Reading:</h3>
+            <Note label="For Business" content="ThoughtPlot makes it easy to communicate complicated decisions to your team so that you can spend less time in meetings and more time adding value to your business." />
             <Note label='What Is' content="People make decisions based on many variables (often political), but communicate those decisions by telling a short story that hits on the one 'most important' point. This often involves stacking data or pointing out only what is most likely to get a thumbs up from the team."/>
             <Note label="What Could Be" content="Decisions can be documented and communicated in a transparent and objective way. Each consideration can be scored on a per option basis so that it's clear which option seems best now, and it's also clear how much better the option is (and why it's better). This means that it's straight forward to go back and re-evaluate the decision when circumstances change."/>
             <br/>
