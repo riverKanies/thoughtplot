@@ -368,7 +368,10 @@ class App extends Component {
   }
 
   goTo(path) {
-    return () => FlowRouter.go(path)
+    return () => {
+      FlowRouter.go(path)
+      if (path === '/') location.reload()
+    }
   }
 
   matrixIsUpToDate() {
