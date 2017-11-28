@@ -107,10 +107,39 @@ export default class CellBuilder extends Component {
     const option = mtx[i][0].val
     const cell = mtx[0][j]
     const consideration = cell.val
-    return <text>
+    return <div style={{textAlign: 'center'}}>
       {this.renderScoreDescription()}
       {this.renderScoreButtons(value)}
-    </text>
+    </div>
+  }
+
+  renderCostBtn() {
+    const { mtx } = this.props
+    if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>"Error, must have at least one option and one consideration!"</text>
+    const i = this.state.currentRow
+    const j = this.state.currentColumn
+    const value = mtx[i][j].val
+    const option = mtx[i][0].val
+    const cell = mtx[0][j]
+    const consideration = cell.val
+    const finished = (i==mtx.length-1 && j==mtx[0].length-1)
+    const note = this.props.mtx[i][j].note
+
+    const fontSize = '7px'
+    const containerStyles = {float: 'right', fontSize, padding: '3px', border: `1px solid ${colors.blue}`, borderTop: '0px', marginRight: '7px'}
+    const btnStyles = {fontSize}
+    if (this.isCost()) return <div style={containerStyles}>
+      <button style={{...btnStyles, background: colors.orange, color: 'white'}} onClick={this.toggleIsCost(j,false)}>Cost</button>
+    </div>
+    if (this.isCost() === false) return <div style={containerStyles}>
+    <button style={{...btnStyles, background: colors.blue, color: 'white'}} onClick={this.toggleIsCost(j,true)}>Benefit</button>
+  </div>
+    return <div style={containerStyles}>
+      <button style={this.isCost() ? {...btnStyles, background: colors.orange, color: 'white'} : btnStyles} onClick={this.toggleIsCost(j,true)}>Cost</button>
+      <text style={{margin: '0 5px'}}>or</text>
+      <button style={this.isCost() === false ? {...btnStyles, background: colors.blue, color: 'white'} : btnStyles} onClick={this.toggleIsCost(j,false)}>Benefit</button>
+      <text style={{marginLeft: '5px'}}>?</text>
+    </div>
   }
 
   renderBuilder() {
@@ -123,31 +152,33 @@ export default class CellBuilder extends Component {
     const cell = mtx[0][j]
     const consideration = cell.val
     const finished = (i==mtx.length-1 && j==mtx[0].length-1)
+    const finishedConsideration = i==mtx.length-1
     const note = this.props.mtx[i][j].note
+
     return <div>
-      <p>
-        <b style={{color: colors.orange}}>{option}</b>
-        <b> - </b>
-        <b style={{color: colors.blue}}>{consideration}</b>
-      </p>
-      <p>Is <b style={{color: colors.blue}}>{consideration}</b> a cost or a benefit?&#8195;
-        <button style={this.isCost() ? {background: colors.orange, color: 'white'} : {}} onClick={this.toggleIsCost(j,true)}>Cost</button>&#8195;
-        <button style={this.isCost() === false ? {background: colors.blue, color: 'white'} : {}} onClick={this.toggleIsCost(j,false)}>Benefit</button>
-      </p>
+      <div>
+        <div style={{width: '300px', margin: '0 auto'}}>
+          <div style={{border: `2px solid ${colors.blue}`, textAlign: 'center', color: colors.blue, fontSize: '2em', overflow: 'hidden', padding: '5px 0'}}>{consideration}</div>
+          {this.renderCostBtn()}
+        </div><br/>
+        <div style={{width: '90px', margin: '0 auto', textAlign: 'center', border: `2px solid ${colors.orange}`, marginTop: '20px', padding: '3px 0'}}><b style={{color: colors.orange}}>{option}</b></div>
+        <br/><br/>
+      </div>
       {this.renderScoreSection()}
       <br/><br/>
       <label>Add a Note:</label><br/>
       <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='(describe why you think this score is appropriate)'/><br/>
       <br/><br/>
-      {finished ? <text><button onClick={this.props.setTab('matrix')} style={nxtStyles}>View Plot &#8680;</button></text> : <button onClick={this.nextCell} style={nxtStyles}>Next Consideration &#8680;</button>}
+      {finished ? <text><button onClick={this.props.setTab('matrix')} style={nxtStyles}>View Plot &#8680;</button></text> :
+        ((finishedConsideration) ? <button onClick={this.nextCell} style={nxtStyles}>Next Consideration &#8680;</button> : <button onClick={this.nextCell} style={nxtStyles}>Next Option &#8680;</button>)
+      }
     </div>
   }
 
   render() {
     return (<div id='cellBuilder'>
       <StepTitle title='Score Options' />
-      <div style={{margin: '0 5%'}}>
-        <p>Give each option a score for each consideration.</p>
+      <div style={{margin: '0 5%', paddingTop: '40px'}}>
         {this.renderBuilder()}
       </div>
     </div>)
@@ -157,10 +188,10 @@ export default class CellBuilder extends Component {
     window.scroll(0,findPos(document.getElementById('cellBuilder'))-70)
     const i = this.state.currentRow
     const j = this.state.currentColumn
-    if (j==this.props.mtx[0].length-1) {
-      this.setState({currentRow: i+1, currentColumn: 1, isCost: this.props.mtx[0][1].isCost || null})
-    } else {
-      this.setState({currentColumn: j+1, isCost: this.props.mtx[0][j+1].isCost || null})
+    if (i==this.props.mtx.length-1) { //if on last row, go to next column, first row
+      this.setState({currentRow: 1, currentColumn: j+1, isCost: this.props.mtx[0][j+1].isCost || null})
+    } else { // simply increment the row
+      this.setState({currentRow: i+1})
     }
   }
 
