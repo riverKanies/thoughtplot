@@ -136,7 +136,7 @@ class App extends Component {
   renderPlot() {
     const bestOption = this.bestOption(this.state.mtx)  
     const { mtx } = this.state
-    if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>Error, must have at least one option and one consideration!</text>
+    if (mtx.length < 2 || mtx[0].length < 2) return <div style={{textAlign: 'center', width: '100%', border: '3px solid lightgray'}}><text style={{color: 'red'}}>Error, must have at least one option and one consideration!</text></div>
     return (<div>
       <div className='container' style={{border: '3px solid lightgray', borderRadius: '15px', padding: '10px 0', margin: '0', width: '100%', background: 'white'}}>
         {this.renderLabelRow()}
@@ -370,7 +370,9 @@ class App extends Component {
   goTo(path) {
     return () => {
       FlowRouter.go(path)
-      if (path === '/') location.reload()
+      if (path === '/' && confirm('Delete unsaved data and start a new decision?')) {
+        location.reload()
+      }
     }
   }
 
