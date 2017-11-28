@@ -37,7 +37,7 @@ Meteor.methods({
     if (decSame) {
       throw new Meteor.Error('you already have a decision with that name')
     }
-    Decisions.insert({
+    const newDecId = Decisions.insert({
       decision,
       matrix,
       weights,
@@ -46,6 +46,7 @@ Meteor.methods({
       owner: this.userId,
       collaborators: [],
     });
+    return newDecId
   },
   'decisions.update'(dec) {
     const { matrix, weights, isWeightedMatrix } = dec

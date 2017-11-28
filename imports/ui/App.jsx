@@ -346,7 +346,9 @@ class App extends Component {
       isWeightedMatrix: this.state.isWeightedMtx,
       weights: this.state.weights
     }
-    Meteor.call('decisions.insert', decision)
+    Meteor.call('decisions.insert', decision, (error, id) => {
+      this.goTo(`/decisions/${id}`)()
+    })
   }
 
   updateMatrix () {
