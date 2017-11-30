@@ -244,7 +244,7 @@ class App extends Component {
             <div className="col-2"><button onClick={this.setTab('list')} style={this.state.selectedTab === 'list' ? stylesActive : styles}>List</button></div>
           </section>
         </div>
-        <div className="container">
+        <div id="mainContainer" className="container">
           {this.renderTab()}
         </div>
         <br/><br/><br/><br/><br/><br/>
@@ -254,6 +254,7 @@ class App extends Component {
 
   setTab(l) {
     return ()=>{
+      window.scroll(0, utils.findPos(document.getElementById('mainContainer')))//window.scrollTo(0,0)
       window.localStorage.setItem('mtxplayTab', l)
       this.setState({selectedTab: l})
     }

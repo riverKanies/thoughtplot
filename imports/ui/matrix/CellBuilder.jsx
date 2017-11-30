@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import StepTitle from './StepTitle'
 import colors from '../colors'
+import utils from './utils'
 
 const range = [0,1,2,3,4,5]
 const fullRange = [-5,-4,-3,-2,-1,0,1,2,3,4,5]
@@ -186,7 +187,7 @@ export default class CellBuilder extends Component {
   }
 
   nextColumn() {
-    window.scroll(0,findPos(document.getElementById('cellBuilder'))-70)
+    window.scroll(0, utils.findPos(document.getElementById('cellBuilder'))-70)
     const j = this.state.currentColumn
     this.setState({currentColumn: j+1, isCost: this.props.mtx[0][j+1].isCost || null})
   }
@@ -210,14 +211,4 @@ export default class CellBuilder extends Component {
     return this.state.isCostArray[this.state.currentColumn]
   }
 
-}
-
-function findPos(obj) {
-  var curtop = 0;
-  if (obj.offsetParent) {
-      do {
-          curtop += obj.offsetTop;
-      } while (obj = obj.offsetParent);
-  return [curtop];
-  }
 }
