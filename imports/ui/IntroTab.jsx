@@ -16,19 +16,24 @@ export default class IntroTab extends Component {
     }
     render() {
         const textStyles = {color: colors.yellow, fontFamily: "'Varela Round', sans-serif", fontSize: '1.1em', marginLeft: '-23px'} //-35.5px
+        const headerStyles = {color: 'lightgray'}
         return (<section style={{display: (this.props.selectedTab === 'intro' ? '' : 'none')}}>
             <header>
-            <div style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px', margin: '40px'}}>
-                <Logo4 logoColor={colors.yellow} />
-                <text style={textStyles}>houghtPlot</text><br/>
-            </div>
+                <div style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px', margin: '40px'}}>
+                    <Logo4 logoColor={colors.yellow} />
+                    <text style={textStyles}>houghtPlot</text><br/>
+                </div>
+                <div style={{textAlign: 'center', margin: '40px', padding: '20px', background: colors.purple, borderRadius: '20px'}}>
+                    <h3 style={headerStyles}>Do you find yourself having to explain some decisions to your team over and over?</h3>
+                    <h2 style={headerStyles}>Plot your thoughts to communicate complex decisions with ease:</h2>
+                    <div style={{textAlign: 'center', background: 'white', width: '300px', margin: '0 auto', borderRadius: '5px', paddingTop: '20px'}}>
+                        <h3 style={{color: colors.blue, margin: '0 0 15px 0', borderBottom: `2px solid ${colors.blue}`, width: '270px', margin: '0 auto'}}>
+                            Document a complex decision now
+                        </h3>
+                        <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="Describe your decision in a few words" style={{width: '280px', fontSize: '1.4em', margin: '0', border: '0px', resize: 'none'}} onKeyPress={this.checkEnter} />
+                    </div>
+                </div>
             </header>
-            <div style={{textAlign: 'center', background: 'white', width: '300px', margin: '0 auto', borderRadius: '5px', paddingTop: '20px'}}>
-                <h3 style={{color: colors.blue, margin: '0 0 15px 0', borderBottom: `2px solid ${colors.blue}`, width: '270px', margin: '0 auto'}}>
-                    Make a hard decision now
-                </h3>
-                <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="Describe your decision in a few words" style={{width: '280px', fontSize: '1.4em', margin: '0', border: '0px', resize: 'none'}} onKeyPress={this.checkEnter} />
-            </div>
             {this.props.renderTryit()}<br/>
             <h3 style={{color: colors.blue, textAlign: 'center'}}>Further Reading:</h3>
             <Note label="For Business" content="ThoughtPlot makes it easy to communicate complicated decisions to your team so that you can spend less time in meetings and more time adding value to your business." />

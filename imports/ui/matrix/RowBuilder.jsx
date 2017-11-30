@@ -23,7 +23,7 @@ export default class RowBuilder extends Component {
     return (<div>
       <StepTitle title='Add Options' />
       <div style={{margin: '0 5%'}}>
-        <p>List your options:</p>
+        <p>List the most important options that you've considered:</p>
         <label>Current Options:</label><br/>
         <ul>
           {mtx.map((row, i) => {
@@ -45,6 +45,7 @@ export default class RowBuilder extends Component {
         </ul>
         <input id={inputId} placeholder='Option Name' onKeyPress={this.checkEnter} onClick={(e)=>e.target.select()}/>
         <button onClick={this.onAddRow}>Add</button><br/>
+        <p>Option names should be 1 or 2 words. Put any additional details in a note.</p>
       </div>
     </div>)
   }

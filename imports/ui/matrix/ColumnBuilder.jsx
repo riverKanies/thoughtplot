@@ -64,7 +64,7 @@ export default class ColumnBuilder extends Component {
       <StepTitle title='Add Considerations' />
       <div style={{margin: '0 5%'}}>
         <p>
-          List the most important considerations for your decision (think about how your options differ):
+          List the most important considerations that you took into account when making this decision (think about how your options differ):
         </p>
         <label>Current Considerations:</label>
         <ul>
@@ -88,7 +88,7 @@ export default class ColumnBuilder extends Component {
         </ul>
         <input id={inputId} placeholder='Consideration (e.g. time)' onKeyPress={this.checkEnter} onClick={(e)=>e.target.select()} />
         <button onClick={this.addColumn}>Add</button><br/>
-
+        <p>Consideration names should be 1 or 2 words. Put additional details in a note.</p>
         <p>
           <button onClick={this.toggleWeights} style={{background: (!this.props.isWeightedMtx ? colors.blue : 'white'), border: '5px solid lightgray', marginRight: '10px', width: '40px', height: '40px', fontSize: '1em'}}>
             <text style={{color: 'white'}}>&#10004;</text>

@@ -200,7 +200,7 @@ class App extends Component {
             <header>
               <h1 style={{color: colors.blue, textAlign: 'center'}}>Plot</h1>
             </header>
-            <p style={{textAlign: 'center'}}>This is the final ThoughtPlot. It will automatically calculate overall scores whenever any values are changed. Feel free to edit any values here.</p>
+            <p style={{textAlign: 'center'}}>This is the final ThoughtPlot. It will automatically calculate overall scores whenever any values are changed. Make sure the plot reflects your intuition on which option is best and why. Feel free to edit any values here.</p>
             {this.renderPlot()}
             <br/>
             <h3 style={{color: colors.blue, textAlign: 'center'}}>Next Steps:</h3>
