@@ -129,7 +129,7 @@ class App extends Component {
     const isCurrentPlot = !!Decisions.findOne({owner: this.props.currentUser._id, decision: this.state.decision})
     if (!isCurrentPlot) return <button onClick={this.saveMatrix} style={baseBtnStyles}>Save New Plot</button>
     const userOwnedDec = Decisions.findOne({_id: this.props.routeDecisionId, owner: this.props.currentUser._id})
-    if (userOwnedDec) return <div><button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button><br/><br/><button onClick={this.setTab('list')} style={{color: colors.blue}}>Communicate Decision &#8680;</button></div>
+    if (userOwnedDec) return <div><button onClick={this.updateMatrix} style={baseBtnStyles}>Update Plot</button><br/><br/><button onClick={this.setTab('list')} style={{color: colors.blue, fontSize: '2em', border: `3px solid ${colors.blue}`}}>Explain to Team &#8680;</button></div>
     return <button onClick={this.setTab('list')} style={baseBtnStyles}>view your copy &#8680;</button>
   }
 
@@ -211,18 +211,15 @@ class App extends Component {
           </div>}
       </section>
       <section style={{display: (this.state.selectedTab === 'list' ? '' : 'none')}}>
-        <header>
+        <header style={{borderBottom: '2px solid black', textAlign: 'center'}}>
           <h1>Decision List</h1>
         </header>
-        <Share {...this.state} />
-        <p>My Decisions:</p>
-        <ul>
-          <DecisionsList {...this.props} shareId={this.state.shareId} goTo={this.goTo} setTab={this.setTab} shareMatrix={this.shareMatrix}/>
-        </ul>
-        <p>Shared With Me:</p>
-        <ul>
-          <SharedDecisionsList {...this.props} goTo={this.goTo} setTab={this.setTab}/>
-        </ul>
+        <p style={{textAlign: 'center'}}>Send explanations to your team members so they can view your decisions and give you feedback</p>
+        <Share {...this.state} /><br/>
+        <p style={{borderBottom: '1px solid black'}}>My Decisions:</p>
+        <DecisionsList {...this.props} shareId={this.state.shareId} goTo={this.goTo} setTab={this.setTab} shareMatrix={this.shareMatrix}/><br/>
+        <p style={{borderBottom: '1px solid black'}}>Shared With Me:</p>
+        <SharedDecisionsList {...this.props} goTo={this.goTo} setTab={this.setTab}/>
       </section>
     </div>)
   }
