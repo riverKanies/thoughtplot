@@ -19,11 +19,11 @@ export default class IntroTab extends Component {
         const headerStyles = {color: 'lightgray'}
         return (<section style={{display: (this.props.selectedTab === 'intro' ? '' : 'none')}}>
             <header>
-                <div style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px', margin: '40px'}}>
+                <div style={{background: colors.orange, textAlign: 'center', padding: '20px', borderRadius: '20px', margin: '40px 0'}}>
                     <Logo4 logoColor={colors.yellow} />
                     <text style={textStyles}>houghtPlot</text><br/>
                 </div>
-                <div style={{textAlign: 'center', margin: '40px', padding: '20px', background: colors.purple, borderRadius: '20px'}}>
+                <div style={{textAlign: 'center', margin: '40px 0', padding: '20px', paddingBottom: '40px', background: colors.purple, borderRadius: '20px'}}>
                     <h3 style={headerStyles}>Do you find yourself having to explain some decisions to your team over and over?</h3>
                     <h2 style={headerStyles}>Plot your thoughts to communicate complex decisions with ease:</h2>
                     <div style={{textAlign: 'center', background: 'white', width: '300px', margin: '0 auto', borderRadius: '5px', paddingTop: '20px'}}>

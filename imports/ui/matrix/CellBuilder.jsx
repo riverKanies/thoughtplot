@@ -29,29 +29,31 @@ export default class CellBuilder extends Component {
     super(props)
 
     this.state = {}
-    this.state.currentRow = 1
     this.state.currentColumn = 1
     this.state.isCostArray = []
 
-    this.nextCell = this.nextCell.bind(this)
+    this.nextColumn = this.nextColumn.bind(this)
     this.selectBtn = this.selectBtn.bind(this)
     this.toggleIsCost = this.toggleIsCost.bind(this)
   }
 
-  renderScoreButtons(value) {
+  renderScoreButtons(row, value) {
     const isCost = this.isCost()
+    //labeled as cost
     if (isCost) return <div className='row'>
+      <div className='col-3'></div>
       {range.map((s,i) => {
         let label = null
         if (i==range.length-1) label = 'high cost'
         if (s == 0) label = 'neutral'
         const selectedStyles = (-s == value) ? {background: colors.orange, color: 'white'} : {}
         return <div key={s} className='col-1' style={{textAlign: 'center'}}>
-          <button style={{...btnStyles, ...selectedStyles, borderColor: colors.orange}} onClick={this.selectBtn(-s)}>{s}</button>
+          <button style={{...btnStyles, ...selectedStyles, borderColor: colors.orange}} onClick={this.selectBtn(row,-s)}>{s}</button>
           {label ? <div style={{color: colors.orange, fontSize:'.6em'}}>{label}</div> : ''}
         </div>
       })}
     </div>
+    //unlabeled
     if (!isCost && isCost !== false) return <div className='row'>
       {fullRange.map((s,i) => {
         let label = null
@@ -61,29 +63,30 @@ export default class CellBuilder extends Component {
         const color = (s<0 ? colors.orange : colors.blue)
         const selectedStyles = (s == value) ? {background: color, color: 'white'} : {}
         return <div key={s} className='col-1' style={{textAlign: 'center'}}>
-          <button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
+          <button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(row,s)}>{s}</button>
           {label ? <div style={{color: color, fontSize:'.6em'}}>{label}</div> : ''}
         </div>
       })}
     </div>
+    //labeled as benefit
     return <div className='row'>
+      <div className='col-3'></div>
       {range.map((s,i) => {
         let label = null
         if (i==range.length-1) label = 'high benefit'
         if (s == 0) label = 'neutral'
         const selectedStyles = (s == value) ? {background: colors.blue, color: 'white'} : {}
         return <div key={s} className='col-1' style={{textAlign: 'center'}}>
-          <button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(s)}>{s}</button>
+          <button style={{...btnStyles, ...selectedStyles}} onClick={this.selectBtn(row,s)}>{s}</button>
           {label ? <div style={{color: colors.blue, fontSize:'.6em'}}>{label}</div> : ''}
         </div>
       })}
     </div>
   }
 
-  renderScoreDescription () {
+  renderScoreDescription (i) {
     const isCost = this.isCost()
     const { mtx } = this.props
-    const i = this.state.currentRow
     const j = this.state.currentColumn
     const value = mtx[i][j].val
     const option = mtx[i][0].val
@@ -98,32 +101,22 @@ export default class CellBuilder extends Component {
 
   }
 
-  renderScoreSection() {
-    const isCost = this.isCost()
+  renderScoreSection(i) {
     const { mtx } = this.props
-    const i = this.state.currentRow
     const j = this.state.currentColumn
     const value = mtx[i][j].val
-    const option = mtx[i][0].val
-    const cell = mtx[0][j]
-    const consideration = cell.val
     return <div style={{textAlign: 'center'}}>
-      {this.renderScoreDescription()}
-      {this.renderScoreButtons(value)}
+      {this.renderScoreDescription(i)}
+      {this.renderScoreButtons(i,value)}
     </div>
   }
 
   renderCostBtn() {
     const { mtx } = this.props
     if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>"Error, must have at least one option and one consideration!"</text>
-    const i = this.state.currentRow
     const j = this.state.currentColumn
-    const value = mtx[i][j].val
-    const option = mtx[i][0].val
     const cell = mtx[0][j]
     const consideration = cell.val
-    const finished = (i==mtx.length-1 && j==mtx[0].length-1)
-    const note = this.props.mtx[i][j].note
 
     const fontSize = '7px'
     const containerStyles = {float: 'right', fontSize, padding: '3px', border: `1px solid ${colors.blue}`, borderTop: '0px', marginRight: '7px'}
@@ -145,33 +138,41 @@ export default class CellBuilder extends Component {
   renderBuilder() {
     const { mtx } = this.props
     if (mtx.length < 2 || mtx[0].length < 2) return <text style={{color: 'red'}}>"Error, must have at least one option and one consideration!"</text>
-    const i = this.state.currentRow
     const j = this.state.currentColumn
-    const value = mtx[i][j].val
-    const option = mtx[i][0].val
     const cell = mtx[0][j]
     const consideration = cell.val
-    const finished = (i==mtx.length-1 && j==mtx[0].length-1)
-    const finishedConsideration = i==mtx.length-1
-    const note = this.props.mtx[i][j].note
+    const finished = (j==mtx[0].length-1)
 
     return <div>
       <div>
         <div style={{width: '300px', margin: '0 auto'}}>
           <div style={{border: `2px solid ${colors.blue}`, textAlign: 'center', color: colors.blue, fontSize: '2em', overflow: 'hidden', padding: '5px 0'}}>{consideration}</div>
           {this.renderCostBtn()}
-        </div><br/>
-        <div style={{width: '90px', margin: '0 auto', textAlign: 'center', border: `2px solid ${colors.orange}`, marginTop: '20px', padding: '3px 0'}}><b style={{color: colors.orange}}>{option}</b></div>
-        <br/><br/>
+        </div><br/><br/>
       </div>
-      {this.renderScoreSection()}
+      <div style={{}}>
+        {this.props.mtx.map((row, i)=>{
+          if (i===0) return ''
+          const option = row[0].val
+          const note = row[j].note
+          return <div key={i} style={{width: '100%', background: 'white', margin: '20px 0', padding: '10px 0', borderRadius: '10px', textAlign: 'center'}}>
+            <div style={{width: '200px', margin: '0 auto 20px', textAlign: 'center', border: `2px solid ${colors.orange}`, marginTop: '20px', padding: '3px 0'}}><b style={{color: colors.orange}}>{option}</b></div>
+            <textarea
+              value={note}
+              onChange={this.props.onChangeNote(i,j)}
+              placeholder={`Briefly describe the costs and benefits of ${consideration} for ${option}`}
+              style={{width: '270px', margin: '10px 0', height: '50px'}}/>
+            <br/>
+            {this.renderScoreSection(i)}
+          </div>
+        })}
+      </div>
       <br/><br/>
-      <label>Add a Note:</label><br/>
-      <textarea value={note} onChange={this.props.onChangeNote(i,j)} placeholder='(describe why you think this score is appropriate)'/><br/>
-      <br/><br/>
-      {finished ? <text><button onClick={this.props.setTab('matrix')} style={nxtStyles}>View Plot &#8680;</button></text> :
-        ((finishedConsideration) ? <button onClick={this.nextCell} style={nxtStyles}>Next Consideration &#8680;</button> : <button onClick={this.nextCell} style={nxtStyles}>Next Option &#8680;</button>)
-      }
+      <div style={{width: '100%', textAlign: 'center'}}>
+        {finished ? <text><button onClick={this.props.setTab('matrix')} style={nxtStyles}>View Plot &#8680;</button></text> :
+          <button onClick={this.nextColumn} style={nxtStyles}>Next Consideration &#8680;</button>
+        }
+      </div>
     </div>
   }
 
@@ -184,20 +185,14 @@ export default class CellBuilder extends Component {
     </div>)
   }
 
-  nextCell() {
+  nextColumn() {
     window.scroll(0,findPos(document.getElementById('cellBuilder'))-70)
-    const i = this.state.currentRow
     const j = this.state.currentColumn
-    if (i==this.props.mtx.length-1) { //if on last row, go to next column, first row
-      this.setState({currentRow: 1, currentColumn: j+1, isCost: this.props.mtx[0][j+1].isCost || null})
-    } else { // simply increment the row
-      this.setState({currentRow: i+1})
-    }
+    this.setState({currentColumn: j+1, isCost: this.props.mtx[0][j+1].isCost || null})
   }
 
-  selectBtn(s) {
+  selectBtn(i,s) {
     return () => {
-      const i = this.state.currentRow
       const j = this.state.currentColumn
       this.props.onChangeHandler(i,j,s)
     }
