@@ -14,6 +14,8 @@ if (Meteor.isServer) {
   Meteor.publish('decisionsShared', function decisionsSharedPublication() {
     const currentUser = Meteor.users.findOne(this.userId)
     if (!currentUser) return []
+    const verified = (Meteor.isDevelopment || currentUser.email[0].verified())
+    if (!verified) return []
     const email = currentUser.emails[0].address 
     return Decisions.find({collaborators: email})
   })

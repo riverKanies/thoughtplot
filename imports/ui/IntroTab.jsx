@@ -24,13 +24,11 @@ export default class IntroTab extends Component {
                     <text style={textStyles}>houghtPlot</text><br/>
                 </div>
                 <div style={{textAlign: 'center', margin: '40px 0', padding: '20px', paddingBottom: '40px', background: colors.purple, borderRadius: '20px'}}>
+                    <h2 style={headerStyles}>Communicate complex decisions with ease</h2>
                     <h3 style={headerStyles}>Do you find yourself having to explain some decisions to your team over and over?</h3>
-                    <h2 style={headerStyles}>Plot your thoughts to communicate complex decisions with ease:</h2>
-                    <div style={{textAlign: 'center', background: 'white', width: '300px', margin: '0 auto', borderRadius: '5px', paddingTop: '20px'}}>
-                        <h3 style={{color: colors.blue, margin: '0 0 15px 0', borderBottom: `2px solid ${colors.blue}`, width: '270px', margin: '0 auto'}}>
-                            Document a complex decision now
-                        </h3>
-                        <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="Describe your decision in a few words" style={{width: '280px', fontSize: '1.4em', margin: '0', border: '0px', resize: 'none'}} onKeyPress={this.checkEnter} />
+                    <h3 style={headerStyles}>Build your ThoughtPlot to get people on the same page</h3>
+                    <div style={{textAlign: 'center', background: colors.blue, width: '300px', margin: '0 auto', borderRadius: '5px', paddingTop: '5px'}}>
+                        <textarea value={this.props.decision} onChange={this.props.onChangeDecision} placeholder="Briefly describe a decision you've made recently" style={{width: '280px', fontSize: '1.4em', margin: '0', border: '0px', resize: 'none', background: 'transparent', color: 'white'}} onKeyPress={this.checkEnter} />
                     </div>
                 </div>
             </header>

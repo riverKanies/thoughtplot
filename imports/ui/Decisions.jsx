@@ -25,7 +25,9 @@ export class DecisionsList extends Component {
 
 export class SharedDecisionsList extends Component {
     render () {
-        return <div style={{padding: '0 20px'}}>{this.props.decisionsShared.map((dec) => {
+        const { decisionsShared } = this.props
+        if (decisionsShared.length == 0) return <p>Note: You must verify email to view decisions that have been shared with you.</p>
+        return <div style={{padding: '0 20px'}}>{decisionsShared.map((dec) => {
             const isCurrentDec = (this.props.decision && this.props.decision._id == dec._id)
             return <p key={dec._id} style={{...itemStyles, color: (isCurrentDec ? colors.blue : 'white')}}>
             &#9672; {dec.decision}&#8195;{isCurrentDec ? ' (viewing)': <button onClick={()=>{this.props.setTab('matrix')(); this.props.goTo(`/decisions/${dec._id}`)()}}>View</button>}

@@ -35,7 +35,7 @@ export default class CellBuilder extends Component {
 
     this.nextColumn = this.nextColumn.bind(this)
     this.selectBtn = this.selectBtn.bind(this)
-    this.toggleIsCost = this.toggleIsCost.bind(this)
+    this.setIsCost = this.setIsCost.bind(this)
   }
 
   renderScoreButtons(row, value) {
@@ -122,16 +122,13 @@ export default class CellBuilder extends Component {
     const fontSize = '7px'
     const containerStyles = {float: 'right', fontSize, padding: '3px', border: `1px solid ${colors.blue}`, borderTop: '0px', marginRight: '7px'}
     const btnStyles = {fontSize}
-    if (this.isCost()) return <div style={containerStyles}>
-      <button style={{...btnStyles, background: colors.orange, color: 'white'}} onClick={this.toggleIsCost(j,false)}>Cost</button>
-    </div>
-    if (this.isCost() === false) return <div style={containerStyles}>
-    <button style={{...btnStyles, background: colors.blue, color: 'white'}} onClick={this.toggleIsCost(j,true)}>Benefit</button>
-  </div>
+
+    const isCost = this.isCost()
+    const isBenefit = isCost === false
     return <div style={containerStyles}>
-      <button style={this.isCost() ? {...btnStyles, background: colors.orange, color: 'white'} : btnStyles} onClick={this.toggleIsCost(j,true)}>Cost</button>
+      <button style={isCost ? {...btnStyles, background: colors.orange, color: 'white'} : btnStyles} onClick={this.setIsCost(j, (isCost ? null : true))}>Cost</button>
       <text style={{margin: '0 5px'}}>or</text>
-      <button style={this.isCost() === false ? {...btnStyles, background: colors.blue, color: 'white'} : btnStyles} onClick={this.toggleIsCost(j,false)}>Benefit</button>
+      <button style={isBenefit ? {...btnStyles, background: colors.blue, color: 'white'} : btnStyles} onClick={this.setIsCost(j, (isBenefit ? null : false))}>Benefit</button>
       <text style={{marginLeft: '5px'}}>?</text>
     </div>
   }
@@ -199,7 +196,7 @@ export default class CellBuilder extends Component {
     }
   }
 
-  toggleIsCost(j, isCost) {
+  setIsCost(j, isCost) {
     return () => {
       const { isCostArray } = this.state
       isCostArray[j] = isCost
