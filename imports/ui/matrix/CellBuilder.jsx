@@ -30,6 +30,11 @@ export default class CellBuilder extends Component {
     super(props)
 
     this.state = {}
+
+    this.state.sliderOverall = 80
+    this.state.sliderDiff1 = 85
+    this.state.sliderDiff2 = 80
+
     this.state.currentColumn = 1
     this.state.isCostArray = []
 
@@ -55,7 +60,36 @@ export default class CellBuilder extends Component {
       })}
     </div>
     //unlabeled
-    if (!isCost && isCost !== false) return <div className='row'>
+    if (!isCost && isCost !== false) return (<div className='row'>
+
+      <p>overall</p>
+      <div id="slidecontainer">
+        <input type="range" min="1" max="100" value={this.state.sliderOverall} className="slider" onChange={((e)=>{
+          this.setState({sliderOverall: e.target.value})
+        }).bind(this)} />
+      </div>
+      <div style={{width: '100%'}}>
+        <div style={{marginLeft: this.state.sliderOverall+'%', width: 100-this.state.sliderOverall+'%', background: 'blue', height: '10px'}}></div>
+      </div>
+      <p>key diff</p>
+      <div style={{width: '100%'}}>
+        <div style={{marginLeft: this.state.sliderDiff1+'%', width: 100-this.state.sliderDiff1+'%', background: 'red', height: '10px'}}></div>
+      </div>
+      <div id="slidecontainer">
+        <input type="range" min="1" max="100" value={this.state.sliderDiff1} className="slider" onChange={((e)=>{
+          this.setState({sliderDiff1: e.target.value})
+        }).bind(this)} />
+      </div>
+      <div style={{width: '100%'}}>
+        <div style={{marginLeft: this.state.sliderDiff2+'%', width: 100-this.state.sliderDiff2-(100-this.state.sliderDiff1)+'%', background: 'red', height: '10px'}}></div>
+      </div>
+      <div id="slidecontainer">
+        <input type="range" min="1" max="100" value={this.state.sliderDiff2} className="slider" onChange={((e)=>{
+          this.setState({sliderDiff2: e.target.value})
+        }).bind(this)} />
+      </div>
+      <p>secondary diff</p>
+
       {fullRange.map((s,i) => {
         let label = null
         if (i==0) label = 'high cost'
@@ -68,7 +102,7 @@ export default class CellBuilder extends Component {
           {label ? <div style={{color: color, fontSize:'.6em'}}>{label}</div> : ''}
         </div>
       })}
-    </div>
+    </div>)
     //labeled as benefit
     return <div className='row'>
       <div className='col-3'></div>
